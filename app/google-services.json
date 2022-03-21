@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "494398726116",
+    "project_id": "payfast-76f9c",
+    "storage_bucket": "payfast-76f9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494398726116:android:6703ecc2b2f235fa0fb1f1",
+        "android_client_info": {
+          "package_name": "com.gtech.payeasy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494398726116-v15t6sfnc0o5aocfrq08skb5tpg5dasl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRsT-YkymQoYFEPrRCIigmntZnsMKlOpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494398726116-v15t6sfnc0o5aocfrq08skb5tpg5dasl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494398726116:android:aa15d8274c0b55a00fb1f1",
+        "android_client_info": {
+          "package_name": "com.gtech.payfast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494398726116-ll7oeje3l16vp1ij6plu5u81t8muuhlk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.payfast",
+            "certificate_hash": "098b75ed2d90b897a434e135f76ace6a810e8cb8"
+          }
+        },
+        {
+          "client_id": "494398726116-mu0deg5pfqddjvpe4qpqnqs94molkmf7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.payfast",
+            "certificate_hash": "4a333a24091243e6d1365690699bb92f6bafaa53"
+          }
+        },
+        {
+          "client_id": "494398726116-v15t6sfnc0o5aocfrq08skb5tpg5dasl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRsT-YkymQoYFEPrRCIigmntZnsMKlOpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494398726116-v15t6sfnc0o5aocfrq08skb5tpg5dasl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494398726116:android:bb8680730c08b66d0fb1f1",
+        "android_client_info": {
+          "package_name": "com.gtech.transits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494398726116-a5qp4mqm1d1hoq7qj4q63hk7qmv3gvs9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gtech.transits",
+            "certificate_hash": "4a333a24091243e6d1365690699bb92f6bafaa53"
+          }
+        },
+        {
+          "client_id": "494398726116-v15t6sfnc0o5aocfrq08skb5tpg5dasl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRsT-YkymQoYFEPrRCIigmntZnsMKlOpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494398726116-v15t6sfnc0o5aocfrq08skb5tpg5dasl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

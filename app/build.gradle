@@ -1,0 +1,104 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+android {
+
+    compileSdk 31
+
+    defaultConfig {
+
+        applicationId "com.gtech.payfast"
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+
+            buildConfigField("String", "HOST_URL", "\"https://infallible-sutherland.162-241-222-27.plesk.page/\"")
+
+            buildConfigField("String", "OPERATOR_ID", "\"1\"")
+
+            // OPERATION TYPE
+            buildConfigField("String", "OPERATION_ISSUE", "\"1\"")
+            buildConfigField("String", "OPERATION_CANCEL", "\"2\"")
+            buildConfigField("String", "OPERATION_RELOAD", "\"3\"")
+            buildConfigField("String", "OPERATION_REFUND", "\"6\"")
+
+            // SUPPORT TYPE
+            buildConfigField("String", "SUPPORT_MOBILE_QR", "\"3\"")
+            buildConfigField("String", "SUPPORT_PAPER_QR", "\"4\"")
+            buildConfigField("String", "SUPPORT_WHATSAPP_QR", "\"5\"")
+
+            // TOKEN TYPE
+            buildConfigField("String", "TOKEN_TYPE_SJT", "\"10\"")
+            buildConfigField("String", "TOKEN_TYPE_RJT", "\"90\"")
+            buildConfigField("String", "TOKEN_TYPE_SVP", "\"81\"")
+            buildConfigField("String", "TOKEN_TYPE_TP", "\"21\"")
+
+            // QR TYPE
+            buildConfigField("String", "QR_SINGLE_JOURNEY", "\"1\"")
+            buildConfigField("String", "QR_RETURN_JOURNEY", "\"2\"")
+            buildConfigField("String", "QR_STORE_VALUE_PASS", "\"3\"")
+            buildConfigField("String", "QR_TRIP_PASS", "\"4\"")
+
+            // PG
+            buildConfigField("String", "PG_ID", "\"1\"")
+
+            // ORDER STATUS
+            buildConfigField("String", "ORDER_GENERATED", "\"100\"")
+
+            // REG FEES
+            buildConfigField("String", "REG_FEES", "\"0\"")
+
+            // ORDER TYPE
+            buildConfigField("String", "NORMAL", "\"0\"")
+            buildConfigField("String", "PENALTY", "\"1\"")
+
+        }
+    }
+
+    viewBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'com.google.firebase:firebase-auth:21.0.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    // GSON
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+
+    // ZXING QR LIB
+    implementation 'com.google.zxing:core:3.4.1'
+
+}
