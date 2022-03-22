@@ -2,89 +2,87 @@ package com.gtech.payfast.Model.Auth;
 
 public class User {
 
-    String id ,name ,email ,number ,operator ,is_verified ,timestamp;
+    private String pax_name;
+    private String insert_date;
+    private String pax_email;
+    private String pax_mobile;
+    private Object is_verified;
+    private Integer pax_id;
+    private Integer points;
 
-    /* CONSTRUCTOR */
-
-    // USER RESPONSE
-    public User(String id, String name, String email, String number, String operator, String is_verified, String timestamp) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.number = number;
-        this.operator = operator;
+    public User(String pax_name, String insert_date, String pax_email, String pax_mobile, Object is_verified, Integer pax_id, Integer points) {
+        this.pax_name = pax_name;
+        this.insert_date = insert_date;
+        this.pax_email = pax_email;
+        this.pax_mobile = pax_mobile;
         this.is_verified = is_verified;
-        this.timestamp = timestamp;
+        this.pax_id = pax_id;
+        this.points = points;
     }
 
-    // CHECK USER REQUEST
-    public User(String number) {
-        this.number = number;
+    public User(String pax_name, String pax_email, String pax_mobile) {
+        this.pax_name = pax_name;
+        this.pax_email = pax_email;
+        this.pax_mobile = pax_mobile;
     }
 
-    // REGISTER USER
-    public User(String name, String email, String number, String operator) {
-        this.name = name;
-        this.email = email;
-        this.number = number;
-        this.operator = operator;
+    public User(String pax_mobile) {
+        this.pax_mobile = pax_mobile;
     }
 
-    /* GETTERS AND SETTERS */
-
-    public String getId() {
-        return id;
+    public String getPax_name() {
+        return pax_name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPax_name(String pax_name) {
+        this.pax_name = pax_name;
     }
 
-    public String getName() {
-        return name;
+    public String getInsert_date() {
+        return insert_date;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setInsert_date(String insert_date) {
+        this.insert_date = insert_date;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPax_email() {
+        return pax_email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPax_email(String pax_email) {
+        this.pax_email = pax_email;
     }
 
-    public String getNumber() {
-        return number;
+    public String getPax_mobile() {
+        return pax_mobile;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setPax_mobile(String pax_mobile) {
+        this.pax_mobile = pax_mobile;
     }
 
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public String getIs_verified() {
+    public Object getIs_verified() {
         return is_verified;
     }
 
-    public void setIs_verified(String is_verified) {
+    public void setIs_verified(Object is_verified) {
         this.is_verified = is_verified;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public Integer getPax_id() {
+        return pax_id;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setPax_id(Integer pax_id) {
+        this.pax_id = pax_id;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 }

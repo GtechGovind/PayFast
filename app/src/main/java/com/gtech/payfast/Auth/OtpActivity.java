@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -128,6 +129,7 @@ public class OtpActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
+        Log.e("Mobile number for OTP", "+91" + getIntent().getStringExtra("NUMBER"));
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber("+91" + getIntent().getStringExtra("NUMBER"))
                 .setTimeout(60L, TimeUnit.SECONDS)
@@ -181,6 +183,7 @@ public class OtpActivity extends AppCompatActivity {
         binding.OptionButton.setOnClickListener(view2 -> Toast.makeText(this, "Your details are safe with us \uD83D\uDE0A", Toast.LENGTH_SHORT).show());
         binding.BackButton.setOnClickListener(view1 -> finish());
         binding.Heading.setText(Heading);
+        binding.UserNumber.setText(getIntent().getStringExtra("NUMBER"));
 
         // GO TO REGISTER
         binding.WrongNumber.setOnClickListener(view1 -> finish());

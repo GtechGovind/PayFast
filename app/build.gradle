@@ -28,8 +28,8 @@ android {
 
         debug {
 
-            buildConfigField("String", "HOST_URL", "\"https://infallible-sutherland.162-241-222-27.plesk.page/\"")
-
+//            buildConfigField("String", "HOST_URL", "\"https://infallible-sutherland.162-241-222-27.plesk.page/\"")
+            buildConfigField("String", "HOST_URL", "\"https://distracted-williamson.162-241-222-27.plesk.page/\"")
             buildConfigField("String", "OPERATOR_ID", "\"1\"")
 
             // OPERATION TYPE

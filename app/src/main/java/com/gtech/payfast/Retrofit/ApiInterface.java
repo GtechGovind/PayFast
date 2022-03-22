@@ -11,6 +11,7 @@ import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
 import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.Pass.Trip;
 import com.gtech.payfast.Model.ResponseModel;
+import com.gtech.payfast.Model.Ticket;
 
 import java.util.List;
 
@@ -19,16 +20,17 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiInterface {
 
     /********************************** USER **************************************/
     @Headers("Accept:application/json")
-    @POST("api/user")
-    Call<ResponseModel> verifyUser(@Body User user);
+    @GET("api/user/check/{phone-number}")
+    Call<ResponseModel> checkUser(@Path("phone-number") String mobile);
 
     @Headers("Accept:application/json")
-    @POST("api/user/add")
+    @POST("api/user/create")
     Call<ResponseModel> registerUser(@Body User user);
 
     /********************************** CONFIG DATA **************************************/
@@ -73,4 +75,8 @@ public interface ApiInterface {
     @POST("api/pass/reload")
     Call<IssueResponse> reloadSVP(@Body Issue reloadSVP);
 
+    /* *********************************** TICKET ********************************************/
+    @Headers("Accept:application/json")
+    @POST("api/ticket/create")
+    Call<ResponseModel> createTicket(@Body Ticket ticket);
 }

@@ -19,6 +19,7 @@ import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Status;
+import com.gtech.payfast.Model.Ticket;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.FareUtility;
@@ -63,6 +64,20 @@ public class MobileQr extends AppCompatActivity {
 
     }
 
+    // CREATE TICKET
+    private void createTicket() {
+
+        Ticket newTicket = new Ticket(
+                dbHelper.getStationId(binding.Source.getText().toString()),
+                dbHelper.getStationId(binding.Destination.getText().toString()),
+                OrderUtils.getOrderTypeCode(TicketType),
+                binding.TicketCount.getText().toString(),
+                TotalFare,
+                SharedPrefUtils.getStringData(this, "NUMBER")
+        );
+
+        Call<ResponseModel> createTicket = ApiController.getInstance().apiInterface().createTicket(newTicket);
+    }
     // CREATE NEW ORDER AND
     private void createOrder() {
 

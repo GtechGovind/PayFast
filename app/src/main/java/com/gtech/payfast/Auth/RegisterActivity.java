@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Retrofit.ApiController;
@@ -62,8 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
         User user = new User(
                 Objects.requireNonNull(binding.FullName.getText()).toString(),
                 Objects.requireNonNull(binding.Email.getText()).toString(),
-                Objects.requireNonNull(binding.Number.getText()).toString(),
-                BuildConfig.OPERATOR_ID
+                Objects.requireNonNull(binding.Number.getText()).toString()
         );
 
         Call<ResponseModel> registerUser = ApiController.getInstance().apiInterface().registerUser(user);
@@ -99,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "User already exist please login.", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        intent.putExtra("NUMBER", user.getNumber());
+                        intent.putExtra("NUMBER", user.getPax_mobile());
                         startActivity(intent);
 
                         binding.RegisterProgressBar.setVisibility(View.GONE);

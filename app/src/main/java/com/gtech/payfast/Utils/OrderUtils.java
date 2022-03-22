@@ -1,5 +1,7 @@
 package com.gtech.payfast.Utils;
 
+import com.gtech.payfast.BuildConfig;
+
 import java.util.UUID;
 
 public class OrderUtils {
@@ -22,8 +24,8 @@ public class OrderUtils {
     }
 
     public static String getOrderTypeCode(String TicketType){
-        if (TicketType.equals("Single")) return "10";
-        else return "90";
+        if (TicketType.equals("Single")) return BuildConfig.TOKEN_TYPE_SJT;
+        else return BuildConfig.TOKEN_TYPE_RJT;
     }
 
 }

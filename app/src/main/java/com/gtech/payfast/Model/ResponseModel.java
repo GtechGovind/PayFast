@@ -59,6 +59,12 @@ public class ResponseModel {
         this.data = data;
     }
 
+    public ResponseModel(User user, Boolean status) {
+        this.user = user;
+        this.status = status;
+    }
+
+
     // GETTERS AND SETTERS
     public boolean isStatus() {
         return status;

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             if (SharedPrefUtils.getStringData(this, "NUMBER") != null) {
                 startActivity(new Intent(this, MainDashboard.class));
             } else {
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, MainDashboard.class));
             }
 
             finish();

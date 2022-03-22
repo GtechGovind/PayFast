@@ -62,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         String NUMBER = Objects.requireNonNull(binding.Number.getText()).toString().trim();
         User user = new User(NUMBER);
 
-        Call<ResponseModel> verifyUser = ApiController.getInstance().apiInterface().verifyUser(user);
-        verifyUser.enqueue(new Callback<ResponseModel>() {
+        Call<ResponseModel> checkUser = ApiController.getInstance().apiInterface().checkUser(NUMBER);
+        checkUser.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
 
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Gson gson = new Gson();
-                Log.e("CHECK_USER_REQUEST", gson.toJson(user));
+                Log.e("CHECK_USER_REQUEST", gson.toJson(NUMBER));
                 Log.e("CHECK_USER_RESPONSE", gson.toJson(response.body()));
 
                 ResponseModel checkUserResponse = response.body();
@@ -87,9 +87,9 @@ public class LoginActivity extends AppCompatActivity {
                         User oldUser = checkUserResponse.getUser();
 
                         Intent intent = new Intent(LoginActivity.this, OtpActivity.class);
-                        intent.putExtra("NUMBER", oldUser.getNumber());
-                        intent.putExtra("EMAIL", oldUser.getEmail());
-                        intent.putExtra("NAME", oldUser.getName());
+                        intent.putExtra("NUMBER", oldUser.getPax_mobile());
+                        intent.putExtra("EMAIL", oldUser.getPax_email());
+                        intent.putExtra("NAME", oldUser.getPax_name());
 
                         startActivity(intent);
 
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "User doesn't exist please Register.", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                        intent.putExtra("NUMBER", user.getNumber());
+                        intent.putExtra("NUMBER", user.getPax_mobile());
                         startActivity(intent);
 
                         finish();
