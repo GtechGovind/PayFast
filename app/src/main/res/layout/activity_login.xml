@@ -131,7 +131,9 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:text="@string/register"
-                app:cornerRadius="50dp" />
+                app:cornerRadius="50dp"
+                android:backgroundTint="@color/secondary_light"
+                android:textColor="@color/primary" />
 
         </LinearLayout>
 
