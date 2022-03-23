@@ -16,6 +16,7 @@ public class ResponseModel {
 
     // ORDER
     String message, order_no;
+    String order_id;
 
     // GET QR
     List<Qr> qrs;
@@ -59,11 +60,17 @@ public class ResponseModel {
         this.data = data;
     }
 
+    // Check user
     public ResponseModel(User user, Boolean status) {
         this.user = user;
         this.status = status;
     }
 
+    // Ticket creation order Id
+    public ResponseModel(Boolean status, String order_id) {
+        this.status = status;
+        this.order_id = order_id;
+    }
 
     // GETTERS AND SETTERS
     public boolean isStatus() {
@@ -113,5 +120,13 @@ public class ResponseModel {
     }
     public void setData(ResponseData data) {
         this.data = data;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
     }
 }

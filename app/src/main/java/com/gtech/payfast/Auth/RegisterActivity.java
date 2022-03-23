@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.gtech.payfast.Activity.MainDashboard;
 import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Retrofit.ApiController;
@@ -86,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (registerUserResponse.isStatus()) {
 
-                        Intent intent = new Intent(RegisterActivity.this, OtpActivity.class);
+                        Intent intent = new Intent(RegisterActivity.this, MainDashboard.class);
                         intent.putExtra("NUMBER", Objects.requireNonNull(binding.FullName.getText()).toString());
                         intent.putExtra("EMAIL", Objects.requireNonNull(binding.Email.getText()).toString());
                         intent.putExtra("NAME", Objects.requireNonNull(binding.Number.getText()).toString());

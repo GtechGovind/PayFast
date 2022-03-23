@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.gtech.payfast.Activity.MainDashboard;
 import com.gtech.payfast.Activity.QrActivity;
 import com.gtech.payfast.Activity.SVP.StoreValuePass;
 import com.gtech.payfast.BuildConfig;
@@ -17,6 +18,7 @@ import com.gtech.payfast.Model.IssueToken.Data;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Payment;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
+import com.gtech.payfast.Model.ProcessedTicket;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityPaymentBinding;
@@ -47,7 +49,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             switch (getIntent().getStringExtra("PAYMENT_TYPE")) {
                 case "1":
-                    issueMobileQrTicket();
+                    processTicket();
                     break;
                 case "2":
                     issueSVP();
@@ -174,12 +176,41 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
+    // Process QR Mobile Ticket
+    private void processTicket() {
+        String ORDER_ID;
+        ORDER_ID = getIntent().getStringExtra("ORDER_ID");
+
+        Call<ProcessedTicket> processedTicket = ApiController.getInstance().apiInterface().processTicket(ORDER_ID);
+        processedTicket.enqueue(new Callback<ProcessedTicket>() {
+            @Override
+            public void onResponse(@NonNull Call<ProcessedTicket> call, @NonNull Response<ProcessedTicket> response) {
+                Gson gson = new Gson();
+                Log.e("ISSUE_QR_REQUEST", gson.toJson(ORDER_ID));
+                Log.e("ISSUE_QR_RESPONSE", gson.toJson(response.body()));
+                if (response.body() != null) {
+                    if (response.body().getStatus() && (response.body().getProduct_id() == 1 ||  response.body().getProduct_id() == 2)) {
+                        // Payment processed
+                        Intent intent = new Intent(PaymentActivity.this, QrActivity.class);
+                        intent.putExtra("ORDER_ID", response.body().getOrder_id());
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<ProcessedTicket> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
     // MOBILE QR TICKET
     private void issueMobileQrTicket() {
 
         String ORDER_NO, SOURCE_ID, TICKET_TYPE, TICKET_COUNT, DESTINATION_ID, TOTAL_FARE;
 
-        ORDER_NO = getIntent().getStringExtra("ORDER_NO");
+        ORDER_NO = getIntent().getStringExtra("ORDER_ID");
         SOURCE_ID = getIntent().getStringExtra("SOURCE_ID");
         TICKET_TYPE = getIntent().getStringExtra("TICKET_TYPE");
         TICKET_COUNT = getIntent().getStringExtra("TICKET_COUNT");

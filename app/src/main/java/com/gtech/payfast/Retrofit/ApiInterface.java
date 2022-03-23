@@ -2,18 +2,18 @@ package com.gtech.payfast.Retrofit;
 
 
 import com.gtech.payfast.Model.Auth.User;
+import com.gtech.payfast.Model.Config.FareRequest;
 import com.gtech.payfast.Model.Config.Fare;
-import com.gtech.payfast.Model.Config.Station;
-import com.gtech.payfast.Model.Fetch.Qr;
-import com.gtech.payfast.Model.IssueToken.Data;
+import com.gtech.payfast.Model.Config.StationsResponse;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
 import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.Pass.Trip;
+import com.gtech.payfast.Model.ProcessedTicket;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket;
-
-import java.util.List;
+import com.gtech.payfast.Model.TicketResponse;
+import com.gtech.payfast.Model.TicketViewResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -36,12 +36,12 @@ public interface ApiInterface {
     /********************************** CONFIG DATA **************************************/
     // GET CONFIG DATA
     @Headers("Accept:application/json")
-    @GET("api/stations")
-    Call<List<Station>> getStations();
+    @GET("api/get/station")
+    Call<StationsResponse> getStations();
 
     @Headers("Accept:application/json")
-    @GET("api/fares")
-    Call<List<Fare>> getFare();
+    @POST("api/get/fare")
+    Call<Fare> getFare(@Body FareRequest fare);
 
     /********************************** ODER **************************************/
     //CREATE ORDER
@@ -78,5 +78,13 @@ public interface ApiInterface {
     /* *********************************** TICKET ********************************************/
     @Headers("Accept:application/json")
     @POST("api/ticket/create")
-    Call<ResponseModel> createTicket(@Body Ticket ticket);
+    Call<TicketResponse> createTicket(@Body Ticket ticket);
+
+    @Headers("Accept:application/json")
+    @GET("api/processing/init/{order-id}")
+    Call<ProcessedTicket> processTicket(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @GET("api/ticket/view/{order-id}")
+    Call<TicketViewResponse> viewTicket(@Path("order-id") String orderId);
 }

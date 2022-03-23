@@ -1,54 +1,27 @@
 package com.gtech.payfast.Model.Config;
 
 public class Fare {
+    Boolean status;
+    Integer fare;
 
-    String id, fare_for, source, destination, fare;
-
-    public Fare(String id, String fare_for, String source, String destination, String fare) {
-        this.id = id;
-        this.fare_for = fare_for;
-        this.source = source;
-        this.destination = destination;
+    public Fare(Boolean status, Integer fare) {
+        this.status = status;
         this.fare = fare;
     }
 
-    public String getId() {
-        return id;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
-    public String getFare_for() {
-        return fare_for;
-    }
-
-    public void setFare_for(String fare_for) {
-        this.fare_for = fare_for;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public String getFare() {
+    public Integer getFare() {
         return fare;
     }
 
-    public void setFare(String fare) {
+    public void setFare(Integer fare) {
         this.fare = fare;
     }
 }

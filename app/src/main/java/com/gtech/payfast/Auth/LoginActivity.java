@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.gtech.payfast.Activity.MainDashboard;
 import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Retrofit.ApiController;
+import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityLoginBinding;
 
 import java.util.Objects;
@@ -86,11 +88,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         User oldUser = checkUserResponse.getUser();
 
-                        Intent intent = new Intent(LoginActivity.this, OtpActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainDashboard.class);
                         intent.putExtra("NUMBER", oldUser.getPax_mobile());
                         intent.putExtra("EMAIL", oldUser.getPax_email());
                         intent.putExtra("NAME", oldUser.getPax_name());
-
+                        SharedPrefUtils.saveData(LoginActivity.this, "NUMBER", oldUser.getPax_mobile());
                         startActivity(intent);
 
                     } else {

@@ -68,8 +68,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             ContentValues values = new ContentValues();
             values.put("id", station.getId());
-            values.put("station_name", station.getStation_name());
-            values.put("station_code", station.getStation_code());
+            values.put("station_name", station.getStn_name());
+            values.put("station_code", station.getStn_code());
 
             try {
                 db.insertOrThrow("stations", null, values);
@@ -90,10 +90,10 @@ public class DBHelper extends SQLiteOpenHelper {
         for (Fare fare : fares) {
 
             ContentValues values = new ContentValues();
-            values.put("id", fare.getId());
-            values.put("fare_for", fare.getFare_for());
-            values.put("source", fare.getSource());
-            values.put("destination", fare.getDestination());
+//            values.put("id", fare.getId());
+//            values.put("fare_for", fare.getFare_for());
+//            values.put("source", fare.getSource());
+//            values.put("destination", fare.getDestination());
             values.put("fare", fare.getFare());
 
             try {

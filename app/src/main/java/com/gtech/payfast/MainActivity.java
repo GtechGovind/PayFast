@@ -13,12 +13,9 @@ import com.google.gson.Gson;
 import com.gtech.payfast.Activity.MainDashboard;
 import com.gtech.payfast.Auth.LoginActivity;
 import com.gtech.payfast.Database.DBHelper;
-import com.gtech.payfast.Model.Config.Fare;
-import com.gtech.payfast.Model.Config.Station;
+import com.gtech.payfast.Model.Config.StationsResponse;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         getStations();
 
         // GET FARE
-        getFare();
+        // getFare();
 
         // SPLASH SCREEN
         new Handler().postDelayed(() -> {
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             if (SharedPrefUtils.getStringData(this, "NUMBER") != null) {
                 startActivity(new Intent(this, MainDashboard.class));
             } else {
-                startActivity(new Intent(this, MainDashboard.class));
+                startActivity(new Intent(this, LoginActivity.class));
             }
 
             finish();
@@ -56,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
     private void getFare() {
 
         Call<List<Fare>> getFares = ApiController.getInstance().apiInterface().getFare();
@@ -78,24 +76,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    */
 
     private void getStations() {
 
-        Call<List<Station>> getStations = ApiController.getInstance().apiInterface().getStations();
-        getStations.enqueue(new Callback<List<Station>>() {
+        Call<StationsResponse> getStations = ApiController.getInstance().apiInterface().getStations();
+        getStations.enqueue(new Callback<StationsResponse>() {
             @Override
-            public void onResponse(@NonNull Call<List<Station>> call, @NonNull Response<List<Station>> response) {
+            public void onResponse(@NonNull Call<StationsResponse> call, @NonNull Response<StationsResponse> response) {
 
                 Gson gson = new Gson();
                 Log.e("STATIONS_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) dbHelper.insertIntoStations(response.body());
+                if (response.body() != null) dbHelper.insertIntoStations(response.body().getStations());
                 else Toast.makeText(MainActivity.this, "Internal Server Error try after sometime!", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Station>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<StationsResponse> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

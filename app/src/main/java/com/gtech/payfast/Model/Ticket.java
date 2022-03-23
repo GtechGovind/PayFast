@@ -1,12 +1,5 @@
 package com.gtech.payfast.Model;
 
-// Ticket creation
-// source_id
-// destination_id
-// pass_id
-// quantity
-// fare
-// pax_mobile
 public class Ticket {
 
     String source_id, destination_id, pass_id, quantity, fare, pax_mobile;

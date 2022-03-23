@@ -16,13 +16,15 @@ import com.google.gson.Gson;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Database.DBHelper;
+import com.gtech.payfast.Model.Config.FareRequest;
+import com.gtech.payfast.Model.Config.Fare;
 import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Status;
 import com.gtech.payfast.Model.Ticket;
+import com.gtech.payfast.Model.TicketResponse;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.Retrofit.ApiController;
-import com.gtech.payfast.Utils.FareUtility;
 import com.gtech.payfast.Utils.OrderUtils;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityMobileQrBinding;
@@ -58,7 +60,7 @@ public class MobileQr extends AppCompatActivity {
             binding.MobileQrProgressBar.setVisibility(View.VISIBLE);
             binding.OrderButton.setVisibility(View.GONE);
 
-            if (isMobileQrInputValid()) createOrder();
+            if (isMobileQrInputValid()) createTicket();
 
         });
 
@@ -76,74 +78,48 @@ public class MobileQr extends AppCompatActivity {
                 SharedPrefUtils.getStringData(this, "NUMBER")
         );
 
-        Call<ResponseModel> createTicket = ApiController.getInstance().apiInterface().createTicket(newTicket);
-    }
-    // CREATE NEW ORDER AND
-    private void createOrder() {
-
-        Order newOrder = new Order(
-                OrderUtils.getOID("MQR"),
-                SharedPrefUtils.getStringData(this, "NUMBER"),
-                dbHelper.getStationId(binding.Source.getText().toString()),
-                dbHelper.getStationId(binding.Destination.getText().toString()),
-                OrderUtils.getOrderTypeCode(TicketType),
-                binding.TicketCount.getText().toString(),
-                TotalFare,
-                BuildConfig.PG_ID,
-                BuildConfig.OPERATOR_ID,
-                Status.getInstance().getSTATUS_ORDER_CREATED(),
-                Status.getInstance().getORDER_TYPE_NORMAL()
-        );
-
-        Call<ResponseModel> createOrder = ApiController.getInstance().apiInterface().createNewOrder(newOrder);
-        createOrder.enqueue(new Callback<ResponseModel>() {
+        Call<TicketResponse> createTicket = ApiController.getInstance().apiInterface().createTicket(newTicket);
+        createTicket.enqueue(new Callback<TicketResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
-
+            public void onResponse(@NonNull Call<TicketResponse> call, @NonNull Response<TicketResponse> response) {
                 Gson gson = new Gson();
-                Log.e("CHECK_USER_REQUEST", gson.toJson(newOrder));
+                Log.e("CHECK_USER_REQUEST", gson.toJson(newTicket));
                 Log.e("CHECK_USER_RESPONSE", gson.toJson(response.body()));
 
                 if (response.body() != null) {
-
-                    if (response.body().isStatus()) {
+                    if (response.body().getStatus()) {
+                        String order_id = response.body().getOrder_id();
+                        Log.e("ORDER ID", order_id);
 
                         Intent intent = new Intent(MobileQr.this, PaymentActivity.class);
-                        intent.putExtra("ORDER_NO", newOrder.getOrder_no());
-                        intent.putExtra("SOURCE_ID", newOrder.getSource());
-                        intent.putExtra("TICKET_TYPE", newOrder.getType());
-                        intent.putExtra("TICKET_COUNT", newOrder.getCount());
-                        intent.putExtra("DESTINATION_ID", newOrder.getDestination());
-                        intent.putExtra("TOTAL_FARE", newOrder.getFare());
+                        intent.putExtra("ORDER_ID", response.body().getOrder_id());
+                        intent.putExtra("SOURCE_ID", newTicket.getSource_id());
+                        intent.putExtra("TICKET_COUNT", newTicket.getQuantity());
+                        intent.putExtra("DESTINATION_ID", newTicket.getDestination_id());
+                        intent.putExtra("TOTAL_FARE", newTicket.getFare());
                         intent.putExtra("PAYMENT_TYPE", "1");
 
                         binding.MobileQrProgressBar.setVisibility(View.GONE);
                         binding.OrderButton.setVisibility(View.VISIBLE);
 
                         startActivity(intent);
-
                     } else {
                         binding.MobileQrProgressBar.setVisibility(View.GONE);
                         binding.OrderButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(MobileQr.this, response.body().getError(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MobileQr.this, "Some error", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     binding.MobileQrProgressBar.setVisibility(View.GONE);
                     binding.OrderButton.setVisibility(View.VISIBLE);
                     Toast.makeText(MobileQr.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                binding.MobileQrProgressBar.setVisibility(View.GONE);
-                binding.OrderButton.setVisibility(View.VISIBLE);
-                Toast.makeText(MobileQr.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<TicketResponse> call, @NonNull Throwable t) {
+                Log.e("ORDER ID", t.getMessage());
             }
         });
-
     }
 
     // SET FARE
@@ -152,24 +128,42 @@ public class MobileQr extends AppCompatActivity {
 
         if (isMobileQrInputValid()) {
 
-            String SourceId, DestinationId, FareFor, TicketCount;
-
+            String  SourceId, DestinationId, pass_id;
             SourceId = dbHelper.getStationId(binding.Source.getText().toString());
             DestinationId = dbHelper.getStationId(binding.Destination.getText().toString());
-            FareFor = "1";
-            TicketCount = binding.TicketCount.getText().toString();
+            pass_id = TicketType.equals("Single") ? BuildConfig.TOKEN_TYPE_SJT : BuildConfig.TOKEN_TYPE_RJT;
 
-            if (TicketType.equals("Single")) TotalFare = FareUtility.getFareForSingleJourney(this, SourceId, DestinationId, FareFor, TicketCount);
-            else if (TicketType.equals("Return")) TotalFare = FareUtility.getFareForReturnJourney(this, SourceId, DestinationId, FareFor, TicketCount);
+            FareRequest fareRequest = new FareRequest(Integer.parseInt(SourceId), Integer.parseInt(DestinationId), Integer.parseInt(pass_id));
+            Call<Fare> fare = ApiController.getInstance().apiInterface().getFare(fareRequest);
+            fare.enqueue(new Callback<Fare>() {
+                @Override
+                public void onResponse(@NonNull Call<Fare> call, @NonNull Response<Fare> response) {
+                    Integer count = Integer.parseInt(binding.TicketCount.getText().toString());
+                    int total;
 
-            binding.TotalFare.setText("₹ " + TotalFare);
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            total = response.body().getFare() * count;
+                            TotalFare = Integer.toString(total);
+                            String TicketCount = Integer.toString(count);
+                            binding.TotalFare.setText("₹ " + TotalFare);
 
-            double totalFareInDouble = Double.parseDouble(TotalFare);
-            double ticketCountInDouble = Double.parseDouble(TicketCount);
-            String FareForSingleTicket = String.valueOf(totalFareInDouble/ticketCountInDouble);
+                            double totalFareInDouble = Double.parseDouble(TotalFare);
+                            double ticketCountInDouble = Double.parseDouble(TicketCount);
+                            String FareForSingleTicket = String.valueOf(totalFareInDouble/ticketCountInDouble);
 
-            binding.FarePerTicket.setText(MessageFormat.format("₹ {0} / TICKET", FareForSingleTicket));
+                            binding.FarePerTicket.setText(MessageFormat.format("₹ {0} / TICKET", FareForSingleTicket));
+                        }
+                    }
+                }
 
+                @Override
+                public void onFailure(@NonNull Call<Fare> call, @NonNull Throwable t) {
+                    binding.MobileQrProgressBar.setVisibility(View.GONE);
+                    binding.OrderButton.setVisibility(View.VISIBLE);
+                    Toast.makeText(MobileQr.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
     }
