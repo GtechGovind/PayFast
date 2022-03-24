@@ -20,7 +20,6 @@ import com.gtech.payfast.Model.IssueToken.Data;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
 import com.gtech.payfast.Model.IssueToken.Response.ResponseData;
 import com.gtech.payfast.Model.IssueToken.Response.Trips;
-import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.Pass.Trip;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Status;
@@ -61,7 +60,7 @@ public class StoreValuePass extends AppCompatActivity {
     // CHECK IF USER HAS A PASS OR NOT
     private void isUserHasPass() {
 
-        Order order = new Order(SharedPrefUtils.getStringData(this, "NUMBER"), BuildConfig.TOKEN_TYPE_SVP);
+       Order order = new Order(SharedPrefUtils.getStringData(this, "NUMBER"), BuildConfig.TOKEN_TYPE_SVP);
 
         Call<ResponseModel> isUserHasPass = ApiController.getInstance().apiInterface().isUserHasPass(order);
         isUserHasPass.enqueue(new Callback<ResponseModel>() {

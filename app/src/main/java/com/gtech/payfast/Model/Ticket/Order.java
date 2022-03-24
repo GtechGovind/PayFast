@@ -1,10 +1,10 @@
-package com.gtech.payfast.Model;
+package com.gtech.payfast.Model.Ticket;
 
-public class Ticket {
+public class Order {
 
     String source_id, destination_id, pass_id, quantity, fare, pax_mobile;
 
-    public Ticket(String source_id, String destination_id, String pass_id, String quantity, String fare, String pax_mobile) {
+    public Order(String source_id, String destination_id, String pass_id, String quantity, String fare, String pax_mobile) {
         this.source_id = source_id;
         this.destination_id = destination_id;
         this.pass_id = pass_id;

@@ -66,7 +66,7 @@ public class ResponseModel {
         this.status = status;
     }
 
-    // Ticket creation order Id
+    // CREATE TICKET RESPONSE WITH ORDER ID
     public ResponseModel(Boolean status, String order_id) {
         this.status = status;
         this.order_id = order_id;

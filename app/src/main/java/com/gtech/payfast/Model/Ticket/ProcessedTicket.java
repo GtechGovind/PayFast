@@ -1,10 +1,10 @@
-package com.gtech.payfast.Model;
+package com.gtech.payfast.Model.Ticket;
 
 public class ProcessedTicket {
-      Boolean status;
-      int product_id;
-      String order_id;
-      int op_type_id;
+    Boolean status;
+    int product_id;
+    String order_id;
+    int op_type_id;
 
     public ProcessedTicket(Boolean status, int product_id, String order_id, int op_type_id) {
         this.status = status;

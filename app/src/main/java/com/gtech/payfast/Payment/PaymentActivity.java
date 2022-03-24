@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import com.gtech.payfast.Activity.MainDashboard;
 import com.gtech.payfast.Activity.QrActivity;
 import com.gtech.payfast.Activity.SVP.StoreValuePass;
 import com.gtech.payfast.BuildConfig;
@@ -18,7 +17,7 @@ import com.gtech.payfast.Model.IssueToken.Data;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Payment;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
-import com.gtech.payfast.Model.ProcessedTicket;
+import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityPaymentBinding;

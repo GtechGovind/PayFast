@@ -69,4 +69,5 @@
     <string name="reload_pass">RELOAD PASS</string>
     <string name="reload_your_pass">RELOAD YOUR PASS</string>
     <string name="pass_price">PASS PRICE</string>
+    <string name="your_tickets">Your Tickets</string>
 </resources>

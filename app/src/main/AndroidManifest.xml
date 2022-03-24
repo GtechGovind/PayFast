@@ -9,13 +9,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PayFast">
         <activity
+            android:name=".Activity.TP.TripPass"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.TicketDashboard"
+            android:exported="false" />
+        <activity
             android:name=".Activity.QrActivity"
             android:exported="true" />
         <activity
             android:name=".Payment.PaymentActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Activity.TP.TripPass"
             android:exported="true" />
         <activity
             android:name=".Activity.SVP.StoreValuePass"

@@ -1,20 +1,22 @@
-package com.gtech.payfast.Model;
+package com.gtech.payfast.Model.Ticket;
 
 import com.gtech.payfast.Model.Config.Station;
 
 import java.util.ArrayList;
 
-public class TicketViewResponse {
+public class Ticket {
     Boolean status;
     int type;
     String order_id;
     ArrayList<Station> stations;
-    ArrayList<UpwardTicket> upwardTickets;
+    ArrayList<UpwardTicket> upwardTicket;
 
-    public TicketViewResponse(Boolean status, int type, String order_id) {
+    public Ticket(Boolean status, int type, String order_id, ArrayList<Station> stations, ArrayList<UpwardTicket> upwardTicket) {
         this.status = status;
         this.type = type;
         this.order_id = order_id;
+        this.stations = stations;
+        this.upwardTicket = upwardTicket;
     }
 
     public Boolean getStatus() {
@@ -49,11 +51,11 @@ public class TicketViewResponse {
         this.stations = stations;
     }
 
-    public ArrayList<UpwardTicket> getUpwardTickets() {
-        return upwardTickets;
+    public ArrayList<UpwardTicket> getUpwardTicket() {
+        return upwardTicket;
     }
 
-    public void setUpwardTickets(ArrayList<UpwardTicket> upwardTickets) {
-        this.upwardTickets = upwardTickets;
+    public void setUpwardTicket(ArrayList<UpwardTicket> upwardTicket) {
+        this.upwardTicket = upwardTicket;
     }
 }

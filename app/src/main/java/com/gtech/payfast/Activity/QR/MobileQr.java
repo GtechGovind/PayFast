@@ -18,11 +18,8 @@ import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Config.FareRequest;
 import com.gtech.payfast.Model.Config.Fare;
-import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.ResponseModel;
-import com.gtech.payfast.Model.Status;
-import com.gtech.payfast.Model.Ticket;
-import com.gtech.payfast.Model.TicketResponse;
+import com.gtech.payfast.Model.Ticket.Order;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.OrderUtils;
@@ -69,7 +66,7 @@ public class MobileQr extends AppCompatActivity {
     // CREATE TICKET
     private void createTicket() {
 
-        Ticket newTicket = new Ticket(
+        Order order = new Order(
                 dbHelper.getStationId(binding.Source.getText().toString()),
                 dbHelper.getStationId(binding.Destination.getText().toString()),
                 OrderUtils.getOrderTypeCode(TicketType),
@@ -78,31 +75,32 @@ public class MobileQr extends AppCompatActivity {
                 SharedPrefUtils.getStringData(this, "NUMBER")
         );
 
-        Call<TicketResponse> createTicket = ApiController.getInstance().apiInterface().createTicket(newTicket);
-        createTicket.enqueue(new Callback<TicketResponse>() {
+        Call<ResponseModel> createTicket = ApiController.getInstance().apiInterface().createTicket(order);
+        createTicket.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(@NonNull Call<TicketResponse> call, @NonNull Response<TicketResponse> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 Gson gson = new Gson();
-                Log.e("CHECK_USER_REQUEST", gson.toJson(newTicket));
+                Log.e("CHECK_USER_REQUEST", gson.toJson(order));
                 Log.e("CHECK_USER_RESPONSE", gson.toJson(response.body()));
 
                 if (response.body() != null) {
-                    if (response.body().getStatus()) {
+                    if (response.body().isStatus()) {
                         String order_id = response.body().getOrder_id();
                         Log.e("ORDER ID", order_id);
 
                         Intent intent = new Intent(MobileQr.this, PaymentActivity.class);
                         intent.putExtra("ORDER_ID", response.body().getOrder_id());
-                        intent.putExtra("SOURCE_ID", newTicket.getSource_id());
-                        intent.putExtra("TICKET_COUNT", newTicket.getQuantity());
-                        intent.putExtra("DESTINATION_ID", newTicket.getDestination_id());
-                        intent.putExtra("TOTAL_FARE", newTicket.getFare());
+                        intent.putExtra("SOURCE_ID", order.getSource_id());
+                        intent.putExtra("TICKET_COUNT", order.getQuantity());
+                        intent.putExtra("DESTINATION_ID", order.getDestination_id());
+                        intent.putExtra("TOTAL_FARE", order.getFare());
                         intent.putExtra("PAYMENT_TYPE", "1");
 
                         binding.MobileQrProgressBar.setVisibility(View.GONE);
                         binding.OrderButton.setVisibility(View.VISIBLE);
 
                         startActivity(intent);
+                        finish();
                     } else {
                         binding.MobileQrProgressBar.setVisibility(View.GONE);
                         binding.OrderButton.setVisibility(View.VISIBLE);
@@ -116,7 +114,7 @@ public class MobileQr extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<TicketResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 Log.e("ORDER ID", t.getMessage());
             }
         });

@@ -14,10 +14,8 @@ import com.google.gson.Gson;
 import com.gtech.payfast.Adapter.QrAdapter;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Database.DBHelper;
-import com.gtech.payfast.Model.Fetch.Qr;
-import com.gtech.payfast.Model.Order;
-import com.gtech.payfast.Model.ResponseModel;
-import com.gtech.payfast.Model.TicketViewResponse;
+import com.gtech.payfast.Model.Ticket.Ticket;
+import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.databinding.ActivityQrBinding;
 
@@ -32,6 +30,7 @@ public class QrActivity extends AppCompatActivity {
     private ActivityQrBinding binding;
     private QrAdapter qrAdapter;
     DBHelper dbHelper;
+    String paxId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +51,20 @@ public class QrActivity extends AppCompatActivity {
 
     private void getQrCodes() {
         String ORDER_ID = getIntent().getStringExtra("ORDER_ID");
-        Call<TicketViewResponse> getQrs = ApiController.getInstance().apiInterface().viewTicket(ORDER_ID);
-        getQrs.enqueue(new Callback<TicketViewResponse>() {
+        Call<Ticket> getQrs = ApiController.getInstance().apiInterface().viewTicket(ORDER_ID);
+        getQrs.enqueue(new Callback<Ticket>() {
             @Override
-            public void onResponse(@NonNull Call<TicketViewResponse> call, @NonNull Response<TicketViewResponse> response) {
+            public void onResponse(@NonNull Call<Ticket> call, @NonNull Response<Ticket> response) {
                 Gson gson = new Gson();
                 Log.e("GET_QR_REQUEST", gson.toJson(ORDER_ID));
                 Log.e("GET_QR_RESPONSE", gson.toJson(response.body()));
 
                 if (response.body() != null) {
                     if (response.body().getStatus()) {
-                        Intent intent = new Intent(QrActivity.this, MainDashboard.class);
-                        startActivity(intent);
-                        finish();
+                        Log.e("Upward Ticket", gson.toJson(response.body().getUpwardTicket()));
+                        List<UpwardTicket> ticketQrs = response.body().getUpwardTicket();
+                        qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, QrActivity.this);
+                        binding.QrRecyclerView.setAdapter(qrAdapter);
                     } else {
                         // TODO: error
                         Toast.makeText(QrActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
@@ -76,45 +76,10 @@ public class QrActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<TicketViewResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Ticket> call, @NonNull Throwable t) {
                 Toast.makeText(QrActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-    // QR CODE
-    private void getQrCodes_2() {
-
-        Order order = new Order(getIntent().getStringExtra("ORDER_NO"));
-        Call<ResponseModel> getQrs = ApiController.getInstance().apiInterface().getQrs(order);
-        getQrs.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
-
-                Gson gson = new Gson();
-                Log.e("GET_QR_REQUEST", gson.toJson(order));
-                Log.e("GET_QR_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) {
-
-                    if (response.body().isStatus()) {
-
-                        List<Qr> qrs = response.body().getQrs();
-
-                        qrAdapter = new QrAdapter(qrs, binding.QrProgressBar, QrActivity.this);
-                        binding.QrRecyclerView.setAdapter(qrAdapter);
-
-                    } else Toast.makeText(QrActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
-                } else Toast.makeText(QrActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(QrActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     // SET CONFIG
@@ -122,7 +87,7 @@ public class QrActivity extends AppCompatActivity {
 
         String Heading = "TRIP QR";
         binding.QrRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(Heading);
 

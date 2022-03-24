@@ -7,13 +7,12 @@ import com.gtech.payfast.Model.Config.Fare;
 import com.gtech.payfast.Model.Config.StationsResponse;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
-import com.gtech.payfast.Model.Order;
 import com.gtech.payfast.Model.Pass.Trip;
-import com.gtech.payfast.Model.ProcessedTicket;
+import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Model.ResponseModel;
-import com.gtech.payfast.Model.Ticket;
-import com.gtech.payfast.Model.TicketResponse;
-import com.gtech.payfast.Model.TicketViewResponse;
+import com.gtech.payfast.Model.Ticket.Order;
+import com.gtech.payfast.Model.Ticket.Ticket;
+import com.gtech.payfast.Model.Ticket.UpdateTicketDashboard;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -47,7 +46,7 @@ public interface ApiInterface {
     //CREATE ORDER
     @Headers("Accept:application/json")
     @POST("api/order/add")
-    Call<ResponseModel> createNewOrder(@Body Order order);
+    Call<ResponseModel> createNewOrder(@Body com.gtech.payfast.Activity.SVP.Order order);
 
     /********************************** MOBILE QR **************************************/
     @Headers("Accept:application/json")
@@ -56,12 +55,12 @@ public interface ApiInterface {
 
     @Headers("Accept:application/json")
     @POST("api/qr")
-    Call<ResponseModel> getQrs(@Body Order order);
+    Call<ResponseModel> getQrs(@Body com.gtech.payfast.Activity.SVP.Order order);
 
     /********************************** STORE VALUE PASS **************************************/
     @Headers("Accept:application/json")
     @POST("api/pass")
-    Call<ResponseModel> isUserHasPass(@Body Order order);
+    Call<ResponseModel> isUserHasPass(@Body com.gtech.payfast.Activity.SVP.Order order);
 
     @Headers("Accept:application/json")
     @POST("api/pass/new")
@@ -78,7 +77,7 @@ public interface ApiInterface {
     /* *********************************** TICKET ********************************************/
     @Headers("Accept:application/json")
     @POST("api/ticket/create")
-    Call<TicketResponse> createTicket(@Body Ticket ticket);
+    Call<ResponseModel> createTicket(@Body Order order);
 
     @Headers("Accept:application/json")
     @GET("api/processing/init/{order-id}")
@@ -86,5 +85,9 @@ public interface ApiInterface {
 
     @Headers("Accept:application/json")
     @GET("api/ticket/view/{order-id}")
-    Call<TicketViewResponse> viewTicket(@Path("order-id") String orderId);
+    Call<Ticket> viewTicket(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @GET("api/ticket/dashboard/{pax-id}")
+    Call<UpdateTicketDashboard> updateTicketDashboard(@Path("pax-id") String paxId);
 }

@@ -20,20 +20,20 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Database.DBHelper;
-import com.gtech.payfast.Model.Fetch.Qr;
+import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.R;
 
 import java.util.List;
 
 public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
-    List<Qr> qrs;
+    List<UpwardTicket> ticketQrs;
     ProgressBar qrProgressBar;
     Context context;
     DBHelper dbHelper;
 
-    public QrAdapter(List<Qr> qrs, ProgressBar qrProgressBar, Context context) {
-        this.qrs = qrs;
+    public QrAdapter(List<UpwardTicket> qrs, ProgressBar qrProgressBar, Context context) {
+        this.ticketQrs = qrs;
         this.qrProgressBar = qrProgressBar;
         this.context = context;
         dbHelper = new DBHelper(context);
@@ -46,35 +46,36 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
         return new QrViewHolder(view);
     }
 
+
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     @Override
     public void onBindViewHolder(@NonNull QrViewHolder holder, int position) {
 
-        switch (qrs.get(position).getType()) {
-            case "10":
+        switch (ticketQrs.get(position).getPass_id()) {
+            case 10:
                 holder.TicketType.setText("Single Journey Ticket");
                 break;
-            case "90":
+            case 90:
                 holder.TicketType.setText("Return Journey Ticket");
                 holder.ArrowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.return_arrow));
                 break;
-            case "81":
+            case 81:
                 holder.TicketType.setText("Store Value Ticket");
                 break;
         }
 
-        if (qrs.get(position).getSource() != null) {
+        if (ticketQrs.get(position).getSource() != null) {
 
-            holder.Source.setText(dbHelper.getStationName(qrs.get(position).getSource()));
-            holder.Destination.setText(dbHelper.getStationName(qrs.get(position).getDestination()));
+            holder.Source.setText(ticketQrs.get(position).getSource());
+            holder.Destination.setText(ticketQrs.get(position).getDestination());
 
         }
 
-        holder.SID.setText(qrs.get(position).getSlave_qr_code());
+        holder.SID.setText(ticketQrs.get(position).getSl_qr_no());
 
         QRCodeWriter writer = new QRCodeWriter();
         try {
-            BitMatrix bitMatrix = writer.encode(qrs.get(position).getQr_code_data(), BarcodeFormat.QR_CODE, 800, 800);
+            BitMatrix bitMatrix = writer.encode(ticketQrs.get(position).getQr_data(), BarcodeFormat.QR_CODE, 800, 800);
             int width = bitMatrix.getWidth();
             int height = bitMatrix.getHeight();
             Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
@@ -89,10 +90,10 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
             e.printStackTrace();
         }
 
-        holder.Status.setText(qrs.get(position).getQr_status());
-        holder.MasterTxnId.setText("MID: " + qrs.get(position).getMasterTxnId());
+        // holder.Status.setText(ticketQrs.get(position).getQr_status());
+        holder.MasterTxnId.setText("MID: " + ticketQrs.get(position).getMs_qr_no());
         int count = position + 1;
-        holder.Passenger.setText("Passenger " + count + "  ||  " + qrs.get(position).getQr_direction());
+        holder.Passenger.setText("Passenger " + count + "  ||  " + ticketQrs.get(position).getQr_dir());
 
     }
 
@@ -104,7 +105,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     @Override
     public int getItemCount() {
-        return qrs.size();
+        return ticketQrs.size();
     }
 
     static class QrViewHolder extends RecyclerView.ViewHolder {
