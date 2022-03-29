@@ -50,4 +50,6 @@ public class Station {
     public void setInsert_date(String insert_date) {
         this.insert_date = insert_date;
     }
+
+
 }

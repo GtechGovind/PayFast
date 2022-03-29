@@ -27,7 +27,7 @@ public class MainDashboard extends AppCompatActivity {
         setBasicConfig();
 
         // SET LISTENERS FOR PRODUCTS
-        binding.QrCard.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
+        binding.QrCard.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
         binding.SVPCard.setOnClickListener(view -> startActivity(new Intent(this, StoreValuePass.class)));
         binding.TPCard.setOnClickListener(view -> startActivity(new Intent(this, TripPass.class)));
 
@@ -40,6 +40,7 @@ public class MainDashboard extends AppCompatActivity {
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(Heading);
+        binding.goToUpcoming.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
 
     }
 

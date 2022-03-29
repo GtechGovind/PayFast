@@ -2,16 +2,20 @@ package com.gtech.payfast.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.gtech.payfast.Activity.QR.MobileQr;
 import com.gtech.payfast.Adapter.TicketAdapter;
 import com.gtech.payfast.Model.Ticket.UpdateTicketDashboard;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
+import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityTicketDashboardBinding;
@@ -34,13 +38,15 @@ public class TicketDashboard extends AppCompatActivity {
         View ticketDashboard = binding.getRoot();
         setContentView(ticketDashboard);
 
-        // setBasicConfig();
+        // SET ACTIVITY CONFIGURATION
+         setBasicConfig();
+
+         // UPDATE THE DASHBOARD
          updateTicketDashboard();
     }
 
     private void updateTicketDashboard() {
-         String PAX_ID = SharedPrefUtils.getStringData(this, "PAX_ID");
-//        String PAX_ID = "SJSDKS";
+        String PAX_ID = SharedPrefUtils.getStringData(this, "PAX_ID");
         Call<UpdateTicketDashboard> ticketDashboardCall = ApiController.getInstance().apiInterface().updateTicketDashboard(PAX_ID);
         ticketDashboardCall.enqueue(new Callback<UpdateTicketDashboard>() {
             @Override
@@ -51,11 +57,20 @@ public class TicketDashboard extends AppCompatActivity {
 
                 if (response.body() != null) {
                     if (response.body().getStatus()) {
+
                         List<UpwardTicket> upcomingOrders = response.body().getUpcomingOrders();
                         List<UpwardTicket> recentOrders = response.body().getRecentOrders();
-                        ticketAdapter = new TicketAdapter(upcomingOrders, recentOrders);
+                        for (UpwardTicket recentOrder : recentOrders) {
+                            binding.DestinationRecent.setText(recentOrder.getDestination());
+                            binding.SourceRecent.setText(recentOrder.getSource());
+                        }
+
+                        ticketAdapter = new TicketAdapter(upcomingOrders, TicketDashboard.this);
+                        binding.ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(TicketDashboard.this, LinearLayoutManager.VERTICAL, false));
                         binding.ticketsRecyclerView.setAdapter(ticketAdapter);
+
                         Toast.makeText(TicketDashboard.this, "Hurray!!", Toast.LENGTH_SHORT).show();
+
                     }
                 } else {
                     Toast.makeText(TicketDashboard.this, "There was a problem", Toast.LENGTH_SHORT).show();
@@ -70,5 +85,7 @@ public class TicketDashboard extends AppCompatActivity {
     }
 
     private void setBasicConfig() {
+        binding.Heading.setText(R.string.ticket_dashboard);
+        binding.goToBookTickets.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
     }
 }

@@ -32,6 +32,8 @@ public class UpwardTicket {
     int qr_dir;
     int qr_status;
     String qr_data;
+    int amt_deducted;
+    int balance_amt;
 
     public UpwardTicket(int sale_or_id, String sale_or_no, String txn_date, int pax_id, int src_stn_id, int des_stn_id, int mm_ms_acc_id, String ms_qr_no, String ms_qr_exp, int unit, int unit_price, int total_price, int op_type_id, int media_type_id, int product_id, int pass_id, int pg_id, String pg_txn_no, String ref_sl_qr, int sale_or_status, String insert_date, String source, String destination, int id, int mm_sl_acc_id, String sl_qr_no, String sl_qr_exp, String ref_qr_no, int qr_dir, int qr_status, String qr_data) {
         this.sale_or_id = sale_or_id;
@@ -91,6 +93,46 @@ public class UpwardTicket {
         this.insert_date = insert_date;
         this.source = source;
         this.destination = destination;
+    }
+
+    public UpwardTicket(int sale_or_id, String txn_date, int mm_ms_acc_id, String insert_date, int id, int mm_sl_acc_id, String sl_qr_no, String sl_qr_exp, String ref_qr_no, int qr_status, String qr_data, int amt_deducted, int balance_amt) {
+        this.sale_or_id = sale_or_id;
+        this.txn_date = txn_date;
+        this.mm_ms_acc_id = mm_ms_acc_id;
+        this.insert_date = insert_date;
+        this.id = id;
+        this.mm_sl_acc_id = mm_sl_acc_id;
+        this.sl_qr_no = sl_qr_no;
+        this.sl_qr_exp = sl_qr_exp;
+        this.ref_qr_no = ref_qr_no;
+        this.qr_status = qr_status;
+        this.qr_data = qr_data;
+        this.amt_deducted = amt_deducted;
+        this.balance_amt = balance_amt;
+    }
+
+    public UpwardTicket(int sale_or_id, String sale_or_no, String txn_date, int pax_id, int src_stn_id, int des_stn_id, int mm_ms_acc_id, String ms_qr_no, String ms_qr_exp, int unit, int unit_price, int total_price, int op_type_id, int media_type_id, int product_id, int pass_id, int pg_id, String pg_txn_no, String ref_sl_qr, int sale_or_status, String insert_date) {
+        this.sale_or_id = sale_or_id;
+        this.sale_or_no = sale_or_no;
+        this.txn_date = txn_date;
+        this.pax_id = pax_id;
+        this.src_stn_id = src_stn_id;
+        this.des_stn_id = des_stn_id;
+        this.mm_ms_acc_id = mm_ms_acc_id;
+        this.ms_qr_no = ms_qr_no;
+        this.ms_qr_exp = ms_qr_exp;
+        this.unit = unit;
+        this.unit_price = unit_price;
+        this.total_price = total_price;
+        this.op_type_id = op_type_id;
+        this.media_type_id = media_type_id;
+        this.product_id = product_id;
+        this.pass_id = pass_id;
+        this.pg_id = pg_id;
+        this.pg_txn_no = pg_txn_no;
+        this.ref_sl_qr = ref_sl_qr;
+        this.sale_or_status = sale_or_status;
+        this.insert_date = insert_date;
     }
 
     public int getSale_or_id() {
@@ -339,5 +381,21 @@ public class UpwardTicket {
 
     public void setQr_data(String qr_data) {
         this.qr_data = qr_data;
+    }
+
+    public int getAmt_deducted() {
+        return amt_deducted;
+    }
+
+    public void setAmt_deducted(int amt_deducted) {
+        this.amt_deducted = amt_deducted;
+    }
+
+    public int getBalance_amt() {
+        return balance_amt;
+    }
+
+    public void setBalance_amt(int balance_amt) {
+        this.balance_amt = balance_amt;
     }
 }

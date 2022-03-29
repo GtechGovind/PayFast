@@ -93,7 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("EMAIL", oldUser.getPax_email());
                         intent.putExtra("NAME", oldUser.getPax_name());
                         SharedPrefUtils.saveData(LoginActivity.this, "NUMBER", oldUser.getPax_mobile());
-                        SharedPrefUtils.saveData(LoginActivity.this, "PAX_ID", oldUser.getPax_id());
+                        SharedPrefUtils.saveData(LoginActivity.this, "PAX_ID", oldUser.getPax_id().toString());
+                        Log.e("SAVING PAX ID", oldUser.getPax_id().toString());
                         startActivity(intent);
 
                     } else {

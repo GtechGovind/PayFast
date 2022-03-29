@@ -24,6 +24,10 @@ public class ResponseModel {
     // CHECK PASS
     ResponseData data;
 
+    // SVP PASS PAYMENT PROCESSING RESPONSE
+    int product_id;
+    int op_type_id;
+
     // IF_USER_DOES_NOT_EXIST
     public ResponseModel(boolean status, int code, String error) {
         this.status = status;
@@ -70,6 +74,12 @@ public class ResponseModel {
     public ResponseModel(Boolean status, String order_id) {
         this.status = status;
         this.order_id = order_id;
+    }
+
+    public ResponseModel(boolean status, int product_id, int op_type_id) {
+        this.status = status;
+        this.product_id = product_id;
+        this.op_type_id = op_type_id;
     }
 
     // GETTERS AND SETTERS
@@ -128,5 +138,21 @@ public class ResponseModel {
 
     public void setOrder_id(String order_id) {
         this.order_id = order_id;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
+    }
+
+    public int getOp_type_id() {
+        return op_type_id;
+    }
+
+    public void setOp_type_id(int op_type_id) {
+        this.op_type_id = op_type_id;
     }
 }

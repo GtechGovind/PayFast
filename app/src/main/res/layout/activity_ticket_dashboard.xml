@@ -57,7 +57,8 @@
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -66,19 +67,106 @@
             android:text="@string/your_tickets"
             android:textSize="30sp" />
 
-        <TextView
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/RecentOrdersText"
+        android:layout_below="@+id/TopBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="2sp"
+        android:layout_margin="5sp"
+        android:text="@string/recent_orders"
+        android:textColor="@color/black" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/RecentOrderCard"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/RecentOrdersText"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:padding="10dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20sp"
-            android:textColor="@color/white"
-            android:text="@string/select_one_" />
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="UselessLeaf">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:src="@drawable/card"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/SourceRecent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/source"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/DestinationRecent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/destination"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/PassengerRecent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/destination"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/UpcomingOrdersText"
+        android:layout_below="@+id/RecentOrderCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="2sp"
+        android:layout_margin="5sp"
+        android:text="@string/upcoming_orders"
+        android:textColor="@color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/TopBar"
+        android:layout_below="@id/RecentOrderCard"
         android:paddingTop="20dp">
 
         <LinearLayout
@@ -87,10 +175,10 @@
             android:layout_margin="20dp"
             android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ticketsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ticketsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -101,36 +189,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
             <Button
-                android:id="@+id/goToUpcoming"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/upcoming"
-                app:icon="@drawable/upcoming"
-                android:layout_marginEnd="20dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-            <View
-                android:layout_width="1dp"
+                android:id="@+id/goToBookTickets"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/primary_dark" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/history"
-                android:layout_marginStart="20dp"
-                app:icon="@drawable/history"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-        </LinearLayout>
+                android:layout_margin="5dp"
+                android:text="@string/book_tickets"
+                app:icon="@drawable/upcoming" />
 
     </androidx.cardview.widget.CardView>
 

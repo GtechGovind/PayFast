@@ -17,6 +17,7 @@ import com.gtech.payfast.Model.IssueToken.Data;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Payment;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
+import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
@@ -51,7 +52,8 @@ public class PaymentActivity extends AppCompatActivity {
                     processTicket();
                     break;
                 case "2":
-                    issueSVP();
+                    // issueSVP();
+                    processSVP();
                     break;
                 case "3":
                     reloadSVP();
@@ -115,6 +117,38 @@ public class PaymentActivity extends AppCompatActivity {
         });
 
     }
+
+    // Init processing SVP
+    private void processSVP() {
+        String ORDER_ID;
+
+        ORDER_ID = getIntent().getStringExtra("ORDER_ID");
+
+        Call<ResponseModel> processSVPCall = ApiController.getInstance().apiInterface().processSVP(ORDER_ID);
+        processSVPCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+
+                Gson gson = new Gson();
+                Log.e("PROCESS_SVP_REQUEST", gson.toJson(ORDER_ID));
+                Log.e("PROCESS_SVP_RESPONSE", gson.toJson(response.body()));
+
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        // SVP pass has been processed
+                        // Redirect to SVP Dashboard
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+                Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     // STORE VALUE PASS
     private void issueSVP() {

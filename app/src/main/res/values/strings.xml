@@ -70,4 +70,9 @@
     <string name="reload_your_pass">RELOAD YOUR PASS</string>
     <string name="pass_price">PASS PRICE</string>
     <string name="your_tickets">Your Tickets</string>
+    <string name="ticket_dashboard">Ticket Dashboard</string>
+    <string name="book_tickets">Book Tickets</string>
+    <string name="recent_orders">Recent Orders</string>
+    <string name="upcoming_orders">Upcoming Orders</string>
+    <string name="reload_pass_sv">Reload Pass</string>
 </resources>

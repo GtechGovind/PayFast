@@ -8,6 +8,10 @@ import com.gtech.payfast.Model.Config.StationsResponse;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
 import com.gtech.payfast.Model.Pass.Trip;
+import com.gtech.payfast.Model.SVP.CreateSVPass;
+import com.gtech.payfast.Model.SVP.ReloadSVPass;
+import com.gtech.payfast.Model.SVP.SVDashboard;
+import com.gtech.payfast.Model.SVP.SVStatus;
 import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.Order;
@@ -63,6 +67,39 @@ public interface ApiInterface {
     Call<ResponseModel> isUserHasPass(@Body com.gtech.payfast.Activity.SVP.Order order);
 
     @Headers("Accept:application/json")
+    @GET("api/sv/canIssuePass/{pax-mobile}")
+    Call<ResponseModel> canIssuePass(@Path("pax-mobile") String mobile);
+
+    @Headers("Accept:application/json")
+    @GET("api/sv/dashboard/{pax-id}")
+    Call<SVDashboard> updateSVDashboard(@Path("pax-id") String paxId);
+
+    @Headers("Accept:application/json")
+    @POST("api/sv/create")
+    Call<ResponseModel> createSVPass(@Body CreateSVPass createSVPass);
+
+    @Headers("Accept:application/json")
+    @GET("api/processing/init/{order-id}")
+    Call<ResponseModel> processSVP(@Path("order-id") String orderId);
+
+
+    @Headers("Accept:application/json")
+    @GET("api/sv/trip/{order-id}")
+    Call<ResponseModel> generateSVTrip(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @GET("api/sv/status/{ms-qr-no}")
+    Call<SVStatus> getSVStatus(@Path("ms-qr-no") String msQrNo);
+
+    @Headers("Accept:application/json")
+    @GET("api/sv/reload/status/{order-id}")
+    Call<ResponseModel> canReloadSVP(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @POST("api/sv/reload")
+    Call<ResponseModel> reloadSVP(@Body ReloadSVPass svPass);
+
+    @Headers("Accept:application/json")
     @POST("api/pass/new")
     Call<IssueResponse> issueSVP(@Body Issue issue);
 
@@ -90,4 +127,6 @@ public interface ApiInterface {
     @Headers("Accept:application/json")
     @GET("api/ticket/dashboard/{pax-id}")
     Call<UpdateTicketDashboard> updateTicketDashboard(@Path("pax-id") String paxId);
+
+
 }

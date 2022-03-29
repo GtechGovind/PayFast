@@ -47,7 +47,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
     }
 
 
-    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull QrViewHolder holder, int position) {
 
