@@ -75,4 +75,5 @@
     <string name="recent_orders">Recent Orders</string>
     <string name="upcoming_orders">Upcoming Orders</string>
     <string name="reload_pass_sv">Reload Pass</string>
+    <string name="trip_pass_heading">Trip Pass</string>
 </resources>

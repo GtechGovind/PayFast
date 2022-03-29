@@ -12,6 +12,8 @@ import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
 import com.gtech.payfast.Model.SVP.SVDashboard;
 import com.gtech.payfast.Model.SVP.SVStatus;
+import com.gtech.payfast.Model.TP.TPDashboard;
+import com.gtech.payfast.Model.TP.TPStatus;
 import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.Order;
@@ -128,5 +130,16 @@ public interface ApiInterface {
     @GET("api/ticket/dashboard/{pax-id}")
     Call<UpdateTicketDashboard> updateTicketDashboard(@Path("pax-id") String paxId);
 
+    /* ******************************** TRIP PASS *******************************************/
+    @Headers("Accept:application/json")
+    @GET("/api/tp/status/{ms-qr-no}")
+    Call<TPStatus> getTPStatus(@Path("ms-qr-no") String msQrNo);
 
+    @Headers("Accept:application/json")
+    @GET("/api/tp/dashboard/{pax-id}")
+    Call<TPDashboard> updateTPDashboard(@Path("pax-id") String paxId);
+
+    @Headers("Accept:application/json")
+    @GET("api/tp/canIssuePass/{pax-mobile}")
+    Call<ResponseModel> canIssueTP(@Path("pax-mobile") String mobile);
 }

@@ -43,7 +43,9 @@ import com.gtech.payfast.databinding.ActivityStoreValuePassBinding;
 import com.gtech.payfast.databinding.ReloadBottomSheetLayoutBinding;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -553,8 +555,11 @@ public class StoreValuePass extends AppCompatActivity {
                     if (response.body().getStatus()) {
                         // SV status updated
                         // Update dashboard
-                        binding.Balance.setText(response.body().getData().getBalance().toString());
-                        writeQr(response.body().getData().getTrips().get(0).getQrCodeData());
+                        if (response.body().getData() != null) {
+                            binding.Balance.setText(response.body().getData().getBalance().toString());
+                            if (!response.body().getData().getTrips().isEmpty())
+                                writeQr(response.body().getData().getTrips().get(0).getQrCodeData());
+                        }
                     }
                 } else {
                     // REQUEST FAILED
