@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
-        android:text="@string/desc_svp"
+        android:text="@string/trip_pass_desc"
         android:textColor="@color/white" />
 
     <androidx.cardview.widget.CardView
@@ -149,10 +149,35 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/SourceTP"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/source"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/DestinationTP"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/destination"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                            <TextView
                                 android:id="@+id/Balance"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/balanceamount"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:visibility="gone"/>
+
+                            <TextView
+                                android:id="@+id/BalanceTrips"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/balance_trips"
                                 android:textColor="@color/white"
                                 android:textSize="20sp" />
 
@@ -226,9 +251,10 @@
                     </androidx.cardview.widget.CardView>
 
                     <ImageView
-                        android:id="@+id/QrCode"
+                        android:id="@+id/QrCodeTP"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:src="@drawable/logo"
                         android:contentDescription="@string/scan" />
 
                     <androidx.cardview.widget.CardView

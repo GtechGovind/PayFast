@@ -4,16 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.gson.Gson;
-import com.gtech.payfast.Database.DBHelper;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Model.ResponseModel;
+import com.gtech.payfast.Model.TP.ReloadTP;
 import com.gtech.payfast.Model.TP.TPDashboard;
+import com.gtech.payfast.Model.TP.TPStatus;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
@@ -35,7 +41,11 @@ public class TripPass extends AppCompatActivity {
         setContentView(TripPassView);
 
         setBasicConfig();
+
         updateDashboard();
+
+        //
+        // getTPStatus();
         // UPDATE TRIP PASS DASHBOARD
         // CHECK FOR TRIP PASS' STATUS
         // IF NO TRIP PASS
@@ -65,23 +75,76 @@ public class TripPass extends AppCompatActivity {
                     if (response.body().getStatus()) {
                         // Pass exists
                         // Update pass
+                        binding.HasTP.setVisibility(View.VISIBLE);
+
+                        binding.UserName.setText(response.body().getUser().getPax_name());
+                        binding.MasterTxnId.setText(response.body().getPass().getMs_qr_no());
+                        binding.SourceTP.setText(response.body().getPass().getSource());
+                        binding.DestinationTP.setText(response.body().getPass().getDestination());
+
+                        if (response.body().getTrip() != null) {
+                            binding.QrCodeTP.setVisibility(View.VISIBLE);
+                            writeQr(response.body().getTrip().getQr_data());
+                        } else {
+                            binding.HasTPController.setVisibility(View.VISIBLE);
+                            binding.GenerateTrip.setVisibility(View.VISIBLE);
+                            binding.GenerateTrip.setOnClickListener(v -> generateTrip(response.body().getPass().getSale_or_no()));
+                        }
+
+                        if (response.body().getPass() != null) {
+                            getTPStatus(response.body().getPass().getMs_qr_no());
+                            canReloadPass(response.body().getPass().getSale_or_no());
+                        }
                     } else {
                         // No Trip Pass
                         // Check if trip pass can be issued
+                        binding.NoPass.setVisibility(View.VISIBLE);
                         canIssuePass();
                     }
                 } else {
-
+                    binding.NoPass.setVisibility(View.VISIBLE);
+                    Toast.makeText(TripPass.this, "There was a problem updating dashboard.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<TPDashboard> call, @NonNull Throwable t) {
-
+                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // GET TP PASS STATUS
+    private void getTPStatus(String msQrNo) {
+        Call<TPStatus> TPStatusCall = ApiController.getInstance().apiInterface().getTPStatus(msQrNo);
+        TPStatusCall.enqueue(new Callback<TPStatus>() {
+            @Override
+            public void onResponse(@NonNull Call<TPStatus> call, @NonNull Response<TPStatus> response) {
+                Gson gson = new Gson();
+                Log.e("TP_STATUS_REQ", gson.toJson(msQrNo));
+                Log.e("TP_STATUS_RESP", gson.toJson(response.body()));
+
+                if (response.body() != null) {
+                    if (response.body().getStatus()) {
+                        binding.BalanceTrips.setText("Balance Trips: " + response.body().getData().getBalanceTrip().toString());
+                        if (!response.body().getData().getTrips().isEmpty()) {
+                            writeQr(response.body().getData().getTrips().get(0).getQrCodeData());
+                        }
+                    }
+                } else {
+                    // REQUEST FAILED
+                    Toast.makeText(TripPass.this, "Failed to get TP Status", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TPStatus> call, @NonNull Throwable t) {
+                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // CAN ISSUE TRIP PASS
     private void canIssuePass() {
         String mobile = SharedPrefUtils.getStringData(this, "NUMBER");
         Call<ResponseModel> canIssuePassCall = ApiController.getInstance().apiInterface().canIssueTP(mobile);
@@ -111,8 +174,103 @@ public class TripPass extends AppCompatActivity {
         });
     }
 
+    // GENERATE TRIP
+    private void generateTrip(String orderId) {
+        Call<ResponseModel> generateTripCall = ApiController.getInstance().apiInterface().generateTripTP(orderId);
+        generateTripCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        binding.GenerateTrip.setVisibility(View.GONE);
+                        updateDashboard();
+                    } else {
+                        // Could not generate trip
+                        Toast.makeText(TripPass.this, "Could not generate trip pass. Try Again.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Problem with generate trip request
+                    Toast.makeText(TripPass.this, "Problem with generate trip request", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // CAN USER RELOAD PASS
+    private void canReloadPass(String orderId) {
+        Call<ResponseModel> canReloadPassCall = ApiController.getInstance().apiInterface().canReloadTP(orderId);
+        canReloadPassCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                Gson gson = new Gson();
+                Log.e("RELOAD_PASS_REQ", orderId);
+                Log.e("RELOAD_PASS_RESP", gson.toJson(response.body()));
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        binding.ReloadPassCard.setVisibility(View.VISIBLE);
+                        binding.ReloadPassCard.setOnClickListener(v -> reloadPass());
+                    }
+                } else {
+                    // Problem with generate trip request
+                    Toast.makeText(TripPass.this, "Problem with can reload pass request", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    // RELOAD PASS
+    private void reloadPass() {
+        ReloadTP reloadTP = new ReloadTP("89898767Ae", 775);
+        Call<ResponseModel> reloadPassCall = ApiController.getInstance().apiInterface().reloadTP(reloadTP);
+
+        reloadPassCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    // WRITE QR
+    private void writeQr(String qrData) {
+        binding.GenerateTrip.setVisibility(View.GONE);
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(qrData, BarcodeFormat.QR_CODE, 800, 800);
+            int width = bitMatrix.getWidth();
+            int height = bitMatrix.getHeight();
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bmp.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                }
+            }
+            binding.HasTPController.setVisibility(View.VISIBLE);
+            binding.QrCodeTP.setImageBitmap(bmp);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setBasicConfig() {
         binding.Heading.setText(R.string.trip_pass_heading);
         binding.TPassProgressBar.setVisibility(View.GONE);
+        binding.ReloadPassCard.setVisibility(View.GONE);
     }
 }

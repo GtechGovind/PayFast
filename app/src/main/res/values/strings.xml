@@ -76,4 +76,6 @@
     <string name="upcoming_orders">Upcoming Orders</string>
     <string name="reload_pass_sv">Reload Pass</string>
     <string name="trip_pass_heading">Trip Pass</string>
+    <string name="trip_pass_desc">Lorem ipsum dolor sit amet kitn</string>
+    <string name="balance_trips">Balance Trips</string>
 </resources>

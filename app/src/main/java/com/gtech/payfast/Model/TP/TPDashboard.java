@@ -3,6 +3,7 @@ package com.gtech.payfast.Model.TP;
 import java.io.Serializable;
 import java.lang.Boolean;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 
@@ -11,7 +12,7 @@ public class TPDashboard implements Serializable {
 
   private Pass pass;
 
-  private Object user;
+  private User user;
 
   private Boolean status;
 
@@ -31,11 +32,11 @@ public class TPDashboard implements Serializable {
     this.pass = pass;
   }
 
-  public Object getUser() {
+  public User getUser() {
     return this.user;
   }
 
-  public void setUser(Object user) {
+  public void setUser(User user) {
     this.user = user;
   }
 
@@ -408,6 +409,78 @@ public class TPDashboard implements Serializable {
 
     public void setPax_id(Integer pax_id) {
       this.pax_id = pax_id;
+    }
+  }
+
+  public static class User implements Serializable {
+    private String pax_name;
+
+    private String insert_date;
+
+    private String pax_email;
+
+    private Long pax_mobile;
+
+    private Object is_verified;
+
+    private Integer pax_id;
+
+    private Integer points;
+
+    public String getPax_name() {
+      return this.pax_name;
+    }
+
+    public void setPax_name(String pax_name) {
+      this.pax_name = pax_name;
+    }
+
+    public String getInsert_date() {
+      return this.insert_date;
+    }
+
+    public void setInsert_date(String insert_date) {
+      this.insert_date = insert_date;
+    }
+
+    public String getPax_email() {
+      return this.pax_email;
+    }
+
+    public void setPax_email(String pax_email) {
+      this.pax_email = pax_email;
+    }
+
+    public Long getPax_mobile() {
+      return this.pax_mobile;
+    }
+
+    public void setPax_mobile(Long pax_mobile) {
+      this.pax_mobile = pax_mobile;
+    }
+
+    public Object getIs_verified() {
+      return this.is_verified;
+    }
+
+    public void setIs_verified(Object is_verified) {
+      this.is_verified = is_verified;
+    }
+
+    public Integer getPax_id() {
+      return this.pax_id;
+    }
+
+    public void setPax_id(Integer pax_id) {
+      this.pax_id = pax_id;
+    }
+
+    public Integer getPoints() {
+      return this.points;
+    }
+
+    public void setPoints(Integer points) {
+      this.points = points;
     }
   }
 }

@@ -12,6 +12,7 @@ import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
 import com.gtech.payfast.Model.SVP.SVDashboard;
 import com.gtech.payfast.Model.SVP.SVStatus;
+import com.gtech.payfast.Model.TP.ReloadTP;
 import com.gtech.payfast.Model.TP.TPDashboard;
 import com.gtech.payfast.Model.TP.TPStatus;
 import com.gtech.payfast.Model.Ticket.ProcessedTicket;
@@ -142,4 +143,16 @@ public interface ApiInterface {
     @Headers("Accept:application/json")
     @GET("api/tp/canIssuePass/{pax-mobile}")
     Call<ResponseModel> canIssueTP(@Path("pax-mobile") String mobile);
+
+    @Headers("Accept:application/json")
+    @GET("api/tp/trip/{order-id}")
+    Call<ResponseModel> generateTripTP(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @GET("api/tp/reload/status/{order-id}")
+    Call<ResponseModel> canReloadTP(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @POST("api/sv/reload")
+    Call<ResponseModel> reloadTP(@Body ReloadTP reloadTP);
 }
