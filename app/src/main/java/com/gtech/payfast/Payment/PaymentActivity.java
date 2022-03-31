@@ -12,11 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.gtech.payfast.Activity.QrActivity;
 import com.gtech.payfast.Activity.SVP.StoreValuePass;
+import com.gtech.payfast.Activity.TP.TripPass;
 import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Model.IssueToken.Data;
 import com.gtech.payfast.Model.IssueToken.Issue;
 import com.gtech.payfast.Model.IssueToken.Payment;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
+import com.gtech.payfast.Model.Pass.Trip;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Retrofit.ApiController;
@@ -58,6 +60,8 @@ public class PaymentActivity extends AppCompatActivity {
                 case "3":
                     reloadSVP();
                     break;
+                case "4":
+                    processTP();
             }
 
         });
@@ -149,6 +153,35 @@ public class PaymentActivity extends AppCompatActivity {
         });
     }
 
+    private void processTP() {
+        String ORDER_ID;
+
+        ORDER_ID = getIntent().getStringExtra("ORDER_ID");
+
+        Call<ResponseModel> processSVPCall = ApiController.getInstance().apiInterface().processSVP(ORDER_ID);
+        processSVPCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+
+                Gson gson = new Gson();
+                Log.e("PROCESS_SVP_REQUEST", gson.toJson(ORDER_ID));
+                Log.e("PROCESS_SVP_RESPONSE", gson.toJson(response.body()));
+
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        // TP pass has been processed
+                        // Redirect to TP Dashboard
+                        startActivity(new Intent(PaymentActivity.this, TripPass.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+                Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     // STORE VALUE PASS
     private void issueSVP() {

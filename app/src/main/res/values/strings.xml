@@ -78,4 +78,9 @@
     <string name="trip_pass_heading">Trip Pass</string>
     <string name="trip_pass_desc">Lorem ipsum dolor sit amet kitn</string>
     <string name="balance_trips">Balance Trips</string>
+    <string name="tp_name_label">Name</string>
+    <string name="tp_label_mx_id">Master Transaction Id</string>
+    <string name="reload">Reload</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="refund_pass">Refund Pass</string>
 </resources>

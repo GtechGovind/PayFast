@@ -3,6 +3,7 @@ package com.gtech.payfast.Activity.TP;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,8 +13,12 @@ import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Config.Fare;
 import com.gtech.payfast.Model.Config.FareRequest;
+import com.gtech.payfast.Model.ResponseModel;
+import com.gtech.payfast.Model.TP.CreateTP;
+import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
+import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityTripPassGenerationBinding;
 
 import retrofit2.Call;
@@ -24,6 +29,7 @@ public class TripPassGeneration extends AppCompatActivity {
     private ActivityTripPassGenerationBinding binding;
     DBHelper dbHelper;
     ArrayAdapter<String> StationAdapter;
+    Integer totalFare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +39,52 @@ public class TripPassGeneration extends AppCompatActivity {
         View TripPassGenerationView = binding.getRoot();
         setContentView(TripPassGenerationView);
 
+        dbHelper = new DBHelper(this);
+
         setBasicConfig();
     }
 
-    private void orderTP() {}
+    private void orderTP() {
+        Integer price = totalFare;
+        String mobile = SharedPrefUtils.getStringData(this, "NUMBER");
+
+
+        CreateTP createTPParam = new CreateTP(
+                Integer.parseInt(dbHelper.getStationId(binding.Source.getText().toString())),
+                Integer.parseInt(dbHelper.getStationId(binding.Destination.getText().toString())),
+                price,
+                mobile
+        );
+        Call<ResponseModel> createTPCall =  ApiController.getInstance().apiInterface().createTP(createTPParam);
+        createTPCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+
+                        Intent intent = new Intent(TripPassGeneration.this, PaymentActivity.class);
+                        // TODO: Intent put extra
+                        intent.putExtra("PAYMENT_TYPE", "4");
+                        intent.putExtra("ORDER_ID", response.body().getOrder_id());
+                        startActivity(intent);
+
+                        finish();
+                    } else {
+                        // response status is false
+                        Toast.makeText(TripPassGeneration.this, response.body().getError(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // request failed
+                    Toast.makeText(TripPassGeneration.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(TripPassGeneration.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void setFare() {
         if (isInputValid()) {
@@ -53,8 +101,8 @@ public class TripPassGeneration extends AppCompatActivity {
 
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
-                            String TotalFare = Integer.toString(response.body().getFare());
-                            binding.TotalFare.setText("₹ " + TotalFare);
+                            totalFare = response.body().getFare();
+                            binding.TotalFare.setText("₹ " + totalFare);
                             binding.OrderButton.setEnabled(true);
                         }
                     }

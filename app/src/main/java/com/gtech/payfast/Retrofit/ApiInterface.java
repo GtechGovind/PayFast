@@ -12,6 +12,7 @@ import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
 import com.gtech.payfast.Model.SVP.SVDashboard;
 import com.gtech.payfast.Model.SVP.SVStatus;
+import com.gtech.payfast.Model.TP.CreateTP;
 import com.gtech.payfast.Model.TP.ReloadTP;
 import com.gtech.payfast.Model.TP.TPDashboard;
 import com.gtech.payfast.Model.TP.TPStatus;
@@ -153,6 +154,14 @@ public interface ApiInterface {
     Call<ResponseModel> canReloadTP(@Path("order-id") String orderId);
 
     @Headers("Accept:application/json")
-    @POST("api/sv/reload")
+    @POST("api/tp/reload")
     Call<ResponseModel> reloadTP(@Body ReloadTP reloadTP);
+
+    @Headers("Accept:application/json")
+    @GET("api/refund/ticket/{order-id}")
+    Call<ResponseModel> refundTP(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @POST("api/tp/create")
+    Call<ResponseModel> createTP(@Body CreateTP createTP);
 }

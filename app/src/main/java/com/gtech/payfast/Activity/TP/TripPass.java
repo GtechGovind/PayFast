@@ -16,14 +16,19 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.gtech.payfast.Activity.SVP.StoreValuePass;
+import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.TP.ReloadTP;
 import com.gtech.payfast.Model.TP.TPDashboard;
 import com.gtech.payfast.Model.TP.TPStatus;
+import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityTripPassBinding;
+
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,11 +76,12 @@ public class TripPass extends AppCompatActivity {
                 Log.e("UPDATE_TP_DASHBOARD_REP", gson.toJson(response.body()));
 
                 binding.TPassProgressBar.setVisibility(View.GONE);
-                if (response.body() != null) {
-                    if (response.body().getStatus()) {
+                if (response.body() != null && response.body().getStatus()) {
                         // Pass exists
                         // Update pass
                         binding.HasTP.setVisibility(View.VISIBLE);
+                        binding.RefundPassCard.setVisibility(View.VISIBLE);
+                        binding.RefundPassCard.setOnClickListener(v -> refundPass(response.body().getPass().getSale_or_no()));
 
                         binding.UserName.setText(response.body().getUser().getPax_name());
                         binding.MasterTxnId.setText(response.body().getPass().getMs_qr_no());
@@ -95,15 +101,9 @@ public class TripPass extends AppCompatActivity {
                             getTPStatus(response.body().getPass().getMs_qr_no());
                             canReloadPass(response.body().getPass().getSale_or_no());
                         }
-                    } else {
-                        // No Trip Pass
-                        // Check if trip pass can be issued
-                        binding.NoPass.setVisibility(View.VISIBLE);
-                        canIssuePass();
-                    }
                 } else {
                     binding.NoPass.setVisibility(View.VISIBLE);
-                    Toast.makeText(TripPass.this, "There was a problem updating dashboard.", Toast.LENGTH_SHORT).show();
+                    canIssuePass();
                 }
             }
 
@@ -126,7 +126,9 @@ public class TripPass extends AppCompatActivity {
 
                 if (response.body() != null) {
                     if (response.body().getStatus()) {
-                        binding.BalanceTrips.setText("Balance Trips: " + response.body().getData().getBalanceTrip().toString());
+                        Date date = new Date(response.body().getData().getMasterExpiry());
+                        binding.BalanceTrips.setText(response.body().getData().getBalanceTrip().toString());
+                        binding.ExpiryDate.setText(date.toString());
                         if (!response.body().getData().getTrips().isEmpty()) {
                             writeQr(response.body().getData().getTrips().get(0).getQrCodeData());
                         }
@@ -212,8 +214,7 @@ public class TripPass extends AppCompatActivity {
                 Log.e("RELOAD_PASS_RESP", gson.toJson(response.body()));
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
-                        binding.ReloadPassCard.setVisibility(View.VISIBLE);
-                        binding.ReloadPassCard.setOnClickListener(v -> reloadPass());
+                        binding.ReloadTPButton.setVisibility(View.VISIBLE);
                     }
                 } else {
                     // Problem with generate trip request
@@ -246,6 +247,38 @@ public class TripPass extends AppCompatActivity {
         });
     }
 
+    // REFUND PASS
+    private void refundPass(String orderId) {
+        Call<ResponseModel> refundTPCall = ApiController.getInstance().apiInterface().refundTP(orderId);
+
+        refundTPCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                Gson gson = new Gson();
+                Log.e("REFUND_PASS_REQ", gson.toJson(orderId));
+                Log.e("REFUND_PASS_RESP", gson.toJson(response.body()));
+
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+
+                        updateDashboard();
+                    } else {
+                        Toast.makeText(TripPass.this, "There was a problem refunding your pass", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // NETWORK ERROR: COULD NOT REFUND PASS
+                    Toast.makeText(TripPass.this, "There was a problem refunding your pass", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // WRITE QR
     private void writeQr(String qrData) {
         binding.GenerateTrip.setVisibility(View.GONE);
@@ -269,8 +302,13 @@ public class TripPass extends AppCompatActivity {
     }
 
     private void setBasicConfig() {
+        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
+        binding.BackButton.setOnClickListener(view -> finish());
+
         binding.Heading.setText(R.string.trip_pass_heading);
         binding.TPassProgressBar.setVisibility(View.GONE);
-        binding.ReloadPassCard.setVisibility(View.GONE);
+        binding.ReloadTPButton.setVisibility(View.GONE);
+        binding.RefundPassCard.setVisibility(View.GONE);
+
     }
 }
