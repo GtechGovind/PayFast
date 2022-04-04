@@ -41,7 +41,7 @@
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/heading"
+                android:text="@string/mumbai_metro_one"
                 android:textSize="18sp" />
 
             <ImageView
@@ -64,109 +64,28 @@
             android:layout_marginHorizontal="20dp"
             android:includeFontPadding="false"
             android:textColor="@color/white"
-            android:text="@string/your_tickets"
+            android:text="@string/ticket_dashboard"
+            android:textStyle="bold"
             android:textSize="30sp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/RecentOrdersText"
-        android:layout_below="@+id/TopBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="2sp"
-        android:layout_margin="5sp"
-        android:text="@string/recent_orders"
-        android:textColor="@color/black" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/RecentOrderCard"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/RecentOrdersText"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="5dp"
-        android:padding="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            tools:ignore="UselessLeaf">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:src="@drawable/card"
-                tools:ignore="ContentDescription" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_weight="3"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/SourceRecent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/source"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/DestinationRecent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/destination"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/PassengerRecent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/destination"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
+    <com.google.android.material.chip.Chip
         android:id="@+id/UpcomingOrdersText"
-        android:layout_below="@+id/RecentOrderCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/TopBar"
         android:layout_marginHorizontal="2sp"
-        android:layout_margin="5sp"
-        android:text="@string/upcoming_orders"
-        android:textColor="@color/black" />
+        android:layout_marginStart="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_marginBottom="5sp"
+        android:text="@string/upcoming_orders" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/RecentOrderCard"
+        android:layout_below="@id/TopBar"
         android:paddingTop="20dp">
 
         <LinearLayout
@@ -178,7 +97,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ticketsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp" />
 
         </LinearLayout>
 
@@ -196,8 +116,16 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:text="@string/book_tickets"
-                app:icon="@drawable/upcoming" />
+                app:icon="@drawable/ic_ticky_note" />
 
     </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/TProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/progress_bg"
+        android:visibility="gone" />
 
 </RelativeLayout>

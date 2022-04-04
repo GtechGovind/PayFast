@@ -62,8 +62,9 @@
             android:layout_marginHorizontal="20dp"
             android:includeFontPadding="false"
             android:textColor="@color/white"
-            android:text="@string/select_one"
-            android:textSize="30sp" />
+            android:text="@string/dashboard"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -130,7 +131,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:layout_margin="5dp"
                             android:text="@string/qr_desc"
                             tools:ignore="SmallSp" />
@@ -195,7 +196,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:layout_margin="5dp"
                             android:text="@string/desc_svp"
                             tools:ignore="SmallSp" />
@@ -260,7 +261,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:layout_margin="5dp"
                             android:text="@string/desc_tp"
                             tools:ignore="SmallSp" />
@@ -285,9 +286,10 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
-        android:layout_alignParentBottom="true"
+        android:id="@+id/goToUpcomingCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -298,25 +300,12 @@
 
             <Button
                 android:id="@+id/goToUpcoming"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/upcoming"
-                app:icon="@drawable/upcoming"
                 android:layout_marginEnd="20dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/primary_dark" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/history"
-                android:layout_marginStart="20dp"
-                app:icon="@drawable/history"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
+                android:text="@string/upcoming"
+                app:icon="@drawable/upcoming" />
 
         </LinearLayout>
 

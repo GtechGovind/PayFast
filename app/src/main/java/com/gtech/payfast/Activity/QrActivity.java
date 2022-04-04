@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.gtech.payfast.Adapter.QrAdapter;
@@ -28,9 +29,9 @@ import retrofit2.Response;
 public class QrActivity extends AppCompatActivity {
 
     private ActivityQrBinding binding;
-    private QrAdapter qrAdapter;
     DBHelper dbHelper;
-    String paxId;
+    List<UpwardTicket> ticketQrs;
+    List<UpwardTicket> returnTicketQrs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,14 @@ public class QrActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
+        binding.outwardTicket.setOnClickListener(view -> {
+            setAdapter(false);
+        });
+
+        binding.returnTicket.setOnClickListener(view -> {
+            setAdapter(true);
+        });
+
     }
 
     private void getQrCodes() {
@@ -62,9 +71,12 @@ public class QrActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     if (response.body().getStatus()) {
                         Log.e("Upward Ticket", gson.toJson(response.body().getUpwardTicket()));
-                        List<UpwardTicket> ticketQrs = response.body().getUpwardTicket();
-                        qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, QrActivity.this);
-                        binding.QrRecyclerView.setAdapter(qrAdapter);
+                        ticketQrs = response.body().getUpwardTicket();
+                        returnTicketQrs = response.body().getReturnTicket();
+                        setAdapter(false);
+                        if (ticketQrs.size() > 1) {
+                            Toast.makeText(QrActivity.this, "Swipe to see other tickets!", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         // TODO: error
                         Toast.makeText(QrActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
@@ -90,7 +102,19 @@ public class QrActivity extends AppCompatActivity {
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(Heading);
+    }
 
+    private void setAdapter(Boolean isReturn)
+    {
+        QrAdapter qrAdapter;
+        if (isReturn) {
+            qrAdapter = new QrAdapter(returnTicketQrs, binding.QrProgressBar, QrActivity.this);
+        } else {
+            qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, QrActivity.this);
+        }
+
+        binding.QrRecyclerView.setAdapter(qrAdapter);
+        binding.MetroLogo.setVisibility(View.VISIBLE);
     }
 
 }

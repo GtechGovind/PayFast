@@ -54,70 +54,13 @@ public class PaymentActivity extends AppCompatActivity {
                     processTicket();
                     break;
                 case "2":
-                    // issueSVP();
                     processSVP();
-                    break;
-                case "3":
-                    reloadSVP();
                     break;
                 case "4":
                     processTP();
+                    break;
             }
 
-        });
-
-    }
-
-    // RELOAD STORE VALUE PASS
-    private void reloadSVP() {
-
-        String ORDER_NO, RECHARGE_AMOUNT, MASTER_TXN_ID;
-
-        ORDER_NO = getIntent().getStringExtra("ODER_NO");
-        RECHARGE_AMOUNT = getIntent().getStringExtra("RECHARGE_AMOUNT");
-        MASTER_TXN_ID = getIntent().getStringExtra("MASTER_TXN_ID");
-
-        Data data = new Data(
-                Calendar.getInstance().getTime().toString(),
-                SharedPrefUtils.getStringData(this, "EMAIL"),
-                RECHARGE_AMOUNT,
-                SharedPrefUtils.getStringData(this, "NUMBER"),
-                SharedPrefUtils.getStringData(this, "NAME"),
-                BuildConfig.OPERATION_RELOAD,
-                BuildConfig.OPERATOR_ID,
-                ORDER_NO,
-                BuildConfig.TOKEN_TYPE_SVP,
-                "0",
-                MASTER_TXN_ID
-        );
-
-        Payment payment = new Payment(RECHARGE_AMOUNT, BuildConfig.PG_ID);
-
-        Issue reloadSVP = new Issue(data, payment);
-
-        Call<IssueResponse> reloadPass = ApiController.getInstance().apiInterface().reloadSVP(reloadSVP);
-        reloadPass.enqueue(new Callback<IssueResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<IssueResponse> call, @NonNull Response<IssueResponse> response) {
-
-                Gson gson = new Gson();
-                Log.e("RELOAD_SVP_REQUEST", gson.toJson(reloadPass));
-                Log.e("RELOAD_SVP_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) {
-
-                    if (response.body().getStatus().equals("OK")) startActivity(new Intent(PaymentActivity.this, StoreValuePass.class));
-                    else Toast.makeText(PaymentActivity.this, response.body().getError(), Toast.LENGTH_SHORT).show();
-                    finish();
-
-                } else Toast.makeText(PaymentActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<IssueResponse> call, @NonNull Throwable t) {
-                Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
         });
 
     }
@@ -172,6 +115,7 @@ public class PaymentActivity extends AppCompatActivity {
                         // TP pass has been processed
                         // Redirect to TP Dashboard
                         startActivity(new Intent(PaymentActivity.this, TripPass.class));
+                        finish();
                     }
                 }
             }
@@ -181,65 +125,6 @@ public class PaymentActivity extends AppCompatActivity {
                 Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    // STORE VALUE PASS
-    private void issueSVP() {
-
-        String ORDER_NO, RECHARGE_AMOUNT;
-
-        ORDER_NO = getIntent().getStringExtra("ODER_NO");
-        RECHARGE_AMOUNT = getIntent().getStringExtra("RECHARGE_AMOUNT");
-
-        Data data = new Data(
-                Calendar.getInstance().getTime().toString(),
-                "null",
-                SharedPrefUtils.getStringData(this, "EMAIL"),
-                RECHARGE_AMOUNT,
-                SharedPrefUtils.getStringData(this, "NUMBER"),
-                SharedPrefUtils.getStringData(this, "NAME"),
-                BuildConfig.OPERATION_ISSUE,
-                BuildConfig.OPERATOR_ID,
-                ORDER_NO,
-                BuildConfig.QR_STORE_VALUE_PASS,
-                "null",
-                BuildConfig.SUPPORT_MOBILE_QR,
-                BuildConfig.TOKEN_TYPE_SVP,
-                "0"
-        );
-
-        Payment payment = new Payment(RECHARGE_AMOUNT, BuildConfig.PG_ID);
-
-        Issue issue = new Issue(data, payment);
-
-        Call<IssueResponse> issueSVP = ApiController.getInstance().apiInterface().issueSVP(issue);
-        issueSVP.enqueue(new Callback<IssueResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<IssueResponse> call, @NonNull Response<IssueResponse> response) {
-
-                Gson gson = new Gson();
-                Log.e("ISSUE_QR_REQUEST", gson.toJson(issue));
-                Log.e("ISSUE_QR_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) {
-
-                    if (response.body().getStatus().equals("OK")) {
-
-                        startActivity(new Intent(PaymentActivity.this, StoreValuePass.class));
-                        finish();
-
-                    } else Toast.makeText(PaymentActivity.this, response.body().getError(), Toast.LENGTH_SHORT).show();
-
-                } else Toast.makeText(PaymentActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<IssueResponse> call, @NonNull Throwable t) {
-                Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     // Process QR Mobile Ticket
@@ -269,72 +154,6 @@ public class PaymentActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    // MOBILE QR TICKET
-    private void issueMobileQrTicket() {
-
-        String ORDER_NO, SOURCE_ID, TICKET_TYPE, TICKET_COUNT, DESTINATION_ID, TOTAL_FARE;
-
-        ORDER_NO = getIntent().getStringExtra("ORDER_ID");
-        SOURCE_ID = getIntent().getStringExtra("SOURCE_ID");
-        TICKET_TYPE = getIntent().getStringExtra("TICKET_TYPE");
-        TICKET_COUNT = getIntent().getStringExtra("TICKET_COUNT");
-        DESTINATION_ID = getIntent().getStringExtra("DESTINATION_ID");
-        TOTAL_FARE = getIntent().getStringExtra("TOTAL_FARE");
-
-        Data data = new Data(
-                Calendar.getInstance().getTime().toString(),
-                DESTINATION_ID,
-                SharedPrefUtils.getStringData(this, "EMAIL"),
-                TOTAL_FARE,
-                SharedPrefUtils.getStringData(this, "NUMBER"),
-                SharedPrefUtils.getStringData(this, "NAME"),
-                BuildConfig.OPERATION_ISSUE,
-                BuildConfig.OPERATOR_ID,
-                ORDER_NO,
-                (TICKET_TYPE.equals("10")) ? BuildConfig.QR_SINGLE_JOURNEY : BuildConfig.QR_RETURN_JOURNEY,
-                SOURCE_ID,
-                BuildConfig.SUPPORT_MOBILE_QR,
-                TICKET_TYPE,
-                TICKET_COUNT
-        );
-
-        Payment payment = new Payment(TOTAL_FARE, BuildConfig.PG_ID);
-
-        Issue issue = new Issue(data, payment);
-
-        Call<IssueResponse> issueQrToken = ApiController.getInstance().apiInterface().issueMobileQrToken(issue);
-        issueQrToken.enqueue(new Callback<IssueResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<IssueResponse> call, @NonNull Response<IssueResponse> response) {
-
-                Gson gson = new Gson();
-                Log.e("ISSUE_QR_REQUEST", gson.toJson(issue));
-                Log.e("ISSUE_QR_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) {
-
-                    if (response.body().getStatus().equals("OK")) {
-
-                        Intent intent = new Intent(PaymentActivity.this, QrActivity.class);
-                        intent.putExtra("ORDER_NO", response.body().getOrder_no());
-                        startActivity(intent);
-                        finish();
-
-                    } else Toast.makeText(PaymentActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
-                } else Toast.makeText(PaymentActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<IssueResponse> call, @NonNull Throwable t) {
-                Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("ERROR", t.getMessage());
-            }
-        });
-
     }
 
 }

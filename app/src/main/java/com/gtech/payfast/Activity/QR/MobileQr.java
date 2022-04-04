@@ -80,8 +80,8 @@ public class MobileQr extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 Gson gson = new Gson();
-                Log.e("CHECK_USER_REQUEST", gson.toJson(order));
-                Log.e("CHECK_USER_RESPONSE", gson.toJson(response.body()));
+                Log.e("CREATE_TICKET_REQUEST", gson.toJson(order));
+                Log.e("CREATE_TICKET_RESPONSE", gson.toJson(response.body()));
 
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
@@ -182,10 +182,8 @@ public class MobileQr extends AppCompatActivity {
     // SET CONFIG
     private void setBasicConfig() {
 
-        String Heading = "MOBILE QR ORDER";
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
-        binding.Heading.setText(Heading);
 
         // INCREMENT COUNTER
         binding.AddButton.setOnClickListener(view -> {

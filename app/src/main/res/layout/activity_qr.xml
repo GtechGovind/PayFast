@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,8 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/BackButton"
@@ -32,10 +34,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="6"
-            android:textColor="@color/white"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/heading"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
         <ImageView
@@ -51,10 +53,15 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@id/TopBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/line1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TopBar">
 
         <ProgressBar
             android:id="@+id/QrProgressBar"
@@ -70,25 +77,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="50dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/QrRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <ImageView
+                    android:id="@+id/MetroLogo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="-50dp"
+                    android:contentDescription="@string/mumbai_metro_one"
+                    android:src="@drawable/metrologo"
+                    android:visibility="gone" />
+
             </LinearLayout>
-
         </ScrollView>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-50dp"
-            android:src="@drawable/metrologo"
-            tools:ignore="ContentDescription" />
 
     </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/outwardTicket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/outward" />
+
+        <Button
+            android:id="@+id/returnTicket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="RETURN" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

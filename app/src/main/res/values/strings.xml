@@ -83,4 +83,10 @@
     <string name="reload">Reload</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="refund_pass">Refund Pass</string>
+    <string name="mumbai_metro_one">Mumbai Metro One</string>
+    <string name="fare">Fare</string>
+    <string name="balance">Balance</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="booking_date">Booking Date</string>
+    <string name="outward">OUTWARD</string>
 </resources>

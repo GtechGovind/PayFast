@@ -36,6 +36,7 @@ import com.gtech.payfast.Model.SVP.SVStatus;
 import com.gtech.payfast.Model.Status;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.Payment.PaymentActivity;
+import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.OrderUtils;
 import com.gtech.payfast.Utils.SharedPrefUtils;
@@ -55,6 +56,7 @@ public class StoreValuePass extends AppCompatActivity {
 
     private ActivityStoreValuePassBinding binding;
     private BottomSheetDialog reloadDialogue;
+    private boolean statusUpdated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,6 @@ public class StoreValuePass extends AppCompatActivity {
                     if (response.body().isStatus()) {
                         // Can issue pass
                         // Create SV pass
-                        Toast.makeText(StoreValuePass.this, "USER CAN BE ISSUED PASS!", Toast.LENGTH_SHORT).show();
                         setDonutHaveSvp();
                     } else {
                         // Cannot issue pass
@@ -109,7 +110,7 @@ public class StoreValuePass extends AppCompatActivity {
     // UPDATE DASHBOARD
     private void updateDashboard() {
         String PAX_ID = SharedPrefUtils.getStringData(this, "PAX_ID");
-        Call<SVDashboard> svDashboardCall= ApiController.getInstance().apiInterface().updateSVDashboard(PAX_ID);
+        Call<SVDashboard> svDashboardCall = ApiController.getInstance().apiInterface().updateSVDashboard(PAX_ID);
         svDashboardCall.enqueue(new Callback<SVDashboard>() {
             @Override
             public void onResponse(@NonNull Call<SVDashboard> call, @NonNull Response<SVDashboard> response) {
@@ -131,21 +132,23 @@ public class StoreValuePass extends AppCompatActivity {
                         UpwardTicket pass = response.body().getPass();
                         UpwardTicket trip = response.body().getTrip();
                         if (user != null) {
-                            String name = "Name: " + user.getPax_name();
+                            String name = user.getPax_name();
                             binding.UserName.setText(name);
                         }
                         if (pass != null) {
                             binding.MasterTxnId.setText(pass.getMs_qr_no());
                             binding.Balance.setText(String.valueOf(pass.getTotal_price()));
+                            binding.ExpiryDate.setText(pass.getMs_qr_exp().split(" ")[0]);
                         }
                         if (trip != null) {
-                            String balanceAmt = "Balance: " + trip.getBalance_amt();
+                            String balanceAmt = "₹" + trip.getBalance_amt();
                             binding.Balance.setText(balanceAmt);
 
                             // SHOW QR CODE IF TRIP HAS BEEN GENERATED,
                             // OTHERWISE SHOW GENERATE TRIP BUTTON
                             binding.GenerateTrip.setVisibility(View.GONE);
-                            binding.QrCode.setVisibility(View.VISIBLE);
+                            binding.QrCodeCard.setVisibility(View.VISIBLE);
+                            binding.QrNo.setText("" + trip.getSl_qr_no());
                             writeQr(trip.getQr_data());
                         } else {
                             // ONCLICK GenerateTrip, call generate trip API
@@ -156,7 +159,7 @@ public class StoreValuePass extends AppCompatActivity {
                         }
                         // GET SV STATUS
                         if (pass != null) {
-                            getSVStatus(pass.getMs_qr_no());
+                            if (!statusUpdated) getSVStatus(pass.getMs_qr_no());
                             canReloadPass(pass.getSale_or_no());
                         }
 
@@ -267,36 +270,6 @@ public class StoreValuePass extends AppCompatActivity {
 
     }
 
-    // IF USER HAS PASS
-    private void setHasSvp(ResponseData data) {
-
-        binding.UserName.setText(SharedPrefUtils.getStringData(this, "NAME"));
-        binding.MasterTxnId.setText(data.getMasterTxnId());
-        binding.Balance.setText(MessageFormat.format("Balance: {0}", data.getBalance()));
-
-        // SET GENERATE TRIP
-        int TripsCounter = 0;
-
-        for (Trips trip : data.getTrips())
-            if (trip.getTokenStatus().equals("GENERATED") || trip.getTokenStatus().equals("IN_JOURNEY"))
-                TripsCounter++;
-
-        if (TripsCounter > 0) binding.ViewQrTicket.setVisibility(View.VISIBLE);
-        else binding.GenerateTrip.setVisibility(View.VISIBLE);
-
-        binding.GenerateTrip.setOnClickListener(view -> generateNewTrip(data));
-
-        binding.ViewQrTicket.setOnClickListener(view -> {
-            Intent intent = new Intent(StoreValuePass.this, QrActivity.class);
-            intent.putExtra("ORDER_NO", data.getOrder_no());
-            startActivity(intent);
-            finish();
-        });
-
-        // binding.ReloadPassCard.setOnClickListener(view -> setBottomSheetForReload(data));
-
-    }
-
     // GENERATE SV TRIP
     private void generateSVTrip(String orderId) {
         binding.SPassProgressBar.setVisibility(View.VISIBLE);
@@ -333,120 +306,6 @@ public class StoreValuePass extends AppCompatActivity {
         });
     }
 
-    // RELOAD PASS
-    private void reloadSVP(ResponseData SvpData, String fare, ProgressBar reloadProgressBar) {
-
-        reloadProgressBar.setVisibility(View.VISIBLE);
-
-        Order order = new Order(
-                OrderUtils.getOID("SVP"),
-                SharedPrefUtils.getStringData(this, "NUMBER"),
-                null,
-                null,
-                BuildConfig.TOKEN_TYPE_SVP,
-                null,
-                fare,
-                BuildConfig.PG_ID,
-                BuildConfig.OPERATOR_ID,
-                Status.getInstance().getSTATUS_ORDER_CREATED(),
-                Status.getInstance().getORDER_TYPE_RELOAD()
-        );
-
-        Call<ResponseModel> createSvpOrder = ApiController.getInstance().apiInterface().createNewOrder(order);
-        createSvpOrder.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
-
-                Gson gson = new Gson();
-                Log.e("RELOAD_SVP_REQUEST", gson.toJson(order));
-                Log.e("RELOAD_SVP_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) {
-
-                    if (response.body().isStatus()) {
-
-                        Intent intent = new Intent(StoreValuePass.this, PaymentActivity.class);
-                        intent.putExtra("PAYMENT_TYPE", "3");
-                        intent.putExtra("RECHARGE_AMOUNT", fare);
-                        intent.putExtra("ODER_NO", order.getOrder_no());
-                        intent.putExtra("MASTER_TXN_ID", SvpData.getMasterTxnId());
-                        startActivity(intent);
-
-                        reloadProgressBar.setVisibility(View.GONE);
-
-                        reloadDialogue.cancel();
-                        finish();
-
-                    } else {
-                        reloadProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(StoreValuePass.this, response.body().getError(), Toast.LENGTH_SHORT).show();
-                    }
-
-                } else
-                    Toast.makeText(StoreValuePass.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    // CREATE NEW TRIP
-    private void generateNewTrip(ResponseData svpData) {
-
-        Data dataTrip = new Data(
-                Calendar.getInstance().getTime().toString(),
-                "null",
-                SharedPrefUtils.getStringData(this, "EMAIL"),
-                SharedPrefUtils.getStringData(this, "NUMBER"),
-                SharedPrefUtils.getStringData(this, "NAME"),
-                BuildConfig.OPERATION_ISSUE,
-                BuildConfig.OPERATOR_ID,
-                svpData.getOrder_no(),
-                BuildConfig.QR_TRIP_PASS,
-                "null",
-                BuildConfig.TOKEN_TYPE_SVP,
-                svpData.getMasterTxnId()
-        );
-
-        Trip trip = new Trip(dataTrip);
-
-        Call<IssueResponse> getTrip = ApiController.getInstance().apiInterface().issueSVPTrip(trip);
-        getTrip.enqueue(new Callback<IssueResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<IssueResponse> call, @NonNull Response<IssueResponse> response) {
-
-                Gson gson = new Gson();
-                Log.e("ISSUE_SVP_TRIP_REQUEST", gson.toJson(trip));
-                Log.e("ISSUE_SVP_TRIP_RESPONSE", gson.toJson(response.body()));
-
-                if (response.body() != null) {
-
-                    if (response.body().getStatus().equals("OK")) {
-
-                        Intent intent = new Intent(StoreValuePass.this, QrActivity.class);
-                        intent.putExtra("ORDER_NO", svpData.getOrder_no());
-                        startActivity(intent);
-                        finish();
-
-                    } else Toast.makeText(StoreValuePass.this, response.body().getError(), Toast.LENGTH_SHORT).show();
-
-                } else Toast.makeText(StoreValuePass.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<IssueResponse> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
     // CAN RELOAD PASS
     private void canReloadPass(String orderId) {
 
@@ -461,9 +320,9 @@ public class StoreValuePass extends AppCompatActivity {
                      if (response.body().isStatus()) {
                          // PASS CAN BE RELOADED
                          // SHOW RELOAD PASS BUTTON
-                         binding.ReloadPassCard.setVisibility(View.VISIBLE);
-                         binding.ReloadPassCard.setOnClickListener(view -> setBottomSheetForReload(orderId));
 
+                         binding.ReloadSVButton.setVisibility(View.VISIBLE);
+                         binding.ReloadSVButton.setOnClickListener(view -> setBottomSheetForReload(orderId));
                      }
                  }
             }
@@ -555,11 +414,8 @@ public class StoreValuePass extends AppCompatActivity {
                     if (response.body().getStatus()) {
                         // SV status updated
                         // Update dashboard
-                        if (response.body().getData() != null) {
-                            binding.Balance.setText(response.body().getData().getBalance().toString());
-                            if (!response.body().getData().getTrips().isEmpty())
-                                writeQr(response.body().getData().getTrips().get(0).getQrCodeData());
-                        }
+                        statusUpdated = true;
+                        updateDashboard();
                     }
                 } else {
                     // REQUEST FAILED
@@ -576,15 +432,13 @@ public class StoreValuePass extends AppCompatActivity {
 
     // SET CONFIG
     private void setBasicConfig() {
-
-        String Heading = "STORE VALUE PASS";
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
-        binding.Heading.setText(Heading);
+        binding.Heading.setText(R.string.mumbai_metro_one);
 
         binding.GenerateTrip.setVisibility(View.GONE);
-        binding.QrCode.setVisibility(View.GONE);
-        binding.ReloadPassCard.setVisibility(View.GONE);
+        binding.QrCodeCard.setVisibility(View.GONE);
+        binding.ReloadSVButton.setVisibility(View.GONE);
     }
 
     // BOTTOM LAYOUT FOR RELOAD

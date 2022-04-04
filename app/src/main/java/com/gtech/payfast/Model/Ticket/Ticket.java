@@ -10,6 +10,7 @@ public class Ticket {
     String order_id;
     ArrayList<Station> stations;
     ArrayList<UpwardTicket> upwardTicket;
+    ArrayList<UpwardTicket> returnTicket;
 
     public Ticket(Boolean status, int type, String order_id, ArrayList<Station> stations, ArrayList<UpwardTicket> upwardTicket) {
         this.status = status;
@@ -17,6 +18,15 @@ public class Ticket {
         this.order_id = order_id;
         this.stations = stations;
         this.upwardTicket = upwardTicket;
+    }
+
+    public Ticket(Boolean status, int type, String order_id, ArrayList<Station> stations, ArrayList<UpwardTicket> upwardTicket, ArrayList<UpwardTicket> returnTicket) {
+        this.status = status;
+        this.type = type;
+        this.order_id = order_id;
+        this.stations = stations;
+        this.upwardTicket = upwardTicket;
+        this.returnTicket = returnTicket;
     }
 
     public Boolean getStatus() {
@@ -57,5 +67,13 @@ public class Ticket {
 
     public void setUpwardTicket(ArrayList<UpwardTicket> upwardTicket) {
         this.upwardTicket = upwardTicket;
+    }
+
+    public ArrayList<UpwardTicket> getReturnTicket() {
+        return returnTicket;
+    }
+
+    public void setReturnTicket(ArrayList<UpwardTicket> returnTicket) {
+        this.returnTicket = returnTicket;
     }
 }

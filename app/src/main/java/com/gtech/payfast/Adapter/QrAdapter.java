@@ -28,6 +28,7 @@ import java.util.List;
 public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     List<UpwardTicket> ticketQrs;
+    List<UpwardTicket> returnTicketQrs;
     ProgressBar qrProgressBar;
     Context context;
     DBHelper dbHelper;
@@ -89,11 +90,35 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
         } catch (WriterException e) {
             e.printStackTrace();
         }
-
-        // holder.Status.setText(ticketQrs.get(position).getQr_status());
-        holder.MasterTxnId.setText("MID: " + ticketQrs.get(position).getMs_qr_no());
-        int count = position + 1;
-        holder.Passenger.setText("Passenger " + count + "  ||  " + ticketQrs.get(position).getQr_dir());
+        // SET TICKET STATUS
+        String status;
+        switch (ticketQrs.get(position).getQr_status()) {
+            case 1:
+                status = "GENERATED";
+                break;
+            case 2:
+                status = "IN JOURNEY";
+                break;
+            case 3:
+                status = "COMPLETED";
+                break;
+            case 4:
+                status = "EXPIRED";
+                break;
+            default:
+                status = "";
+                break;
+        }
+        holder.Status.setText(status);
+        // SET CURRENT PASSENGER INDEX
+        String passengerCount = "Passenger " + ticketQrs.get(position).getQr_dir();
+        holder.Passenger.setText(passengerCount);
+        // SET BOOKING AND EXPIRY DATE
+        holder.BookingDate.setText(ticketQrs.get(position).getTxn_date());
+        holder.ExpiryDate.setText(ticketQrs.get(position).getMs_qr_exp());
+        // SET UNIT PRICE
+        String fare = "₹" + ticketQrs.get(position).getUnit_price();
+        holder.Fare.setText(fare);
 
     }
 
@@ -110,9 +135,9 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     static class QrViewHolder extends RecyclerView.ViewHolder {
 
-        TextView TicketType, Source, Destination, Passenger;
+        TextView TicketType, Source, Destination, Passenger, BookingDate, ExpiryDate, Fare;
         ImageView ArrowImage, QrCode;
-        Chip SID, Status, NeedHelp, ShareQr, MasterTxnId;
+        Chip SID, Status, NeedHelp, ShareQr;
 
         public QrViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,9 +151,10 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
             Status = itemView.findViewById(R.id.Status);
             NeedHelp = itemView.findViewById(R.id.NeedHelp);
             ShareQr = itemView.findViewById(R.id.ShareQr);
-            MasterTxnId = itemView.findViewById(R.id.MasterTxnId);
             Passenger = itemView.findViewById(R.id.Passenger);
-
+            BookingDate = itemView.findViewById(R.id.BookingDate);
+            ExpiryDate = itemView.findViewById(R.id.ExpiryDate);
+            Fare = itemView.findViewById(R.id.Fare);
         }
     }
 

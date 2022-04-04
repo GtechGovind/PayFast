@@ -56,14 +56,15 @@ tools:context=".Activity.TP.TripPassGeneration">
     android:includeFontPadding="false"
     android:textColor="@color/white"
     android:text="@string/trip_pass"
-    android:textSize="30sp" />
+    android:textSize="30sp"
+    android:textStyle="bold"/>
 
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20sp"
     android:textColor="@color/white"
-    android:text="@string/mobile_qr_" />
+    android:text="@string/trip_pass_desc" />
 
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"

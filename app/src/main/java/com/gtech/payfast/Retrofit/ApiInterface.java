@@ -132,6 +132,10 @@ public interface ApiInterface {
     @GET("api/ticket/dashboard/{pax-id}")
     Call<UpdateTicketDashboard> updateTicketDashboard(@Path("pax-id") String paxId);
 
+    @Headers("Accept:application/json")
+    @GET("api/ticket/status/{pax-id}")
+    Call<ResponseModel> updateTicketStatus(@Path("pax-id") String paxId);
+
     /* ******************************** TRIP PASS *******************************************/
     @Headers("Accept:application/json")
     @GET("/api/tp/status/{ms-qr-no}")
