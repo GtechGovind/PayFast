@@ -19,34 +19,20 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.gtech.payfast.Activity.QrActivity;
 import com.gtech.payfast.Auth.ProfileActivity;
-import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Model.Auth.User;
-import com.gtech.payfast.Model.IssueToken.Data;
-import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
-import com.gtech.payfast.Model.IssueToken.Response.ResponseData;
-import com.gtech.payfast.Model.IssueToken.Response.Trips;
-import com.gtech.payfast.Model.Pass.Trip;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
 import com.gtech.payfast.Model.SVP.SVDashboard;
 import com.gtech.payfast.Model.SVP.SVStatus;
-import com.gtech.payfast.Model.Status;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
-import com.gtech.payfast.Utils.OrderUtils;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityStoreValuePassBinding;
 import com.gtech.payfast.databinding.ReloadBottomSheetLayoutBinding;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -137,12 +123,9 @@ public class StoreValuePass extends AppCompatActivity {
                         }
                         if (pass != null) {
                             binding.MasterTxnId.setText(pass.getMs_qr_no());
-                            binding.Balance.setText(String.valueOf(pass.getTotal_price()));
                             binding.ExpiryDate.setText(pass.getMs_qr_exp().split(" ")[0]);
                         }
                         if (trip != null) {
-                            String balanceAmt = "₹" + trip.getBalance_amt();
-                            binding.Balance.setText(balanceAmt);
 
                             // SHOW QR CODE IF TRIP HAS BEEN GENERATED,
                             // OTHERWISE SHOW GENERATE TRIP BUTTON
@@ -415,6 +398,8 @@ public class StoreValuePass extends AppCompatActivity {
                         // SV status updated
                         // Update dashboard
                         statusUpdated = true;
+                        String balanceAmt = "₹" + response.body().getData().getBalance().toString();
+                        binding.Balance.setText(balanceAmt);
                         updateDashboard();
                     }
                 } else {

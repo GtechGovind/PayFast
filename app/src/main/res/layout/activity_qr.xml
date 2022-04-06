@@ -57,21 +57,24 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_below="@id/TopBar"
+        android:background="@drawable/background_inverted"
         app:cardCornerRadius="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/line1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TopBar">
 
         <ProgressBar
             android:id="@+id/QrProgressBar"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:foregroundGravity="top"
+            android:rotationX="343" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,10 +83,193 @@
                 android:orientation="vertical"
                 android:paddingBottom="50dp">
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/primary"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:alpha="0.3"
+                        android:src="@drawable/train_img"
+                        tools:ignore="ContentDescription" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="359dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        tools:layout_editor_absoluteX="1dp">
+
+
+                        <TextView
+                            android:id="@+id/Source"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="Western Express"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+                        <ImageView
+                            android:id="@+id/ArrowImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="23dp"
+                            android:contentDescription="@string/to"
+                            android:src="@drawable/for_arrow"
+                            app:layout_constraintEnd_toStartOf="@+id/Destination"
+                            app:layout_constraintStart_toEndOf="@+id/Source"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="123dp"
+                            android:text="@string/destination"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/Destination"
+                            android:layout_width="170dp"
+                            android:layout_height="21dp"
+                            android:layout_marginEnd="9dp"
+                            android:text="DN Nagar"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/fare"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Source" />
+
+
+                        <TextView
+                            android:id="@+id/Fare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="₹30"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="136dp"
+                            android:layout_marginTop="60dp"
+                            android:text="@string/booking_date"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintStart_toEndOf="@+id/textView3"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/BookingDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="29-02-2020 19:40"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="@+id/textView4"
+                            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/expiry_date"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintStart_toStartOf="@+id/BookingDate"
+                            app:layout_constraintTop_toBottomOf="@+id/BookingDate" />
+
+                        <TextView
+                            android:id="@+id/ExpiryDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:text="29-03-2022 19:40"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="@+id/textView5"
+                            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/source"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintEnd_toStartOf="@+id/ArrowImage"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleSelection="true"
+                    android:visibility="gone"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/outwardTicket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey_light"
+                        android:text="OUTWARD" />
+
+                    <Button
+                        android:id="@+id/returnTicket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey_light"
+                        android:text="RETURN" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/QrRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="565dp" />
 
                 <ImageView
                     android:id="@+id/MetroLogo"
@@ -99,30 +285,5 @@
         </ScrollView>
 
     </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-        android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/outwardTicket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/outward" />
-
-        <Button
-            android:id="@+id/returnTicket"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="RETURN" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,7 +56,8 @@
         android:includeFontPadding="false"
         android:text="@string/store_value_pass"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -92,7 +93,7 @@
                 <!--CARD-->
                 <androidx.cardview.widget.CardView
                     android:layout_width="fill_parent"
-                    android:layout_height="170sp"
+                    android:layout_height="190dp"
                     android:background="@drawable/designone"
                     android:elevation="100sp"
                     app:cardBackgroundColor="@color/primary"
@@ -122,7 +123,6 @@
                             android:id="@+id/NoPass"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
                             android:gravity="center"
                             android:text="@string/no_pass_to_show"
                             android:textColor="@color/white"
@@ -234,7 +234,7 @@
                                         android:id="@+id/ReloadSVButton"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginBottom="5dp"
+                                        android:padding="5dp"
                                         android:layout_gravity="end"
                                         android:text="@string/reload"
                                         android:backgroundTint="@color/grey_light" />
@@ -416,7 +416,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:elevation="5sp">
 
                         <LinearLayout
@@ -430,6 +430,7 @@
                                 android:id="@+id/QrCode"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
                                 android:contentDescription="@string/scan" />
 
                             <com.google.android.material.chip.Chip

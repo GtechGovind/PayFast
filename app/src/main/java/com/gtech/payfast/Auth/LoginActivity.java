@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPrefUtils.saveData(LoginActivity.this, "PAX_ID", oldUser.getPax_id().toString());
                         Log.e("SAVING PAX ID", oldUser.getPax_id().toString());
                         startActivity(intent);
+                        finish();
 
                     } else {
 

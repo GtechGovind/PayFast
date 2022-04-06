@@ -3,6 +3,7 @@ package com.gtech.payfast.Activity.TP;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,11 +17,11 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.gtech.payfast.Activity.SVP.StoreValuePass;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.TP.ReloadTP;
 import com.gtech.payfast.Model.TP.TPDashboard;
+
 import com.gtech.payfast.Model.TP.TPStatus;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.R;
@@ -28,7 +29,6 @@ import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityTripPassBinding;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -40,6 +40,7 @@ import retrofit2.Response;
 
 public class TripPass extends AppCompatActivity {
     private ActivityTripPassBinding binding;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +49,11 @@ public class TripPass extends AppCompatActivity {
         binding = ActivityTripPassBinding.inflate(getLayoutInflater());
         View TripPassView = binding.getRoot();
         setContentView(TripPassView);
-
+        // INIT ALERT DIALOG
+        builder = new AlertDialog.Builder(this);
+        // SET BASIC CONFIG
         setBasicConfig();
-
+        // UPDATE DASHBOARD
         updateDashboard();
     }
 
@@ -72,7 +75,20 @@ public class TripPass extends AppCompatActivity {
                         // Update pass
                         binding.HasTP.setVisibility(View.VISIBLE);
                         binding.RefundPassCard.setVisibility(View.VISIBLE);
-                        binding.RefundPassCard.setOnClickListener(v -> refundPass(response.body().getPass().getSale_or_no()));
+                        binding.RefundPassCard.setOnClickListener(v -> {
+                            builder.setMessage("Are you sure you want to refund your pass card?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", (dialog, id) -> refundPass(response.body().getPass().getSale_or_no()))
+                                    .setNegativeButton("No", (dialog, id) -> {
+                                        //  Action for 'NO' Button
+                                        dialog.cancel();
+                                    });
+                            //Creating dialog box
+                            AlertDialog alert = builder.create();
+                            //Setting the title manually
+                            alert.setTitle("Refund Pass Card");
+                            alert.show();
+                        });
 
                         binding.UserName.setText(response.body().getUser().getPax_name());
                         binding.MasterTxnId.setText(response.body().getPass().getMs_qr_no());
@@ -178,10 +194,12 @@ public class TripPass extends AppCompatActivity {
     // GENERATE TRIP
     private void generateTrip(String orderId) {
         binding.TPProgressBar.setVisibility(View.VISIBLE);
+        binding.GenerateTrip.setEnabled(false);
         Call<ResponseModel> generateTripCall = ApiController.getInstance().apiInterface().generateTripTP(orderId);
         generateTripCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                binding.GenerateTrip.setEnabled(true);
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
                         binding.TPProgressBar.setVisibility(View.GONE);
@@ -199,6 +217,8 @@ public class TripPass extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                binding.TPProgressBar.setVisibility(View.VISIBLE);
+                binding.GenerateTrip.setEnabled(true);
                 Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

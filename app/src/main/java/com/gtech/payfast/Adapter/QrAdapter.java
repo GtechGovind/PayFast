@@ -28,7 +28,6 @@ import java.util.List;
 public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     List<UpwardTicket> ticketQrs;
-    List<UpwardTicket> returnTicketQrs;
     ProgressBar qrProgressBar;
     Context context;
     DBHelper dbHelper;
@@ -58,18 +57,10 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                 break;
             case 90:
                 holder.TicketType.setText("Return Journey Ticket");
-                holder.ArrowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.return_arrow));
                 break;
             case 81:
                 holder.TicketType.setText("Store Value Ticket");
                 break;
-        }
-
-        if (ticketQrs.get(position).getSource() != null) {
-
-            holder.Source.setText(ticketQrs.get(position).getSource());
-            holder.Destination.setText(ticketQrs.get(position).getDestination());
-
         }
 
         holder.SID.setText(ticketQrs.get(position).getSl_qr_no());
@@ -111,14 +102,8 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
         }
         holder.Status.setText(status);
         // SET CURRENT PASSENGER INDEX
-        String passengerCount = "Passenger " + ticketQrs.get(position).getQr_dir();
+        String passengerCount = "Passenger " + (position + 1);
         holder.Passenger.setText(passengerCount);
-        // SET BOOKING AND EXPIRY DATE
-        holder.BookingDate.setText(ticketQrs.get(position).getTxn_date());
-        holder.ExpiryDate.setText(ticketQrs.get(position).getMs_qr_exp());
-        // SET UNIT PRICE
-        String fare = "₹" + ticketQrs.get(position).getUnit_price();
-        holder.Fare.setText(fare);
 
     }
 
@@ -135,26 +120,20 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     static class QrViewHolder extends RecyclerView.ViewHolder {
 
-        TextView TicketType, Source, Destination, Passenger, BookingDate, ExpiryDate, Fare;
-        ImageView ArrowImage, QrCode;
+        TextView TicketType, Passenger;
+        ImageView QrCode;
         Chip SID, Status, NeedHelp, ShareQr;
 
         public QrViewHolder(@NonNull View itemView) {
             super(itemView);
 
             TicketType = itemView.findViewById(R.id.TicketType);
-            Source = itemView.findViewById(R.id.Source);
-            Destination = itemView.findViewById(R.id.Destination);
-            ArrowImage = itemView.findViewById(R.id.ArrowImage);
             QrCode = itemView.findViewById(R.id.QrCode);
             SID = itemView.findViewById(R.id.SID);
             Status = itemView.findViewById(R.id.Status);
             NeedHelp = itemView.findViewById(R.id.NeedHelp);
             ShareQr = itemView.findViewById(R.id.ShareQr);
             Passenger = itemView.findViewById(R.id.Passenger);
-            BookingDate = itemView.findViewById(R.id.BookingDate);
-            ExpiryDate = itemView.findViewById(R.id.ExpiryDate);
-            Fare = itemView.findViewById(R.id.Fare);
         }
     }
 

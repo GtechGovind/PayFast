@@ -8,15 +8,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.gson.Gson;
 import com.gtech.payfast.Adapter.QrAdapter;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Ticket.Ticket;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
+import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.databinding.ActivityQrBinding;
 
@@ -48,14 +51,6 @@ public class QrActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
-        binding.outwardTicket.setOnClickListener(view -> {
-            setAdapter(false);
-        });
-
-        binding.returnTicket.setOnClickListener(view -> {
-            setAdapter(true);
-        });
-
     }
 
     private void getQrCodes() {
@@ -72,10 +67,18 @@ public class QrActivity extends AppCompatActivity {
                     if (response.body().getStatus()) {
                         Log.e("Upward Ticket", gson.toJson(response.body().getUpwardTicket()));
                         ticketQrs = response.body().getUpwardTicket();
+                        // SET TICKET DATA ON CARD
+                        setTicketCard(ticketQrs.get(0));
                         returnTicketQrs = response.body().getReturnTicket();
+                        // SHOW OUTWARD TICKETS
                         setAdapter(false);
+                        binding.outwardTicket.setBackgroundColor(getResources().getColor(R.color.primary));
+                        // IF RJT, SHOW TOGGLE BUTTON
+                        if (returnTicketQrs != null) {
+                            if (!returnTicketQrs.isEmpty()) configToggle();
+                        }
                         if (ticketQrs.size() > 1) {
-                            Toast.makeText(QrActivity.this, "Swipe to see other tickets!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QrActivity.this, "Swipe to see other tickets!", Toast.LENGTH_LONG).show();
                         }
                     } else {
                         // TODO: error
@@ -90,6 +93,43 @@ public class QrActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<Ticket> call, @NonNull Throwable t) {
                 Toast.makeText(QrActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // SET TICKET CARD
+    private void setTicketCard(UpwardTicket ticketData) {
+        // SET SOURCE AND DESTINATION ON THE CARD
+        binding.Source.setText(ticketData.getSource());
+        binding.Destination.setText(ticketData.getDestination());
+        // SET ARROW IMAGE BASED ON JOURNEY TYPE
+        if (ticketData.getPass_id() == 90) {
+            binding.ArrowImage.setImageDrawable(
+                    ResourcesCompat.getDrawable(this.getResources(), R.drawable.return_arrow, null));
+        }
+        // SET BOOKING AND EXPIRY DATE
+        binding.BookingDate.setText(ticketData.getTxn_date());
+        binding.ExpiryDate.setText(ticketData.getMs_qr_exp());
+        // SET UNIT PRICE
+        String fare = "₹" + ticketData.getUnit_price();
+        binding.Fare.setText(fare);
+    }
+
+    // CONFIGURE TOGGLE BUTTON
+    private void configToggle() {
+        binding.toggleButton.setVisibility(View.VISIBLE);
+        binding.toggleButton.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            // SHOW OUTWARD TICKETS
+            if(group.getCheckedButtonId()==R.id.outwardTicket)
+            {
+                setAdapter(false);
+                binding.outwardTicket.setBackgroundColor(getResources().getColor(R.color.primary));
+                binding.returnTicket.setBackgroundColor(getResources().getColor(R.color.grey_light));
+            }else if(group.getCheckedButtonId()==R.id.returnTicket) {
+                // SHOW RETURN TICKETS
+                setAdapter(true);
+                binding.outwardTicket.setBackgroundColor(getResources().getColor(R.color.grey_light));
+                binding.returnTicket.setBackgroundColor(getResources().getColor(R.color.primary));
             }
         });
     }

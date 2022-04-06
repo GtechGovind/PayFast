@@ -83,13 +83,13 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            Source = itemView.findViewById(R.id.Source);
-            Destination = itemView.findViewById(R.id.Destination);
+            Source = itemView.findViewById(R.id.SourceStation);
+            Destination = itemView.findViewById(R.id.DestinationStation);
             TPCard = itemView.findViewById(R.id.TicketCard);
             PassengerCount = itemView.findViewById(R.id.PassengerCount);
             JourneyType = itemView.findViewById(R.id.JourneyType);
-            Fare = itemView.findViewById(R.id.Fare);
-            Expiry = itemView.findViewById(R.id.Expiry);
+            Fare = itemView.findViewById(R.id.TicketFare);
+            Expiry = itemView.findViewById(R.id.TicketExpiryDate);
             ArrowSingleJourney = itemView.findViewById(R.id.ArrowSingleJourney);
             ArrowReturnJourney = itemView.findViewById(R.id.ArrowReturnJourney);
 

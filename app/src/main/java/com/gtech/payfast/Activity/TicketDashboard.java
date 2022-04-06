@@ -122,5 +122,6 @@ public class TicketDashboard extends AppCompatActivity {
     private void setBasicConfig() {
         binding.Heading.setText(R.string.mumbai_metro_one);
         binding.goToBookTickets.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
+        binding.BackButton.setOnClickListener(view -> finish());
     }
 }

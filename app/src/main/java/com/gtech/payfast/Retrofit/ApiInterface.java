@@ -5,9 +5,6 @@ import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.Config.FareRequest;
 import com.gtech.payfast.Model.Config.Fare;
 import com.gtech.payfast.Model.Config.StationsResponse;
-import com.gtech.payfast.Model.IssueToken.Issue;
-import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
-import com.gtech.payfast.Model.Pass.Trip;
 import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
 import com.gtech.payfast.Model.SVP.SVDashboard;
@@ -50,25 +47,7 @@ public interface ApiInterface {
     @POST("api/get/fare")
     Call<Fare> getFare(@Body FareRequest fare);
 
-    /********************************** ODER **************************************/
-    //CREATE ORDER
-    @Headers("Accept:application/json")
-    @POST("api/order/add")
-    Call<ResponseModel> createNewOrder(@Body com.gtech.payfast.Activity.SVP.Order order);
-
-    /********************************** MOBILE QR **************************************/
-    @Headers("Accept:application/json")
-    @POST("api/qr/new")
-    Call<IssueResponse> issueMobileQrToken(@Body Issue issue);
-
-    @Headers("Accept:application/json")
-    @POST("api/qr")
-    Call<ResponseModel> getQrs(@Body com.gtech.payfast.Activity.SVP.Order order);
-
     /********************************** STORE VALUE PASS **************************************/
-    @Headers("Accept:application/json")
-    @POST("api/pass")
-    Call<ResponseModel> isUserHasPass(@Body com.gtech.payfast.Activity.SVP.Order order);
 
     @Headers("Accept:application/json")
     @GET("api/sv/canIssuePass/{pax-mobile}")
@@ -102,18 +81,6 @@ public interface ApiInterface {
     @Headers("Accept:application/json")
     @POST("api/sv/reload")
     Call<ResponseModel> reloadSVP(@Body ReloadSVPass svPass);
-
-    @Headers("Accept:application/json")
-    @POST("api/pass/new")
-    Call<IssueResponse> issueSVP(@Body Issue issue);
-
-    @Headers("Accept:application/json")
-    @POST("api/pass/trip/new")
-    Call<IssueResponse> issueSVPTrip(@Body Trip data);
-
-    @Headers("Accept:application/json")
-    @POST("api/pass/reload")
-    Call<IssueResponse> reloadSVP(@Body Issue reloadSVP);
 
     /* *********************************** TICKET ********************************************/
     @Headers("Accept:application/json")
