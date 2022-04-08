@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -19,8 +18,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.gtech.payfast.Activity.TP.TripPass;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.Auth.User;
+import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
@@ -75,11 +76,9 @@ public class StoreValuePass extends AppCompatActivity {
                         setDonutHaveSvp();
                     } else {
                         // Cannot issue pass
-                        Toast.makeText(StoreValuePass.this, "USER CANNOT BE ISSUED PASS!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // Request was unsuccessful
-                    Toast.makeText(StoreValuePass.this, "REQUEST FAILED", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -88,7 +87,6 @@ public class StoreValuePass extends AppCompatActivity {
                 binding.SPassProgressBar.setVisibility(View.GONE);
                 binding.HasSVP.setVisibility(View.VISIBLE);
                 binding.HasSVPController.setVisibility(View.VISIBLE);
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -155,13 +153,13 @@ public class StoreValuePass extends AppCompatActivity {
                         canIssuePass();
                     }
                 } else {
-                    Toast.makeText(StoreValuePass.this, "There was a problem fetching your request", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<SVDashboard> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -226,28 +224,22 @@ public class StoreValuePass extends AppCompatActivity {
                         binding.SPassProgressBar.setVisibility(View.GONE);
                         binding.NoPass.setVisibility(View.VISIBLE);
                         binding.OrderNewSVP.setVisibility(View.VISIBLE);
-
                         finish();
                     } else {
                         // response status is false
-                        // TODO: show error -> could not create SV Pass
                         binding.SPassProgressBar.setVisibility(View.GONE);
                         binding.NoPass.setVisibility(View.VISIBLE);
                         binding.OrderNewSVP.setVisibility(View.VISIBLE);
-                        Toast.makeText(StoreValuePass.this, response.body().getError(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // request failed
-                    // TODO: show error
-                    Toast.makeText(StoreValuePass.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                // TODO: handle network failure
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -272,19 +264,14 @@ public class StoreValuePass extends AppCompatActivity {
                         updateDashboard();
 
                     } else {
-                        // TRIP WAS NOT GENERATED
-                        Toast.makeText(StoreValuePass.this, "Failed to generate trip", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // RESPONSE BODY IS NULL
-                    Toast.makeText(StoreValuePass.this, "There was a problem making your request", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -312,7 +299,6 @@ public class StoreValuePass extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -347,16 +333,13 @@ public class StoreValuePass extends AppCompatActivity {
 
                     } else {
                         reloadProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(StoreValuePass.this, response.body().getError(), Toast.LENGTH_SHORT).show();
                     }
 
-                } else
-                    Toast.makeText(StoreValuePass.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -403,14 +386,68 @@ public class StoreValuePass extends AppCompatActivity {
                         updateDashboard();
                     }
                 } else {
-                    // REQUEST FAILED
-                    Toast.makeText(StoreValuePass.this, "Failed to get SV status", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<SVStatus> call, @NonNull Throwable t) {
-                Toast.makeText(StoreValuePass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // REFUND SV
+    private void refundPass(String orderId) {
+        Call<ResponseModel> refundTPCall = ApiController.getInstance().apiInterface().refundTP(orderId);
+
+        refundTPCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                Gson gson = new Gson();
+                Log.e("REFUND_PASS_REQ", gson.toJson(orderId));
+                Log.e("REFUND_PASS_RESP", gson.toJson(response.body()));
+
+
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        updateDashboard();
+                    } else {
+
+                    }
+                } else {
+                    // NETWORK ERROR: COULD NOT REFUND PASS
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+            }
+        });
+    }
+
+    // GET REFUND DETAILS
+    private void getRefundDetails(String orderId) {
+        Call<RefundDetail> refundDetailCall = ApiController.getInstance().apiInterface().getRefundDetails(orderId);
+        refundDetailCall.enqueue(new Callback<RefundDetail>() {
+            @Override
+            public void onResponse(Call<RefundDetail> call, Response<RefundDetail> response) {
+                Gson gson = new Gson();
+                Log.e("REFUND_DETAILS_REQ", gson.toJson(orderId));
+                Log.e("REFUND_DETAILS_RESP", gson.toJson(response.body()));
+                if (response.body() != null) {
+                    if (response.body().getStatus()) {
+                        // DISPLAY POPUP MODAL WITH THE REFUND DETAILS
+                        // ON CONFIRMATION REFUND PASS
+                    } else {
+                        // NOPE. NOT HAPPENING.
+                    }
+                } else {
+                    // ERROR REQUEST FAILED
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RefundDetail> call, Throwable t) {
             }
         });
     }

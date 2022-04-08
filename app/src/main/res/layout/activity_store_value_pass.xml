@@ -70,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
+        android:background="@drawable/background_inverted"
         app:cardCornerRadius="10dp">
 
         <ProgressBar
@@ -81,7 +82,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/background_inverted">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -361,7 +363,7 @@
                     android:id="@+id/HasSVPController"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
@@ -370,7 +372,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:elevation="85sp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:cardBackgroundColor="@color/primary"
                         app:cardCornerRadius="15sp">
 
@@ -440,6 +442,52 @@
                                 android:text=""
                                 android:background="@color/primary"/>
                         </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/RefundSVPass"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:elevation="85sp"
+                        android:visibility="visible"
+                        app:cardBackgroundColor="@color/primary"
+                        app:cardCornerRadius="15sp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:layout_weight="5"
+                                android:padding="10sp"
+                                android:text="@string/refund_pass"
+                                android:textColor="@color/white"
+                                android:textSize="20sp" />
+
+                            <ImageView
+                                android:id="@+id/RefundCardArrow"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:src="@drawable/arrow_right"
+                                tools:ignore="ContentDescription" />
+                            <ProgressBar
+                                android:id="@+id/RefundProgressBar"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView

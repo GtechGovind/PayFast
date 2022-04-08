@@ -6,7 +6,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.gtech.payfast.Activity.QR.MobileQr;
 import com.gtech.payfast.Activity.SVP.StoreValuePass;
 import com.gtech.payfast.Activity.TP.TripPass;
 import com.gtech.payfast.Auth.ProfileActivity;
@@ -38,10 +37,7 @@ public class MainDashboard extends AppCompatActivity {
     private void setBasicConfig() {
 
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
-        binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(R.string.mumbai_metro_one);
-        binding.goToUpcoming.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
-        binding.goToUpcomingCard.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
     }
 
 }

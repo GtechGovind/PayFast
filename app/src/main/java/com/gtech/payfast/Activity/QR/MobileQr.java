@@ -1,13 +1,13 @@
 package com.gtech.payfast.Activity.QR;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -104,12 +104,10 @@ public class MobileQr extends AppCompatActivity {
                     } else {
                         binding.MobileQrProgressBar.setVisibility(View.GONE);
                         binding.OrderButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(MobileQr.this, "Some error", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     binding.MobileQrProgressBar.setVisibility(View.GONE);
                     binding.OrderButton.setVisibility(View.VISIBLE);
-                    Toast.makeText(MobileQr.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -159,7 +157,6 @@ public class MobileQr extends AppCompatActivity {
                 public void onFailure(@NonNull Call<Fare> call, @NonNull Throwable t) {
                     binding.MobileQrProgressBar.setVisibility(View.GONE);
                     binding.OrderButton.setVisibility(View.VISIBLE);
-                    Toast.makeText(MobileQr.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -181,6 +178,14 @@ public class MobileQr extends AppCompatActivity {
 
     // SET CONFIG
     private void setBasicConfig() {
+        // SET RECENT ORDER FROM TICKET DASHBOARD IF PASSED
+        String sourceRec = getIntent().getStringExtra("SOURCE_RECENT");
+        String destRec = getIntent().getStringExtra("DESTINATION_RECENT");
+        if (sourceRec != null && destRec != null) {
+            binding.Source.setText(sourceRec);
+            binding.Destination.setText(destRec);
+            setFare();
+        }
 
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());

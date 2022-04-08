@@ -5,6 +5,7 @@ import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.Config.FareRequest;
 import com.gtech.payfast.Model.Config.Fare;
 import com.gtech.payfast.Model.Config.StationsResponse;
+import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
 import com.gtech.payfast.Model.SVP.SVDashboard;
@@ -131,6 +132,10 @@ public interface ApiInterface {
     @Headers("Accept:application/json")
     @GET("api/refund/ticket/{order-id}")
     Call<ResponseModel> refundTP(@Path("order-id") String orderId);
+
+    @Headers("Accept:application/json")
+    @GET("api/refund/{order-id}")
+    Call<RefundDetail> getRefundDetails(@Path("order-id") String orderId);
 
     @Headers("Accept:application/json")
     @POST("api/tp/create")

@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
@@ -18,6 +17,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Auth.ProfileActivity;
+import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.TP.ReloadTP;
 import com.gtech.payfast.Model.TP.TPDashboard;
@@ -76,6 +76,13 @@ public class TripPass extends AppCompatActivity {
                         binding.HasTP.setVisibility(View.VISIBLE);
                         binding.RefundPassCard.setVisibility(View.VISIBLE);
                         binding.RefundPassCard.setOnClickListener(v -> {
+                            final View customLayout
+                                    = getLayoutInflater()
+                                    .inflate(
+                                            R.layout.modal_refund_details,
+                                            null);
+                            builder.setView(customLayout);
+                            // OPEN
                             builder.setMessage("Are you sure you want to refund your pass card?")
                                     .setCancelable(false)
                                     .setPositiveButton("Yes", (dialog, id) -> refundPass(response.body().getPass().getSale_or_no()))
@@ -118,7 +125,6 @@ public class TripPass extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<TPDashboard> call, @NonNull Throwable t) {
-                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -147,13 +153,11 @@ public class TripPass extends AppCompatActivity {
                     }
                 } else {
                     // REQUEST FAILED
-                    Toast.makeText(TripPass.this, "Failed to get TP Status", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<TPStatus> call, @NonNull Throwable t) {
-                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,18 +179,16 @@ public class TripPass extends AppCompatActivity {
                         finish();
                     } else {
                         // Pass cannot be issued
-                        Toast.makeText(TripPass.this, "Pass cannot be issued", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // Request failed
-                    Toast.makeText(TripPass.this, "There was a problem fetching issue Pass request", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.TPProgressBar.setVisibility(View.GONE);
-                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -207,11 +209,9 @@ public class TripPass extends AppCompatActivity {
                         updateDashboard();
                     } else {
                         // Could not generate trip
-                        Toast.makeText(TripPass.this, "Could not generate trip pass. Try Again.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // Problem with generate trip request
-                    Toast.makeText(TripPass.this, "Problem with generate trip request", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -219,7 +219,6 @@ public class TripPass extends AppCompatActivity {
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 binding.TPProgressBar.setVisibility(View.VISIBLE);
                 binding.GenerateTrip.setEnabled(true);
-                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -240,7 +239,6 @@ public class TripPass extends AppCompatActivity {
                     }
                 } else {
                     // Problem with generate trip request
-                    Toast.makeText(TripPass.this, "Network error, try again", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -271,11 +269,9 @@ public class TripPass extends AppCompatActivity {
                         finish();
                     } else {
                         // response status is false
-                        Toast.makeText(TripPass.this, response.body().getError(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // request failed
-                    Toast.makeText(TripPass.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -286,9 +282,38 @@ public class TripPass extends AppCompatActivity {
         });
     }
 
+    // GET REFUND DETAILS
+    private void getRefundDetails(String orderId) {
+        Call<RefundDetail> refundDetailCall = ApiController.getInstance().apiInterface().getRefundDetails(orderId);
+        refundDetailCall.enqueue(new Callback<RefundDetail>() {
+            @Override
+            public void onResponse(Call<RefundDetail> call, Response<RefundDetail> response) {
+                Gson gson = new Gson();
+                Log.e("REFUND_DETAILS_REQ", gson.toJson(orderId));
+                Log.e("REFUND_DETAILS_RESP", gson.toJson(response.body()));
+                if (response.body() != null) {
+                    if (response.body().getStatus()) {
+                        // DISPLAY POPUP MODAL WITH THE REFUND DETAILS
+                        // ON CONFIRMATION REFUND PASS
+                    } else {
+                        // NOPE. NOT HAPPENING.
+                    }
+                } else {
+                    // ERROR REQUEST FAILED
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RefundDetail> call, Throwable t) {
+            }
+        });
+    }
+
     // REFUND PASS
     private void refundPass(String orderId) {
-        binding.TPProgressBar.setVisibility(View.VISIBLE);
+        binding.RefundPassCard.setEnabled(false);
+        binding.RefundCardArrow.setVisibility(View.GONE);
+        binding.RefundProgressBar.setVisibility(View.VISIBLE);
         Call<ResponseModel> refundTPCall = ApiController.getInstance().apiInterface().refundTP(orderId);
 
         refundTPCall.enqueue(new Callback<ResponseModel>() {
@@ -297,24 +322,26 @@ public class TripPass extends AppCompatActivity {
                 Gson gson = new Gson();
                 Log.e("REFUND_PASS_REQ", gson.toJson(orderId));
                 Log.e("REFUND_PASS_RESP", gson.toJson(response.body()));
-
+                binding.RefundProgressBar.setVisibility(View.GONE);
+                binding.RefundCardArrow.setVisibility(View.VISIBLE);
+                binding.RefundPassCard.setEnabled(true);
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
-                        binding.TPProgressBar.setVisibility(View.GONE);
                         updateDashboard();
                     } else {
-                        Toast.makeText(TripPass.this, "There was a problem refunding your pass", Toast.LENGTH_SHORT).show();
+
                     }
                 } else {
                     // NETWORK ERROR: COULD NOT REFUND PASS
-                    Toast.makeText(TripPass.this, "There was a problem refunding your pass", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(TripPass.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.RefundProgressBar.setVisibility(View.GONE);
+                binding.RefundCardArrow.setVisibility(View.VISIBLE);
+                binding.RefundPassCard.setEnabled(true);
             }
         });
     }

@@ -8,13 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.gtech.payfast.Activity.QR.MobileQr;
 import com.gtech.payfast.Adapter.TicketAdapter;
 import com.gtech.payfast.Model.ResponseModel;
-import com.gtech.payfast.Model.Ticket.Ticket;
 import com.gtech.payfast.Model.Ticket.UpdateTicketDashboard;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.R;
@@ -65,7 +63,10 @@ public class TicketDashboard extends AppCompatActivity {
                     if (response.body().getStatus()) {
                         binding.TProgressBar.setVisibility(View.GONE);
                         List<UpwardTicket> upcomingOrders = response.body().getUpcomingOrders();
-
+                        List<UpwardTicket> recentOrders = response.body().getRecentOrders();
+                        if (!(recentOrders == null || recentOrders.isEmpty())) {
+                            setRecentOrder(recentOrders.get(0));
+                        }
                         if (upcomingOrders == null || upcomingOrders.isEmpty()) {
                             // No upcoming orders to show, go to Ticket booking
                             startActivity(new Intent(TicketDashboard.this, MobileQr.class));
@@ -83,15 +84,40 @@ public class TicketDashboard extends AppCompatActivity {
                     }
                 } else {
                     binding.TProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(TicketDashboard.this, "Sorry, there was a problem fetching your tickets", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<UpdateTicketDashboard> call, @NonNull Throwable t) {
                 binding.TProgressBar.setVisibility(View.GONE);
-                Toast.makeText(TicketDashboard.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    // SET UP RECENT ORDER CARD
+    private void setRecentOrder(UpwardTicket recentOrder) {
+        // SET ARROW IMAGE
+        if (recentOrder.getPass_id() == 10) {
+            binding.ArrowReturnJourneyRec.setVisibility(View.GONE);
+        } else if (recentOrder.getPass_id() == 90) {
+            binding.ArrowSingleJourneyRec.setVisibility(View.GONE);
+        }
+        // SET SOURCE AND DESTINATION
+        String source = recentOrder.getSource();
+        String destination = recentOrder.getDestination();
+        binding.SourceRecent.setText(source);
+        binding.DestinationRecent.setText(destination);
+        // SET FARE TEXT
+        String fare = "Click to buy again, fare ₹" + recentOrder.getUnit_price() + " per ticket";
+        binding.FareRecent.setText(fare);
+        // INITIAL ON CLICK LISTENER FOR THE CARD
+        // ON CLICK START MOBILE QR ACTIVITY
+        Intent intent = new Intent(TicketDashboard.this, MobileQr.class);
+        intent.putExtra("SOURCE_RECENT", source);
+        intent.putExtra("DESTINATION_RECENT", destination);
+        binding.RecentTicketCard.setOnClickListener(v -> {
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -114,7 +140,6 @@ public class TicketDashboard extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                Toast.makeText(TicketDashboard.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
