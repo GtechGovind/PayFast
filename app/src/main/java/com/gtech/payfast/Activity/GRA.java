@@ -14,6 +14,7 @@ import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.GRA.Data;
 import com.gtech.payfast.Model.GRA.GRAStatus;
 import com.gtech.payfast.Model.GRA.GRATicket;
+import com.gtech.payfast.Model.GRA.PenaltyInfo;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.R;
@@ -48,11 +49,8 @@ public class GRA extends AppCompatActivity {
 
     private void generateTicket(Data data) {
         // CONFIGURE REQUEST BODY
-
-        Log.e("DATA",new Gson().toJson(data) );
-
         GRATicket graTicket = new GRATicket();
-        GRATicket.PenaltyInfo penaltyInfo = new GRATicket.PenaltyInfo();
+        PenaltyInfo penaltyInfo = new PenaltyInfo();
         penaltyInfo.setData(data);
         penaltyInfo.setStatus(true);
 
@@ -62,6 +60,9 @@ public class GRA extends AppCompatActivity {
         graTicketCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                Gson gson = new Gson();
+                Log.e("GRA_TICKET_REQ", gson.toJson(graTicket));
+                Log.e("GRA_TICKET_RES", gson.toJson(response.body()));
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
                         // CALL PAYMENT ACTIVITY
