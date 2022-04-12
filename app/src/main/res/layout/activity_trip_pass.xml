@@ -52,10 +52,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
         android:includeFontPadding="false"
         android:text="@string/trip_pass"
-        android:textColor="@color/white"
+        android:textColor="@color/secondary_light"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -63,13 +62,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20sp"
-        android:text="@string/trip_pass_desc"
+        android:text="@string/desc_tp"
         android:textColor="@color/white" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:background="@color/secondary_light"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="10dp">
 
         <ProgressBar
@@ -82,7 +82,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/secondary_light">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,9 +96,8 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="fill_parent"
                     android:layout_height="210sp"
-                    android:background="@drawable/designone"
                     android:elevation="100sp"
-                    app:cardBackgroundColor="@color/primary"
+                    app:cardBackgroundColor="@color/card_blue"
                     app:cardCornerRadius="10sp">
 
                     <ImageView
@@ -375,30 +375,53 @@
                         android:id="@+id/QrCodeCard"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="15dp"
                         android:elevation="5sp"
                         android:padding="20dp">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:gravity="center">
 
                             <ImageView
                                 android:id="@+id/QrCodeTP"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/scan" />
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_marginStart="101dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="104dp"
+                                android:contentDescription="@string/scan"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/QrNoTP"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="16dp"
                                 android:background="@color/primary"
-                                android:text="" />
-                        </LinearLayout>
+                                android:text=""
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/QrCodeTP" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/NeedHelp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="37dp"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center"
+                                android:text="@string/need_help"
+                                app:chipIcon="@drawable/ic_baseline_help_outline_24"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/QrCodeTP" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -406,7 +429,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:elevation="85sp"
+                        android:elevation="10dp"
                         app:cardBackgroundColor="@color/primary"
                         app:cardCornerRadius="15sp">
 

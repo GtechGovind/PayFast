@@ -10,12 +10,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.gtech.payfast.Activity.GRA;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.ResponseModel;
@@ -41,6 +43,7 @@ import retrofit2.Response;
 public class TripPass extends AppCompatActivity {
     private ActivityTripPassBinding binding;
     AlertDialog.Builder builder;
+    private String slQrNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,27 +78,7 @@ public class TripPass extends AppCompatActivity {
                         // Update pass
                         binding.HasTP.setVisibility(View.VISIBLE);
                         binding.RefundPassCard.setVisibility(View.VISIBLE);
-                        binding.RefundPassCard.setOnClickListener(v -> {
-                            final View customLayout
-                                    = getLayoutInflater()
-                                    .inflate(
-                                            R.layout.modal_refund_details,
-                                            null);
-                            builder.setView(customLayout);
-                            // OPEN
-                            builder.setMessage("Are you sure you want to refund your pass card?")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", (dialog, id) -> refundPass(response.body().getPass().getSale_or_no()))
-                                    .setNegativeButton("No", (dialog, id) -> {
-                                        //  Action for 'NO' Button
-                                        dialog.cancel();
-                                    });
-                            //Creating dialog box
-                            AlertDialog alert = builder.create();
-                            //Setting the title manually
-                            alert.setTitle("Refund Pass Card");
-                            alert.show();
-                        });
+                        binding.RefundPassCard.setOnClickListener(v -> getRefundDetails(response.body().getPass().getSale_or_no()));
 
                         binding.UserName.setText(response.body().getUser().getPax_name());
                         binding.MasterTxnId.setText(response.body().getPass().getMs_qr_no());
@@ -104,7 +87,9 @@ public class TripPass extends AppCompatActivity {
 
                         if (response.body().getTrip() != null) {
                             binding.QrCodeCard.setVisibility(View.VISIBLE);
-                            binding.QrNoTP.setText(response.body().getTrip().getSl_qr_no());
+                            slQrNo = response.body().getTrip().getSl_qr_no();
+                            binding.QrNoTP.setText(slQrNo);
+
                             writeQr(response.body().getTrip().getQr_data());
                         } else {
                             binding.HasTPController.setVisibility(View.VISIBLE);
@@ -284,6 +269,7 @@ public class TripPass extends AppCompatActivity {
 
     // GET REFUND DETAILS
     private void getRefundDetails(String orderId) {
+        showRefundLoader();
         Call<RefundDetail> refundDetailCall = ApiController.getInstance().apiInterface().getRefundDetails(orderId);
         refundDetailCall.enqueue(new Callback<RefundDetail>() {
             @Override
@@ -291,10 +277,39 @@ public class TripPass extends AppCompatActivity {
                 Gson gson = new Gson();
                 Log.e("REFUND_DETAILS_REQ", gson.toJson(orderId));
                 Log.e("REFUND_DETAILS_RESP", gson.toJson(response.body()));
+                hideRefundLoader();
                 if (response.body() != null) {
                     if (response.body().getStatus()) {
+                        // GET PROCESSING FEE AMOUNT FROM REQUEST, REFUND AMOUNT AND PASS PRICE FROM REQUEST
+                        String processingFeeAmt = Integer.toString(response.body().getRefund().getProcessing_fee_amount());
+                        String refundAmt = Integer.toString(response.body().getRefund().getRefund_amount());
+                        String passPrice = Integer.toString(response.body().getRefund().getPass_price());
                         // DISPLAY POPUP MODAL WITH THE REFUND DETAILS
-                        // ON CONFIRMATION REFUND PASS
+                        final View refundDetailsLayout
+                                = getLayoutInflater()
+                                .inflate(
+                                        R.layout.modal_refund_details,
+                                        null);
+                        builder.setView(refundDetailsLayout);
+                        TextView rfPrice = refundDetailsLayout.findViewById(R.id.RFPrice);
+                        rfPrice.setText(passPrice);
+                        TextView rfProcessingFee = refundDetailsLayout.findViewById(R.id.RFProcessingFee);
+                        rfProcessingFee.setText(processingFeeAmt);
+                        TextView rfRefundAmount = refundDetailsLayout.findViewById(R.id.RFRefundAmount);
+                        rfRefundAmount.setText(refundAmt);
+                        // OPEN
+                        builder.setMessage("Are you sure you want to refund your pass card?")
+                                .setCancelable(false)  // ON CONFIRMATION REFUND PASS
+                                .setPositiveButton("Yes, Refund", (dialog, id) -> refundPass(orderId))
+                                .setNegativeButton("No", (dialog, id) -> {
+                                    //  Action for 'NO' Button
+                                    dialog.cancel();
+                                });
+                        //Creating dialog box
+                        AlertDialog alert = builder.create();
+                        //Setting the title manually
+                        alert.setTitle("Refund Pass Card");
+                        alert.show();
                     } else {
                         // NOPE. NOT HAPPENING.
                     }
@@ -305,26 +320,24 @@ public class TripPass extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RefundDetail> call, Throwable t) {
+                binding.RefundProgressBar.setVisibility(View.GONE);
+                binding.RefundCardArrow.setVisibility(View.VISIBLE);
+                binding.RefundPassCard.setEnabled(true);
             }
         });
     }
 
     // REFUND PASS
     private void refundPass(String orderId) {
-        binding.RefundPassCard.setEnabled(false);
-        binding.RefundCardArrow.setVisibility(View.GONE);
-        binding.RefundProgressBar.setVisibility(View.VISIBLE);
+        showRefundLoader();
         Call<ResponseModel> refundTPCall = ApiController.getInstance().apiInterface().refundTP(orderId);
-
         refundTPCall.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 Gson gson = new Gson();
                 Log.e("REFUND_PASS_REQ", gson.toJson(orderId));
                 Log.e("REFUND_PASS_RESP", gson.toJson(response.body()));
-                binding.RefundProgressBar.setVisibility(View.GONE);
-                binding.RefundCardArrow.setVisibility(View.VISIBLE);
-                binding.RefundPassCard.setEnabled(true);
+                hideRefundLoader();
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
                         updateDashboard();
@@ -339,9 +352,7 @@ public class TripPass extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                binding.RefundProgressBar.setVisibility(View.GONE);
-                binding.RefundCardArrow.setVisibility(View.VISIBLE);
-                binding.RefundPassCard.setEnabled(true);
+                hideRefundLoader();
             }
         });
     }
@@ -368,9 +379,52 @@ public class TripPass extends AppCompatActivity {
         }
     }
 
+
+    // SHOW ACTIVITY INDICATOR (PROGRESS BAR) FOR REFUND REQUEST
+    private void showRefundLoader() {
+        binding.RefundPassCard.setEnabled(false);
+        binding.RefundCardArrow.setVisibility(View.GONE);
+        binding.RefundProgressBar.setVisibility(View.VISIBLE);
+    }
+    // DISABLE ACTIVITY INDICATOR
+    private void hideRefundLoader() {
+        binding.RefundProgressBar.setVisibility(View.GONE);
+        binding.RefundCardArrow.setVisibility(View.VISIBLE);
+        binding.RefundPassCard.setEnabled(true);
+    }
+
+    private void openNeedHelpModal() {
+        final int[] choice = {0};
+        AlertDialog.Builder builder = new AlertDialog.Builder(TripPass.this);
+        builder.setTitle("Need Help");
+        String[] items = {"Unable to Exit"};
+        int checkedItem = 0;
+        builder.setSingleChoiceItems(items, checkedItem, (dialog, which) -> {
+            if (which == 0) {
+                choice[0] = which;
+            }
+        });
+        builder.setCancelable(false)
+                .setPositiveButton("Next", (dialog, id) -> {
+                    if (choice[0] == 0) {// OPEN GRA ACTIVITY
+                        Intent intent = new Intent(TripPass.this, GRA.class);
+                        intent.putExtra("SL_QR_NO", slQrNo);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", (dialog, id) -> {
+                    //  Action for 'NO' Button
+                    dialog.cancel();
+                });
+        AlertDialog alert = builder.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
+    }
+
     private void setBasicConfig() {
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
+        binding.NeedHelp.setOnClickListener(v -> openNeedHelpModal());
 
         binding.Heading.setText(R.string.mumbai_metro_one);
         binding.TPassProgressBar.setVisibility(View.GONE);

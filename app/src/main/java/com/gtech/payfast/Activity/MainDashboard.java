@@ -10,6 +10,7 @@ import com.gtech.payfast.Activity.SVP.StoreValuePass;
 import com.gtech.payfast.Activity.TP.TripPass;
 import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.R;
+import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityMainDashboardBinding;
 
 public class MainDashboard extends AppCompatActivity {
@@ -38,6 +39,13 @@ public class MainDashboard extends AppCompatActivity {
 
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.Heading.setText(R.string.mumbai_metro_one);
+
+        String username = SharedPrefUtils.getStringData(MainDashboard.this, "NAME");
+        String welcomeText;
+        if (username != null) welcomeText = "Welcome, " + username;
+        else welcomeText = "Welcome";
+        binding.WelcomeText.setText(welcomeText);
+
     }
 
 }

@@ -52,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
         android:includeFontPadding="false"
         android:text="@string/store_value_pass"
         android:textColor="@color/white"
@@ -69,7 +68,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/background_inverted"
         app:cardCornerRadius="10dp">
 
@@ -98,7 +97,7 @@
                     android:layout_height="190dp"
                     android:background="@drawable/designone"
                     android:elevation="100sp"
-                    app:cardBackgroundColor="@color/primary"
+                    app:cardBackgroundColor="@color/card_blue"
                     app:cardCornerRadius="10sp">
 
                     <ImageView
@@ -125,8 +124,9 @@
                             android:id="@+id/NoPass"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="@string/no_pass_to_show"
+                            android:gravity="center"
+                            android:layout_centerInParent="true"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold"
@@ -154,7 +154,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:text="@string/govind_yadav"
+                                android:text=""
                                 android:textColor="@color/white"
                                 android:textSize="16sp" />
 
@@ -170,7 +170,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:text="@string/m0123456789"
+                                android:text=""
                                 android:textColor="@color/white"
                                 android:textSize="16sp" />
 
@@ -363,7 +363,7 @@
                     android:id="@+id/HasSVPController"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
@@ -386,7 +386,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
-                                android:layout_weight="2"
+                                android:layout_weight="3"
                                 android:padding="10sp"
                                 android:text="@string/generate_new_trip"
                                 android:textColor="@color/white"
@@ -401,12 +401,21 @@
                                 tools:ignore="ContentDescription,HardcodedText" />
 
                             <ImageView
+                                android:id="@+id/GenerateTripArrow"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:src="@drawable/arrow_right"
                                 tools:ignore="ContentDescription" />
+                            <ProgressBar
+                                android:id="@+id/TripProgressBar"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+
 
                         </LinearLayout>
 
@@ -418,30 +427,53 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="20dp"
                         android:elevation="5sp">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_gravity="center"
                             android:gravity="center">
 
                             <ImageView
                                 android:id="@+id/QrCode"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
-                                android:contentDescription="@string/scan" />
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_marginStart="101dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="104dp"
+                                android:contentDescription="@string/scan"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/QrNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="28dp"
+                                android:background="@color/primary"
                                 android:text=""
-                                android:background="@color/primary"/>
-                        </LinearLayout>
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/QrCode" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/NeedHelp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="24dp"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center"
+                                android:text="@string/need_help"
+                                app:chipIcon="@drawable/ic_baseline_help_outline_24"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/QrCode" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -450,7 +482,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:elevation="85sp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/primary"
                         app:cardCornerRadius="15sp">
 
@@ -485,52 +517,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:visibility="gone" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/ViewQrTicket"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:elevation="85sp"
-                        android:visibility="gone"
-                        app:cardBackgroundColor="@color/primary"
-                        app:cardCornerRadius="15sp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_margin="10dp"
-                                android:layout_weight="3"
-                                android:padding="10sp"
-                                android:text="@string/view_qr_ticket"
-                                android:textColor="@color/white"
-                                android:textSize="20sp" />
-
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="100dp"
-                                android:layout_weight="2"
-                                android:alpha="0.5"
-                                android:src="@drawable/train_img"
-                                tools:ignore="ContentDescription,HardcodedText" />
-
-                            <ImageView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:src="@drawable/arrow_right"
-                                tools:ignore="ContentDescription" />
 
                         </LinearLayout>
 

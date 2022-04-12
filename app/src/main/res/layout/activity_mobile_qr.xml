@@ -49,7 +49,7 @@
     </LinearLayout>
 
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -68,7 +68,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/secondary_light"
         app:cardCornerRadius="10dp">
 
         <ScrollView
@@ -160,11 +161,12 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/AddButton"
+                            android:id="@+id/SubButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="10dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/plus"
+                            android:src="@drawable/minus"
                             tools:ignore="ContentDescription" />
 
                         <TextView
@@ -177,11 +179,12 @@
                             android:textSize="20sp" />
 
                         <ImageView
-                            android:id="@+id/SubButton"
+                            android:id="@+id/AddButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="10dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/minus"
+                            android:src="@drawable/plus"
                             tools:ignore="ContentDescription" />
 
                     </LinearLayout>

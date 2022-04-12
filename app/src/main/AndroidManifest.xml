@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PayFast">
         <activity
+            android:name=".Activity.GRA"
+            android:exported="false" />
+        <activity
             android:name=".Activity.TP.TripPassGeneration"
             android:exported="false" />
         <activity

@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#999999</color>
     <color name="grey_light">#CFCFCF</color>
+    <color name="card_blue">#198CE7</color>
 </resources>

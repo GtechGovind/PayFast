@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/TopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/BackButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/go_back"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/Heading"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/mumbai_metro_one"
+            android:textColor="@color/font_dark"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/Profile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/safe"
+            android:padding="10dp"
+            android:src="@drawable/ic_person" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/StationsGra"
+        android:layout_width="260dp"
+        android:layout_height="52dp"
+        android:entries="@array/stations_list"
+        android:fadingEdge="vertical"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="190dp" />
+
+    <TextView
+        android:id="@+id/SelectStationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Station"
+        android:textColor="@color/font_dark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="60dp"
+        tools:layout_editor_absoluteY="160dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

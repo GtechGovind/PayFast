@@ -1,10 +1,13 @@
 package com.gtech.payfast.Retrofit;
 
 
+import com.gtech.payfast.Activity.GRA;
 import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.Config.FareRequest;
 import com.gtech.payfast.Model.Config.Fare;
 import com.gtech.payfast.Model.Config.StationsResponse;
+import com.gtech.payfast.Model.GRA.GRAStatus;
+import com.gtech.payfast.Model.GRA.GRATicket;
 import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.SVP.CreateSVPass;
 import com.gtech.payfast.Model.SVP.ReloadSVPass;
@@ -140,4 +143,13 @@ public interface ApiInterface {
     @Headers("Accept:application/json")
     @POST("api/tp/create")
     Call<ResponseModel> createTP(@Body CreateTP createTP);
+
+    /* ******************************* GRA *********************************** */
+    @Headers("Accept:application/json")
+    @GET("api/gra/{sl-qr-no}/{station-id}")
+    Call<GRAStatus> graStatus(@Path("sl-qr-no") String slQrNo, @Path("station-id") String stationId);
+
+    @Headers("Accept:application/json")
+    @POST("api/gra")
+    Call<ResponseModel> getGraTicket(@Body GRATicket graTicket);
 }
