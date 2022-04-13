@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +28,10 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Activity.GRA;
 import com.gtech.payfast.Activity.QrActivity;
+import com.gtech.payfast.Activity.TicketDashboard;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.RefundDetail;
+import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
@@ -202,7 +205,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                         // OPEN
                         builder.setMessage("Are you sure you want to refund your ticket")
                                 .setCancelable(false)  // ON CONFIRMATION REFUND PASS
-                                .setPositiveButton("Yes, Refund", (dialog, id) -> {})
+                                .setPositiveButton("Yes, Refund", (dialog, id) -> refundTicket(orderId))
                                 .setNegativeButton("No", (dialog, id) -> {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
@@ -213,10 +216,8 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                         alert.setTitle("Refund Ticket");
                         alert.show();
                     } else {
-                        // NOPE. NOT HAPPENING.
+                        Toast.makeText(context, response.body().getError(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    // ERROR REQUEST FAILED
                 }
             }
 
@@ -225,6 +226,40 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
             }
         });
     }
+
+    private void refundTicket(String orderId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Loading...");
+        AlertDialog alert = builder.create();
+        alert.show();
+        Call<ResponseModel> refundTPCall = ApiController.getInstance().apiInterface().refundTP(orderId);
+
+        refundTPCall.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
+                alert.dismiss();
+                Gson gson = new Gson();
+                Log.e("REFUND_TICKET_REQ", gson.toJson(orderId));
+                Log.e("REFUND_TICKET_RESP", gson.toJson(response.body()));
+
+
+                if (response.body() != null) {
+                    if (response.body().isStatus()) {
+                        Intent intent = new Intent(context, TicketDashboard.class);
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(context, response.body().getError(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+            }
+        });
+    }
+
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);

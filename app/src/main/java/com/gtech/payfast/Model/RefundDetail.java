@@ -10,6 +10,16 @@ public class RefundDetail implements Serializable {
 
   private Refund refund;
 
+  private String error;
+
+  public String getError() {
+    return error;
+  }
+
+  public void setError(String error) {
+    this.error = error;
+  }
+
   public Boolean getStatus() {
     return this.status;
   }

@@ -1,16 +1,35 @@
 package com.gtech.payfast.Model.GRA;
 
 import java.io.Serializable;
-import java.lang.Boolean;
 
 public class GRATicket implements Serializable {
-  private PenaltyInfo penaltyInfo;
+    private Data data;
 
-  public PenaltyInfo getPenaltyInfo() {
-    return this.penaltyInfo;
-  }
+    private String pax_mobile;
 
-  public void setPenaltyInfo(PenaltyInfo penaltyInfo) {
-    this.penaltyInfo = penaltyInfo;
-  }
+    private String station_id;
+
+    public Data getData() {
+        return this.data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public String getPax_mobile() {
+        return pax_mobile;
+    }
+
+    public void setPax_mobile(String pax_mobile) {
+        this.pax_mobile = pax_mobile;
+    }
+
+    public String getStation_id() {
+        return station_id;
+    }
+
+    public void setStation_id(String station_id) {
+        this.station_id = station_id;
+    }
 }

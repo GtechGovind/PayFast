@@ -20,6 +20,7 @@ import com.gtech.payfast.Model.IssueToken.Payment;
 import com.gtech.payfast.Model.IssueToken.Response.IssueResponse;
 import com.gtech.payfast.Model.Pass.Trip;
 import com.gtech.payfast.Model.ResponseModel;
+import com.gtech.payfast.Model.SVP.SVDashboard;
 import com.gtech.payfast.Model.Ticket.ProcessedTicket;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.SharedPrefUtils;
@@ -84,6 +85,7 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.body().isStatus()) {
                         // SVP pass has been processed
                         // Redirect to SVP Dashboard
+                        startActivity(new Intent(PaymentActivity.this, SVDashboard.class));
                         finish();
                     }
                 }

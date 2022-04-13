@@ -38,6 +38,11 @@ import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityStoreValuePassBinding;
 import com.gtech.payfast.databinding.ReloadBottomSheetLayoutBinding;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -136,6 +141,7 @@ public class StoreValuePass extends AppCompatActivity {
 
     // UPDATE DASHBOARD
     private void updateDashboard() {
+        binding.QrCodeCard.setVisibility(View.GONE);
         binding.HasSVP.setVisibility(View.VISIBLE);
         binding.HasSVPController.setVisibility(View.VISIBLE);
         if (user != null) {
@@ -468,7 +474,7 @@ public class StoreValuePass extends AppCompatActivity {
                         alert.setTitle("Refund Pass Card");
                         alert.show();
                     } else {
-                        Toast.makeText(StoreValuePass.this, "Cannot refund pass card!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StoreValuePass.this, response.body().getError(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     // ERROR REQUEST FAILED
@@ -522,6 +528,7 @@ public class StoreValuePass extends AppCompatActivity {
                     if (choice[0] == 0) {// OPEN GRA ACTIVITY
                         Intent intent = new Intent(StoreValuePass.this, GRA.class);
                         intent.putExtra("SL_QR_NO", slQrNo);
+                        intent.putExtra("TICKET_TYPE", "SVP") ;
                         startActivity(intent);
                     }
                 })

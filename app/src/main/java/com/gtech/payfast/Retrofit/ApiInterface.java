@@ -1,7 +1,6 @@
 package com.gtech.payfast.Retrofit;
 
 
-import com.gtech.payfast.Activity.GRA;
 import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.Config.FareRequest;
 import com.gtech.payfast.Model.Config.Fare;

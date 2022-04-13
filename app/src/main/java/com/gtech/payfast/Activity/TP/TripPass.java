@@ -44,6 +44,9 @@ public class TripPass extends AppCompatActivity {
     private ActivityTripPassBinding binding;
     AlertDialog.Builder builder;
     private String slQrNo;
+    private TPDashboard.Pass pass;
+    private TPDashboard.User user;
+    private TPDashboard.Trip trip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +60,10 @@ public class TripPass extends AppCompatActivity {
         // SET BASIC CONFIG
         setBasicConfig();
         // UPDATE DASHBOARD
-        updateDashboard();
+        getDashboardData();
     }
 
-    private void updateDashboard() {
+    private void getDashboardData() {
         binding.TPassProgressBar.setVisibility(View.VISIBLE);
         String PAX_ID = SharedPrefUtils.getStringData(this, "PAX_ID");
         Call<TPDashboard> updateTPDashboard = ApiController.getInstance().apiInterface().updateTPDashboard(PAX_ID);
@@ -74,33 +77,10 @@ public class TripPass extends AppCompatActivity {
 
                 binding.TPassProgressBar.setVisibility(View.GONE);
                 if (response.body() != null && response.body().getStatus()) {
-                        // Pass exists
-                        // Update pass
-                        binding.HasTP.setVisibility(View.VISIBLE);
-                        binding.RefundPassCard.setVisibility(View.VISIBLE);
-                        binding.RefundPassCard.setOnClickListener(v -> getRefundDetails(response.body().getPass().getSale_or_no()));
-
-                        binding.UserName.setText(response.body().getUser().getPax_name());
-                        binding.MasterTxnId.setText(response.body().getPass().getMs_qr_no());
-                        binding.SourceTP.setText(response.body().getPass().getSource());
-                        binding.DestinationTP.setText(response.body().getPass().getDestination());
-
-                        if (response.body().getTrip() != null) {
-                            binding.QrCodeCard.setVisibility(View.VISIBLE);
-                            slQrNo = response.body().getTrip().getSl_qr_no();
-                            binding.QrNoTP.setText(slQrNo);
-
-                            writeQr(response.body().getTrip().getQr_data());
-                        } else {
-                            binding.HasTPController.setVisibility(View.VISIBLE);
-                            binding.GenerateTrip.setVisibility(View.VISIBLE);
-                            binding.GenerateTrip.setOnClickListener(v -> generateTrip(response.body().getPass().getSale_or_no()));
-                        }
-
-                        if (response.body().getPass() != null) {
-                            getTPStatus(response.body().getPass().getMs_qr_no());
-                            canReloadPass(response.body().getPass().getSale_or_no(), response.body().getPass().getUnit_price());
-                        }
+                    pass = response.body().getPass();
+                    user = response.body().getUser();
+                    trip = response.body().getTrip();
+                    updateDashboard();
                 } else {
                     binding.HasTP.setVisibility(View.GONE);
                     binding.NoPass.setVisibility(View.VISIBLE);
@@ -110,6 +90,9 @@ public class TripPass extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<TPDashboard> call, @NonNull Throwable t) {
+                binding.HasTP.setVisibility(View.GONE);
+                binding.NoPass.setVisibility(View.VISIBLE);
+                canIssuePass();
             }
         });
     }
@@ -145,6 +128,35 @@ public class TripPass extends AppCompatActivity {
             public void onFailure(@NonNull Call<TPStatus> call, @NonNull Throwable t) {
             }
         });
+    }
+
+    private void updateDashboard() {
+        binding.QrCodeCard.setVisibility(View.GONE);
+        binding.HasTP.setVisibility(View.VISIBLE);
+        binding.RefundPassCard.setVisibility(View.VISIBLE);
+        binding.RefundPassCard.setOnClickListener(v -> getRefundDetails(pass.getSale_or_no()));
+
+        binding.UserName.setText(user.getPax_name());
+        binding.MasterTxnId.setText(pass.getMs_qr_no());
+        binding.SourceTP.setText(pass.getSource());
+        binding.DestinationTP.setText(pass.getDestination());
+
+        if (trip != null) {
+            binding.QrCodeCard.setVisibility(View.VISIBLE);
+            slQrNo = trip.getSl_qr_no();
+            binding.QrNoTP.setText(slQrNo);
+
+            writeQr(trip.getQr_data());
+        } else {
+            binding.HasTPController.setVisibility(View.VISIBLE);
+            binding.GenerateTrip.setVisibility(View.VISIBLE);
+            binding.GenerateTrip.setOnClickListener(v -> generateTrip(pass.getSale_or_no()));
+        }
+
+        if (pass != null) {
+            getTPStatus(pass.getMs_qr_no());
+            canReloadPass(pass.getSale_or_no(), pass.getUnit_price());
+        }
     }
 
     // CAN ISSUE TRIP PASS
@@ -191,7 +203,7 @@ public class TripPass extends AppCompatActivity {
                     if (response.body().isStatus()) {
                         binding.TPProgressBar.setVisibility(View.GONE);
                         binding.GenerateTrip.setVisibility(View.GONE);
-                        updateDashboard();
+                        getDashboardData();
                     } else {
                         // Could not generate trip
                     }
@@ -409,6 +421,7 @@ public class TripPass extends AppCompatActivity {
                     if (choice[0] == 0) {// OPEN GRA ACTIVITY
                         Intent intent = new Intent(TripPass.this, GRA.class);
                         intent.putExtra("SL_QR_NO", slQrNo);
+                        intent.putExtra("TICKET_TYPE", "TP");
                         startActivity(intent);
                     }
                 })

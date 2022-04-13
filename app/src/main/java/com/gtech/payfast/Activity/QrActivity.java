@@ -10,12 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.gson.Gson;
 import com.gtech.payfast.Adapter.QrAdapter;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Ticket.Ticket;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;

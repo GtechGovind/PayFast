@@ -68,8 +68,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/secondary_light"
         android:layout_marginTop="20dp"
+        android:background="@color/secondary_light"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,12 +92,14 @@
 
             <Spinner
                 android:id="@+id/StationsGra"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="260dp"
                 android:layout_height="52dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="16dp"
                 android:entries="@array/stations_list"
                 android:fadingEdge="vertical"
+                android:textAlignment="inherit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/SelectStationLabel" />
 
@@ -126,9 +128,14 @@
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="20dp"
-                android:padding="5dp"
+                android:background="@drawable/layout_border"
+                android:paddingTop="5dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/StationsGra">
 
@@ -136,8 +143,8 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
                     android:text="Penalties"
                     android:textColor="@color/font_dark"
                     app:layout_constraintStart_toStartOf="parent"
@@ -147,40 +154,45 @@
                     android:id="@+id/TextPenalties"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="72dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
                     android:text="Penalties + Over Travel"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView6"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Penaltiy Amount"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Penalty Amount:"
                     android:textColor="@color/font_dark"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6"
-                    tools:layout_editor_absoluteX="25dp" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/PenaltyAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
-                    tools:layout_editor_absoluteX="138dp"
-                    tools:layout_editor_absoluteY="40dp" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="₹30"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/TextPenalties" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
                 android:id="@+id/GenerateTicket"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginEnd="28dp"
-                android:text="Generate Ticket"
+                android:text="@string/proceed_to_pay"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/PenaltyInfoContainer" />
+                app:layout_constraintTop_toBottomOf="@+id/StationsGra" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

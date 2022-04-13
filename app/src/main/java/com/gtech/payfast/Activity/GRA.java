@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.gtech.payfast.Auth.ProfileActivity;
@@ -14,11 +15,11 @@ import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.GRA.Data;
 import com.gtech.payfast.Model.GRA.GRAStatus;
 import com.gtech.payfast.Model.GRA.GRATicket;
-import com.gtech.payfast.Model.GRA.PenaltyInfo;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Payment.PaymentActivity;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
+import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityGraBinding;
 
 import retrofit2.Call;
@@ -27,7 +28,7 @@ import retrofit2.Response;
 
 public class GRA extends AppCompatActivity {
     private ActivityGraBinding binding;
-    private String slQrNo, stationId;
+    private String slQrNo, stationId, ticketType;
     DBHelper dbHelper;
 
     @Override
@@ -42,19 +43,21 @@ public class GRA extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         // GET SALE QR NO
         slQrNo = getIntent().getStringExtra("SL_QR_NO");
+        // GET TICKET TYPE
+        ticketType = getIntent().getStringExtra("TICKET_TYPE");
 
         setConfig();
 
     }
 
     private void generateTicket(Data data) {
-        // CONFIGURE REQUEST BODY
+        // CONFIG REQUEST BODY
         GRATicket graTicket = new GRATicket();
-        PenaltyInfo penaltyInfo = new PenaltyInfo();
-        penaltyInfo.setData(data);
-        penaltyInfo.setStatus(true);
+        graTicket.setData(data);
+        String paxMobile = SharedPrefUtils.getStringData(GRA.this, "NUMBER");
+        graTicket.setPax_mobile(paxMobile);
+        graTicket.setStation_id(stationId);
 
-        graTicket.setPenaltyInfo(penaltyInfo);
         // API CALL
         Call<ResponseModel> graTicketCall = ApiController.getInstance().apiInterface().getGraTicket(graTicket);
         graTicketCall.enqueue(new Callback<ResponseModel>() {
@@ -69,7 +72,11 @@ public class GRA extends AppCompatActivity {
                         String orderId = response.body().getOrder_id();
                         Intent intent = new Intent(GRA.this, PaymentActivity.class);
                         intent.putExtra("ORDER_ID", orderId);
-                        intent.putExtra("PAYMENT_TYPE", "1");
+                        String paymentType;
+                        if (ticketType == "SVP") paymentType = "2";
+                        else if (ticketType == "TP") paymentType = "4";
+                        else paymentType = "1";
+                        intent.putExtra("PAYMENT_TYPE", paymentType);
                         startActivity(intent);
                     }
                 }
@@ -88,10 +95,13 @@ public class GRA extends AppCompatActivity {
         binding.Profile.setOnClickListener(v -> startActivity(new Intent(GRA.this, ProfileActivity.class)));
         // DISABLE GENERATE TICKET BUTTON
         binding.GenerateTicket.setVisibility(View.GONE);
+        // HIDE PENALTY INFO CONTAINER
+        binding.PenaltyInfoContainer.setVisibility(View.GONE);
         // SET ON CLICK LISTENER TO GRA (CHECK) BUTTON
         binding.grabutton.setOnClickListener(view -> {
             binding.grabutton.setEnabled(false);
             binding.GRAProgressBar.setVisibility(View.VISIBLE);
+            binding.MessageText.setText("");
             stationId = dbHelper.getStationId(binding.StationsGra.getSelectedItem().toString());
             Call<GRAStatus> graStatusCall = ApiController.getInstance().apiInterface().graStatus(slQrNo, stationId);
             graStatusCall.enqueue(new Callback<GRAStatus>() {
@@ -106,15 +116,18 @@ public class GRA extends AppCompatActivity {
 
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
+                            binding.PenaltyInfoContainer.setVisibility(View.VISIBLE);
                             Data resPenaltyData = response.body().getData();
+                            int penaltyAmt = resPenaltyData.getAmount();
+                            String penalty = "₹" + penaltyAmt;
+                            binding.PenaltyAmount.setText(penalty);
                             binding.grabutton.setVisibility(View.GONE);
                             binding.GenerateTicket.setVisibility(View.VISIBLE);
                             binding.GenerateTicket.setOnClickListener(view1 -> generateTicket(resPenaltyData));
                         } else {
                             // SHOW MESSAGE TEXT
+                            binding.MessageText.setText(response.body().getError());
                         }
-                    } else {
-                        // REQUEST NETWORK ERROR
                     }
                 }
 
