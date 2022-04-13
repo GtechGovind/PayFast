@@ -89,6 +89,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="booking_date">Booking Date</string>
     <string name="outward">OUTWARD</string>
+    <string name="generate_new_trip_button_content_desc">generate new trip button</string>
     <string-array name="stations_list">
         <item>Versova</item>
         <item>DN Nagar</item>

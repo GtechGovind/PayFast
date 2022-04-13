@@ -64,17 +64,28 @@ public class TicketDashboard extends AppCompatActivity {
                         binding.TProgressBar.setVisibility(View.GONE);
                         List<UpwardTicket> upcomingOrders = response.body().getUpcomingOrders();
                         List<UpwardTicket> recentOrders = response.body().getRecentOrders();
-                        if (!(recentOrders == null || recentOrders.isEmpty())) {
+                        boolean isRecentOrders = recentOrders != null;
+                        boolean isUpcomingOrders = upcomingOrders != null;
+                        // HIDE RECENT ORDERS VIEW IF NO RECENT ORDERS
+                        if (isRecentOrders) {
                             setRecentOrder(recentOrders.get(0));
+                        } else {
+                            binding.RecentOrdersText.setVisibility(View.GONE);
                         }
-                        if (upcomingOrders == null || upcomingOrders.isEmpty()) {
+                        // HIDE UPCOMING ORDERS VIEW IF NOT UPCOMING ORDERS
+                        if (!isUpcomingOrders) {
+                            binding.UpcomingOrdersText.setVisibility(View.GONE);
+                        } else { // DISPLAY OTHERWISE
+                            binding.UpcomingOrdersText.setVisibility(View.VISIBLE);
+                            ticketAdapter = new TicketAdapter(upcomingOrders, TicketDashboard.this);
+                            binding.ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(TicketDashboard.this, LinearLayoutManager.VERTICAL, false));
+                            binding.ticketsRecyclerView.setAdapter(ticketAdapter);
+                        }
+                        if (!isRecentOrders && !isUpcomingOrders) {
                             // No upcoming orders to show, go to Ticket booking
                             startActivity(new Intent(TicketDashboard.this, MobileQr.class));
                             finish();
                         } else {
-                            ticketAdapter = new TicketAdapter(upcomingOrders, TicketDashboard.this);
-                            binding.ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(TicketDashboard.this, LinearLayoutManager.VERTICAL, false));
-                            binding.ticketsRecyclerView.setAdapter(ticketAdapter);
                             if (!statusUpdated) updateStatus();
                         }
                     } else {
@@ -96,6 +107,8 @@ public class TicketDashboard extends AppCompatActivity {
 
     // SET UP RECENT ORDER CARD
     private void setRecentOrder(UpwardTicket recentOrder) {
+        binding.RecentOrdersText.setVisibility(View.VISIBLE);
+        binding.RecentTicketCard.setVisibility(View.VISIBLE);
         // SET ARROW IMAGE
         if (recentOrder.getPass_id() == 10) {
             binding.ArrowReturnJourneyRec.setVisibility(View.GONE);
@@ -108,7 +121,7 @@ public class TicketDashboard extends AppCompatActivity {
         binding.SourceRecent.setText(source);
         binding.DestinationRecent.setText(destination);
         // SET FARE TEXT
-        String fare = "Click to buy again, fare ₹" + recentOrder.getUnit_price() + " per ticket";
+        String fare = "Click to buy again, fare ₹" + recentOrder.getUnit_price() / recentOrder.getUnit() + " per ticket";
         binding.FareRecent.setText(fare);
         // INITIAL ON CLICK LISTENER FOR THE CARD
         // ON CLICK START MOBILE QR ACTIVITY
@@ -148,5 +161,6 @@ public class TicketDashboard extends AppCompatActivity {
         binding.Heading.setText(R.string.mumbai_metro_one);
         binding.goToBookTickets.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
         binding.BackButton.setOnClickListener(view -> finish());
+        binding.RecentTicketCard.setVisibility(View.GONE);
     }
 }

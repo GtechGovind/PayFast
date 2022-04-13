@@ -38,11 +38,6 @@ import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityStoreValuePassBinding;
 import com.gtech.payfast.databinding.ReloadBottomSheetLayoutBinding;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -265,9 +260,7 @@ public class StoreValuePass extends AppCompatActivity {
                         // TRIP GENERATED SUCCESSFULLY
                         getDashboardData();
 
-                    } else {
                     }
-                } else {
                 }
 
             }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
@@ -117,7 +118,8 @@ public class TripPass extends AppCompatActivity {
                         String formatted = format.format(date);
                         binding.ExpiryDate.setText(formatted);
                         // SET BALANCE TRIPS
-                        binding.BalanceTrips.setText(response.body().getData().getBalanceTrip().toString());
+                        String balanceTrips = response.body().getData().getBalanceTrip().toString();
+                        binding.BalanceTrips.setText(balanceTrips);
                     }
                 } else {
                     // REQUEST FAILED
@@ -166,7 +168,7 @@ public class TripPass extends AppCompatActivity {
         Call<ResponseModel> canIssuePassCall = ApiController.getInstance().apiInterface().canIssueTP(mobile);
         canIssuePassCall.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 binding.TPProgressBar.setVisibility(View.GONE);
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
@@ -174,17 +176,12 @@ public class TripPass extends AppCompatActivity {
                         // Start pass generation activity
                         startActivity(new Intent(TripPass.this, TripPassGeneration.class));
                         finish();
-                    } else {
-                        // Pass cannot be issued
                     }
-                } else {
-                    // Request failed
-
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 binding.TPProgressBar.setVisibility(View.GONE);
             }
         });
@@ -192,16 +189,18 @@ public class TripPass extends AppCompatActivity {
 
     // GENERATE TRIP
     private void generateTrip(String orderId) {
-        binding.TPProgressBar.setVisibility(View.VISIBLE);
+        binding.GenerateTripArrow.setVisibility(View.GONE);
+        binding.TripProgressBar.setVisibility(View.VISIBLE);
         binding.GenerateTrip.setEnabled(false);
         Call<ResponseModel> generateTripCall = ApiController.getInstance().apiInterface().generateTripTP(orderId);
         generateTripCall.enqueue(new Callback<ResponseModel>() {
             @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+            public void onResponse(@NonNull Call<ResponseModel> call, @NonNull Response<ResponseModel> response) {
                 binding.GenerateTrip.setEnabled(true);
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
-                        binding.TPProgressBar.setVisibility(View.GONE);
+                        binding.TripProgressBar.setVisibility(View.GONE);
+                        binding.GenerateTripArrow.setVisibility(View.VISIBLE);
                         binding.GenerateTrip.setVisibility(View.GONE);
                         getDashboardData();
                     } else {
@@ -213,7 +212,7 @@ public class TripPass extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
                 binding.TPProgressBar.setVisibility(View.VISIBLE);
                 binding.GenerateTrip.setEnabled(true);
             }
@@ -266,9 +265,8 @@ public class TripPass extends AppCompatActivity {
                         finish();
                     } else {
                         // response status is false
+                        Toast.makeText(TripPass.this, response.body().getError(), Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    // request failed
                 }
             }
 
@@ -285,7 +283,7 @@ public class TripPass extends AppCompatActivity {
         Call<RefundDetail> refundDetailCall = ApiController.getInstance().apiInterface().getRefundDetails(orderId);
         refundDetailCall.enqueue(new Callback<RefundDetail>() {
             @Override
-            public void onResponse(Call<RefundDetail> call, Response<RefundDetail> response) {
+            public void onResponse(@NonNull Call<RefundDetail> call, @NonNull Response<RefundDetail> response) {
                 Gson gson = new Gson();
                 Log.e("REFUND_DETAILS_REQ", gson.toJson(orderId));
                 Log.e("REFUND_DETAILS_RESP", gson.toJson(response.body()));
@@ -324,14 +322,13 @@ public class TripPass extends AppCompatActivity {
                         alert.show();
                     } else {
                         // NOPE. NOT HAPPENING.
+                        Toast.makeText(TripPass.this, response.body().getError(), Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    // ERROR REQUEST FAILED
                 }
             }
 
             @Override
-            public void onFailure(Call<RefundDetail> call, Throwable t) {
+            public void onFailure(@NonNull Call<RefundDetail> call, @NonNull Throwable t) {
                 binding.RefundProgressBar.setVisibility(View.GONE);
                 binding.RefundCardArrow.setVisibility(View.VISIBLE);
                 binding.RefundPassCard.setEnabled(true);
@@ -354,12 +351,9 @@ public class TripPass extends AppCompatActivity {
                     if (response.body().isStatus()) {
                         updateDashboard();
                     } else {
-
+                        Toast.makeText(TripPass.this, response.body().getError(), Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    // NETWORK ERROR: COULD NOT REFUND PASS
                 }
-
             }
 
             @Override
