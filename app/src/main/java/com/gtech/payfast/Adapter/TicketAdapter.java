@@ -58,8 +58,8 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         }
 
         holder.PassengerCount.setText(Integer.toString(upcomingOrders.get(position).getUnit()));
-        holder.Fare.setText("₹" + Integer.toString(upcomingOrders.get(position).getTotal_price()));
-        String validTill = "Valid till " + upcomingOrders.get(position).getMs_qr_exp();
+        holder.Fare.setText("₹" + upcomingOrders.get(position).getTotal_price());
+        String validTill = "Valid till last train on " + upcomingOrders.get(position).getMs_qr_exp().split(" ")[0];
         holder.Expiry.setText(validTill);
 
         holder.TPCard.setOnClickListener(view -> {

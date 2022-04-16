@@ -56,6 +56,7 @@
         android:includeFontPadding="false"
         android:textColor="@color/white"
         android:text="@string/mobile_qr"
+        android:textStyle="bold"
         android:textSize="30sp" />
 
     <TextView
@@ -94,7 +95,7 @@
                 <!--SOURCE-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/SourceLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/source"
@@ -111,7 +112,7 @@
                 <!--DESTINATION-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/DestinationLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

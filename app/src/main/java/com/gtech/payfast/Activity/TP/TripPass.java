@@ -33,6 +33,7 @@ import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityTripPassBinding;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -112,17 +113,13 @@ public class TripPass extends AppCompatActivity {
                     if (response.body().getStatus()) {
                         // SET EXPIRY DATE
                         // CONVERT EPOCH TIME TO DATE STRING
-                        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
-                        format.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
-                        Date date = new Date(response.body().getData().getMasterExpiry());
-                        String formatted = format.format(date);
-                        binding.ExpiryDate.setText(formatted);
+                        Date date = new Date(response.body().getData().getMasterExpiry() * 1000L);
+                        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                        binding.ExpiryDate.setText( format.format(date) );
                         // SET BALANCE TRIPS
                         String balanceTrips = response.body().getData().getBalanceTrip().toString();
                         binding.BalanceTrips.setText(balanceTrips);
                     }
-                } else {
-                    // REQUEST FAILED
                 }
             }
 
