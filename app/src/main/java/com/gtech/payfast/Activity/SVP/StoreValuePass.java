@@ -286,7 +286,7 @@ public class StoreValuePass extends AppCompatActivity {
                          // PASS CAN BE RELOADED
                          // SHOW RELOAD PASS BUTTON
 
-                         binding.ReloadSVButton.setVisibility(View.VISIBLE);
+                         binding.ReloadSVButton.setEnabled(false);
                          binding.ReloadSVButton.setOnClickListener(view -> setBottomSheetForReload(orderId));
                      }
                  }
@@ -437,8 +437,8 @@ public class StoreValuePass extends AppCompatActivity {
                         // DISPLAY POPUP MODAL WITH THE REFUND DETAILS
                         // ON CONFIRMATION REFUND PASS
                         // GET PROCESSING FEE AMOUNT FROM REQUEST, REFUND AMOUNT AND PASS PRICE FROM REQUEST
-                        String processingFeeAmt = Integer.toString(response.body().getRefund().getProcessing_fee_amount());
-                        String refundAmt = Integer.toString(response.body().getRefund().getRefund_amount());
+                        String processingFeeAmt = Float.toString(response.body().getRefund().getProcessing_fee_amount());
+                        String refundAmt = Float.toString(response.body().getRefund().getRefund_amount());
                         String passPrice = Integer.toString(response.body().getRefund().getPass_price());
                         // DISPLAY POPUP MODAL WITH THE REFUND DETAILS
                         final View refundDetailsLayout
@@ -501,7 +501,7 @@ public class StoreValuePass extends AppCompatActivity {
         binding.Heading.setText(R.string.mumbai_metro_one);
 
         binding.HasSVPController.setVisibility(View.GONE);
-        binding.ReloadSVButton.setVisibility(View.GONE);
+        binding.ReloadSVButton.setEnabled(false);
         binding.NeedHelp.setOnClickListener(v -> openNeedHelpModal());
     }
 

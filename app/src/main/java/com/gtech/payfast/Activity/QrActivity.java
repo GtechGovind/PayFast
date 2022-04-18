@@ -1,5 +1,6 @@
 package com.gtech.payfast.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +33,9 @@ public class QrActivity extends AppCompatActivity {
     DBHelper dbHelper;
     List<UpwardTicket> ticketQrs;
     List<UpwardTicket> returnTicketQrs;
+    QrAdapter qrAdapter;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,22 @@ public class QrActivity extends AppCompatActivity {
         getQrCodes();
 
         dbHelper = new DBHelper(this);
+
+        binding.LeftBtn.setOnClickListener(v -> {
+            qrAdapter.notifyDataSetChanged();
+            binding.QrRecyclerView.post(() -> {
+                binding.QrRecyclerView.scrollToPosition(qrAdapter.getCurrentPosition() - 1);
+            });
+            qrAdapter.notifyDataSetChanged();
+        });
+
+        binding.RightBtn.setOnClickListener(v -> {
+            qrAdapter.notifyDataSetChanged();
+            binding.QrRecyclerView.post(() -> {
+                binding.QrRecyclerView.scrollToPosition(qrAdapter.getCurrentPosition() + 1);
+            });
+            qrAdapter.notifyDataSetChanged();
+        });
 
     }
 
@@ -134,7 +153,7 @@ public class QrActivity extends AppCompatActivity {
     // SET CONFIG
     private void setBasicConfig() {
 
-        String Heading = "TRIP QR";
+        String Heading = "Mobile QR";
         binding.QrRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
         binding.BackButton.setOnClickListener(view -> finish());
@@ -143,15 +162,18 @@ public class QrActivity extends AppCompatActivity {
 
     private void setAdapter(Boolean isReturn)
     {
-        QrAdapter qrAdapter;
+
         if (isReturn) {
-            qrAdapter = new QrAdapter(returnTicketQrs, binding.QrProgressBar, QrActivity.this);
+            qrAdapter = new QrAdapter(returnTicketQrs, binding.QrProgressBar, QrActivity.this, binding);
         } else {
-            qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, QrActivity.this);
+            qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, QrActivity.this, binding);
         }
 
+
         binding.QrRecyclerView.setAdapter(qrAdapter);
-        binding.MetroLogo.setVisibility(View.VISIBLE);
+
+        qrAdapter.getCurrentPosition();
+
     }
 
 }

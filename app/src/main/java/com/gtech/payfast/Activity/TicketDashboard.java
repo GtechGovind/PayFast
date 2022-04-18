@@ -65,8 +65,14 @@ public class TicketDashboard extends AppCompatActivity {
                         binding.TProgressBar.setVisibility(View.GONE);
                         List<UpwardTicket> upcomingOrders = response.body().getUpcomingOrders();
                         List<UpwardTicket> recentOrders = response.body().getRecentOrders();
-                        boolean isRecentOrders = recentOrders != null;
-                        boolean isUpcomingOrders = upcomingOrders != null;
+                        boolean isRecentOrders = false;
+                        boolean isUpcomingOrders = false;
+                        if (recentOrders != null) {
+                            if (!(recentOrders.isEmpty())) isRecentOrders = true;
+                        }
+                        if (upcomingOrders != null) {
+                            if (!(upcomingOrders.isEmpty())) isUpcomingOrders = true;
+                        }
                         // HIDE RECENT ORDERS VIEW IF NO RECENT ORDERS
                         if (isRecentOrders) {
                             setRecentOrder(recentOrders.get(0));

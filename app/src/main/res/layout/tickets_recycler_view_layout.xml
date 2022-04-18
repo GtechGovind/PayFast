@@ -26,7 +26,7 @@
                 android:layout_height="110dp"
                 android:layout_gravity="start"
                 android:background="#FFFFFF"
-                android:backgroundTint="#03A9F4"
+                android:backgroundTint="@color/primary"
                 android:src="@drawable/ic_arrow_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/ic_person"
+                android:src="@drawable/ic_person_inverted"
                 app:layout_constraintEnd_toStartOf="@+id/PassengerCount"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/JourneyType"
@@ -126,13 +126,15 @@
                 android:id="@+id/PassengerCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="32dp"
                 android:text="3"
                 android:textColor="@color/font_dark"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/DestinationStation" />
+                app:layout_constraintTop_toBottomOf="@+id/DestinationStation"
+                app:layout_constraintVertical_bias="0.777" />
 
             <TextView
                 android:id="@+id/TicketExpiryDate"

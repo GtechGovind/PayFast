@@ -39,13 +39,13 @@ public class RefundDetail implements Serializable {
   public static class Refund implements Serializable {
     private Integer pass_price;
 
-    private Integer processing_fee;
+    private Float processing_fee;
 
-    private Integer refund_amount;
+    private Float refund_amount;
 
     private String order_id;
 
-    private Integer processing_fee_amount;
+    private Float processing_fee_amount;
 
     public Integer getPass_price() {
       return this.pass_price;
@@ -55,19 +55,19 @@ public class RefundDetail implements Serializable {
       this.pass_price = pass_price;
     }
 
-    public Integer getProcessing_fee() {
+    public Float getProcessing_fee() {
       return this.processing_fee;
     }
 
-    public void setProcessing_fee(Integer processing_fee) {
+    public void setProcessing_fee(Float processing_fee) {
       this.processing_fee = processing_fee;
     }
 
-    public Integer getRefund_amount() {
+    public Float getRefund_amount() {
       return this.refund_amount;
     }
 
-    public void setRefund_amount(Integer refund_amount) {
+    public void setRefund_amount(Float refund_amount) {
       this.refund_amount = refund_amount;
     }
 
@@ -79,11 +79,11 @@ public class RefundDetail implements Serializable {
       this.order_id = order_id;
     }
 
-    public Integer getProcessing_fee_amount() {
+    public Float getProcessing_fee_amount() {
       return this.processing_fee_amount;
     }
 
-    public void setProcessing_fee_amount(Integer processing_fee_amount) {
+    public void setProcessing_fee_amount(Float processing_fee_amount) {
       this.processing_fee_amount = processing_fee_amount;
     }
   }

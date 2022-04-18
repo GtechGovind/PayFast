@@ -25,7 +25,7 @@
     <string name="select_one_">Select one for your to generate ticket for trip</string>
     <string name="store_value_pass">STORE VALUE PASS</string>
     <string name="desc_tp">It\'s a digital pass to ease the journey of the passenger</string>
-    <string name="trip_pass">TRIP PASS</string>
+    <string name="trip_pass">Trip Pass</string>
     <string name="desc_svp">Store Value pass is for easy travel without any hassle</string>
     <string name="qr_desc">Digital tickets for one-way journey or return journey between any two stations</string>
     <string name="metro_qr_ticket">METRO QR TICKET</string>
@@ -82,7 +82,7 @@
     <string name="tp_label_mx_id">Master Transaction Id</string>
     <string name="reload">Reload</string>
     <string name="expiry_date">Expiry Date</string>
-    <string name="refund_pass">Refund Pass</string>
+    <string name="refund_pass">REFUND PASS</string>
     <string name="mumbai_metro_one">Mumbai Metro One</string>
     <string name="fare">Fare</string>
     <string name="balance">Balance</string>
@@ -91,6 +91,14 @@
     <string name="outward">OUTWARD</string>
     <string name="generate_new_trip_button_content_desc">generate new trip button</string>
     <string name="welcome">Welcome</string>
+    <string name="atek_logo">Atek Logo</string>
+    <string name="loading">loading...</string>
+    <string name="store_value_pass_">Store Value Pass</string>
+    <string name="chakala_jb_nagar">Chakala JB Nagar</string>
+    <string name="data">DATA</string>
+    <string name="western_express">Western Express</string>
+    <string name="_30">₹30</string>
+    <string name="right_arrow">right_arrow</string>
     <string-array name="stations_list">
         <item>Versova</item>
         <item>DN Nagar</item>

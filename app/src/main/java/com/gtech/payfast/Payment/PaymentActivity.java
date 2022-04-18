@@ -85,7 +85,7 @@ public class PaymentActivity extends AppCompatActivity {
                     if (response.body().isStatus()) {
                         // SVP pass has been processed
                         // Redirect to SVP Dashboard
-                        startActivity(new Intent(PaymentActivity.this, SVDashboard.class));
+                        startActivity(new Intent(PaymentActivity.this, StoreValuePass.class));
                         finish();
                     }
                 }

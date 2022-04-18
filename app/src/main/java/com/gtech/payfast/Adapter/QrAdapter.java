@@ -1,10 +1,8 @@
 package com.gtech.payfast.Adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -27,7 +25,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Activity.GRA;
-import com.gtech.payfast.Activity.QrActivity;
 import com.gtech.payfast.Activity.TicketDashboard;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.RefundDetail;
@@ -35,9 +32,9 @@ import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
 import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
+import com.gtech.payfast.databinding.ActivityQrBinding;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,12 +47,15 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
     Context context;
     DBHelper dbHelper;
     String slQrNo, orderId;
+    int adapterPosition;
+    ActivityQrBinding binding;
 
-    public QrAdapter(List<UpwardTicket> qrs, ProgressBar qrProgressBar, Context context) {
+    public QrAdapter(List<UpwardTicket> qrs, ProgressBar qrProgressBar, Context context, ActivityQrBinding binding) {
         this.ticketQrs = qrs;
         this.qrProgressBar = qrProgressBar;
         this.context = context;
         dbHelper = new DBHelper(context);
+        this.binding = binding;
     }
 
     @NonNull
@@ -84,6 +84,8 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                 }
             }
             holder.QrCode.setImageBitmap(bmp);
+
+            adapterPosition = holder.getAdapterPosition();
 
         } catch (WriterException e) {
             e.printStackTrace();
@@ -173,8 +175,8 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                 if (response.body() != null) {
                     if (response.body().getStatus()) {
                         // GET PROCESSING FEE AMOUNT FROM REQUEST, REFUND AMOUNT AND PASS PRICE FROM REQUEST
-                        String processingFeeAmt = Integer.toString(response.body().getRefund().getProcessing_fee_amount());
-                        String refundAmt = Integer.toString(response.body().getRefund().getRefund_amount());
+                        String processingFeeAmt = Float.toString(response.body().getRefund().getProcessing_fee_amount());
+                        String refundAmt = Float.toString(response.body().getRefund().getRefund_amount());
                         String passPrice = Integer.toString(response.body().getRefund().getPass_price());
                         // DISPLAY POPUP MODAL WITH THE REFUND DETAILS
                         final View refundDetailsLayout
@@ -262,7 +264,8 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
         TextView Passenger;
         ImageView QrCode;
-        Chip SID, NeedHelp, ShareQr;
+        TextView SID;
+        Chip NeedHelp, ShareQr;
 
         public QrViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -270,9 +273,12 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
             QrCode = itemView.findViewById(R.id.QrCode);
             SID = itemView.findViewById(R.id.SID);
             NeedHelp = itemView.findViewById(R.id.NeedHelp);
-            ShareQr = itemView.findViewById(R.id.ShareQr);
             Passenger = itemView.findViewById(R.id.Passenger);
         }
+    }
+
+    public Integer getCurrentPosition() {
+        return adapterPosition;
     }
 
 }

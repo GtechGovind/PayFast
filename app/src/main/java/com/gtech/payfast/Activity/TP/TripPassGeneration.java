@@ -129,6 +129,7 @@ public class TripPassGeneration extends AppCompatActivity {
     }
 
     private void setBasicConfig() {
+        binding.BackButton.setOnClickListener(v -> finish());
         binding.Heading.setText(R.string.trip_pass_heading);
         binding.OrderButton.setEnabled(false);
 

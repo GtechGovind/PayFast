@@ -15,6 +15,7 @@ import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.Utils.EmailValidatorUtility;
+import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityRegisterBinding;
 
 import java.util.Objects;
@@ -87,11 +88,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                     if (registerUserResponse.isStatus()) {
 
-                        Intent intent = new Intent(RegisterActivity.this, MainDashboard.class);
-                        intent.putExtra("NUMBER", Objects.requireNonNull(binding.FullName.getText()).toString());
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        intent.putExtra("NUMBER", Objects.requireNonNull(binding.Number.getText()).toString());
                         intent.putExtra("EMAIL", Objects.requireNonNull(binding.Email.getText()).toString());
-                        intent.putExtra("NAME", Objects.requireNonNull(binding.Number.getText()).toString());
+                        intent.putExtra("NAME", Objects.requireNonNull(binding.FullName.getText()).toString());
+
+                        SharedPrefUtils.saveData(RegisterActivity.this, "NAME", response.body().getUser().getPax_name());
+                        SharedPrefUtils.saveData(RegisterActivity.this, "NUMBER", response.body().getUser().getPax_mobile());
+                        SharedPrefUtils.saveData(RegisterActivity.this, "PAX_ID", response.body().getUser().getPax_id());
                         startActivity(intent);
+
+                        finish();
 
                     } else {
 
