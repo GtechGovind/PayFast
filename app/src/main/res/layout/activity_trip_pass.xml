@@ -395,8 +395,8 @@
 
                             <ImageView
                                 android:id="@+id/QrCodeTP"
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
+                                android:layout_width="250dp"
+                                android:layout_height="250dp"
                                 android:layout_marginStart="101dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginEnd="104dp"

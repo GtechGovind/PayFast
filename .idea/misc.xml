@@ -49,14 +49,14 @@
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_main_dashboard.xml" value="0.264" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_mobile_qr.xml" value="0.25" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_profile.xml" value="0.264" />
-        <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_qr.xml" value="0.4359673024523161" />
-        <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_store_value_pass.xml" value="0.4528301886792453" />
+        <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_qr.xml" value="0.2" />
+        <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_store_value_pass.xml" value="0.2" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_ticket_dashboard.xml" value="0.264" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_trip_pass.xml" value="0.4" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/activity_trip_pass_generation.xml" value="0.25" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/modal_refund_details.xml" value="0.264" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/modal_unable_to_exit.xml" value="0.20521590423257802" />
-        <entry key="..\:/AtekWorkspace/app/src/main/res/layout/qr_activity_recycler_view_layout.xml" value="0.3888" />
+        <entry key="..\:/AtekWorkspace/app/src/main/res/layout/qr_activity_recycler_view_layout.xml" value="0.264" />
         <entry key="..\:/AtekWorkspace/app/src/main/res/layout/tickets_recycler_view_layout.xml" value="0.4" />
         <entry key="..\:/MumbaiMetroOne/Android/PayFast/app/src/main/res/layout/activity_login.xml" value="0.2520833333333333" />
         <entry key="..\:/MumbaiMetroOne/Android/PayFast/app/src/main/res/layout/activity_qr.xml" value="0.2520833333333333" />

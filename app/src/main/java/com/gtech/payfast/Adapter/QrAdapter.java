@@ -70,18 +70,6 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull QrViewHolder holder, int position) {
 
-        switch (ticketQrs.get(position).getPass_id()) {
-            case 10:
-                holder.TicketType.setText("Single Journey Ticket");
-                break;
-            case 90:
-                holder.TicketType.setText("Return Journey Ticket");
-                break;
-            case 81:
-                holder.TicketType.setText("Store Value Ticket");
-                break;
-        }
-
         holder.SID.setText(ticketQrs.get(position).getSl_qr_no());
 
         QRCodeWriter writer = new QRCodeWriter();
@@ -119,7 +107,6 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                 status = "";
                 break;
         }
-        holder.Status.setText(status);
         // SET CURRENT PASSENGER INDEX
         String passengerCount = "Passenger " + (position + 1);
         holder.Passenger.setText(passengerCount);
@@ -273,17 +260,15 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     static class QrViewHolder extends RecyclerView.ViewHolder {
 
-        TextView TicketType, Passenger;
+        TextView Passenger;
         ImageView QrCode;
-        Chip SID, Status, NeedHelp, ShareQr;
+        Chip SID, NeedHelp, ShareQr;
 
         public QrViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            TicketType = itemView.findViewById(R.id.TicketType);
             QrCode = itemView.findViewById(R.id.QrCode);
             SID = itemView.findViewById(R.id.SID);
-            Status = itemView.findViewById(R.id.Status);
             NeedHelp = itemView.findViewById(R.id.NeedHelp);
             ShareQr = itemView.findViewById(R.id.ShareQr);
             Passenger = itemView.findViewById(R.id.Passenger);

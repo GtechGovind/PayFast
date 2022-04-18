@@ -39,35 +39,23 @@
 
             <ImageView
                 android:id="@+id/QrCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:contentDescription="@string/scan"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Passenger" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/Status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="12dp"
-                android:backgroundTint="@color/primary"
-                android:text="@string/generated"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toStartOf="@+id/SID"
-                app:layout_constraintTop_toBottomOf="@+id/QrCode" />
-
-            <com.google.android.material.chip.Chip
                 android:id="@+id/SID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="36dp"
                 android:backgroundTint="@color/primary"
                 android:text=""
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/QrCode" />
 
             <com.google.android.material.chip.Chip
@@ -76,42 +64,24 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="40dp"
-                android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/share"
                 app:chipIcon="@drawable/ic_baseline_share_24"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TicketType"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/NeedHelp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="29dp"
                 android:layout_marginEnd="44dp"
-                android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/need_help"
                 app:chipIcon="@drawable/ic_baseline_help_outline_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TicketType"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/TicketType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/single_journey_ticket"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/SID" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
