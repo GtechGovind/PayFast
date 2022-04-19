@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/go_back"
             android:padding="10dp"
-            android:src="@drawable/back" />
+            android:src="@drawable/arrow_left_black" />
 
         <TextView
             android:id="@+id/Heading"
@@ -50,7 +50,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/safe"
             android:padding="10dp"
-            android:src="@drawable/ic_person" />
+            android:src="@drawable/ic_person_inverted" />
 
     </LinearLayout>
 
@@ -61,10 +61,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TopBar"
         android:layout_marginHorizontal="2sp"
-        android:layout_marginStart="5sp"
-        android:layout_marginEnd="5sp"
-        android:layout_marginBottom="5sp"
-        android:text="@string/recent_orders" />
+        android:layout_marginStart="4sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="4sp"
+        android:layout_marginBottom="4sp"
+        android:backgroundTint="@color/primary"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:text="@string/recent_orders"
+        android:textColor="@color/white" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/RecentTicketCard"
@@ -165,11 +170,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/RecentTicketCard"
         android:layout_marginHorizontal="2sp"
-        android:layout_marginStart="5sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginEnd="5sp"
-        android:layout_marginBottom="5sp"
-        android:text="@string/upcoming_orders" />
+        android:layout_marginStart="4sp"
+        android:layout_marginTop="4sp"
+        android:layout_marginEnd="4sp"
+        android:layout_marginBottom="4sp"
+        android:backgroundTint="@color/primary"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:text="@string/upcoming_orders"
+        android:textColor="@color/white" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -195,6 +204,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/goToBookTicketsCard"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:backgroundTint="@color/primary"
@@ -202,14 +212,15 @@
 
             <Button
                 android:id="@+id/goToBookTickets"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:text="@string/book_tickets"
-                android:textStyle="bold"
+                android:textSize="18sp"
                 android:textColor="@color/white"
-                app:icon="@drawable/ic_ticky_note" />
+                app:icon="@drawable/ic_ticky_note_2" />
 
     </androidx.cardview.widget.CardView>
 

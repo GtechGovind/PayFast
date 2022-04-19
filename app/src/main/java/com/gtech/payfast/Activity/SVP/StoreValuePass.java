@@ -123,11 +123,15 @@ public class StoreValuePass extends AppCompatActivity {
                     } else {
                         Log.e("CAN_ISSUE_SV_RESP", gson.toJson(response.body().getError()));
                     }
+                } else {
+                    binding.NoPass.setText("CANNOT ISSUE PASS CARD");
+                    binding.NoPass.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
+                Log.e("CAN_ISSUE_SV_PASS_RESP", t.getMessage());
                 binding.NoPass.setText("CANNOT ISSUE PASS CARD");
                 binding.NoPass.setVisibility(View.VISIBLE);
             }

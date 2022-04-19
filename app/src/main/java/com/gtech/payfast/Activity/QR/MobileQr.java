@@ -37,6 +37,7 @@ public class MobileQr extends AppCompatActivity {
     private ActivityMobileQrBinding binding;
     ArrayAdapter<String> StationAdapter;
     String TicketType = "Single", TotalFare = "0";
+    Integer FarePerTicket;
     DBHelper dbHelper;
 
     @Override
@@ -71,7 +72,7 @@ public class MobileQr extends AppCompatActivity {
                 dbHelper.getStationId(binding.Destination.getText().toString()),
                 OrderUtils.getOrderTypeCode(TicketType),
                 binding.TicketCount.getText().toString(),
-                TotalFare,
+                FarePerTicket.toString(),
                 SharedPrefUtils.getStringData(this, "NUMBER")
         );
 
@@ -102,18 +103,18 @@ public class MobileQr extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
+                        Log.e("CREATE_TICKET_RESPONSE", response.body().getError());
                         binding.MobileQrProgressBar.setVisibility(View.GONE);
                         binding.OrderButton.setVisibility(View.VISIBLE);
                     }
-                } else {
-                    binding.MobileQrProgressBar.setVisibility(View.GONE);
-                    binding.OrderButton.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseModel> call, @NonNull Throwable t) {
-                Log.e("ORDER ID", t.getMessage());
+                Log.e("CREATE_TICKET_FAILED", t.getMessage());
+                binding.MobileQrProgressBar.setVisibility(View.GONE);
+                binding.OrderButton.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -139,7 +140,8 @@ public class MobileQr extends AppCompatActivity {
 
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
-                            total = response.body().getFare() * count;
+                            FarePerTicket = response.body().getFare();
+                            total = FarePerTicket * count;
                             TotalFare = Integer.toString(total);
                             String TicketCount = Integer.toString(count);
                             binding.TotalFare.setText("₹ " + TotalFare);

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 import com.gtech.payfast.Adapter.QrAdapter;
+import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Ticket.Ticket;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
@@ -97,12 +98,8 @@ public class QrActivity extends AppCompatActivity {
                             Toast.makeText(QrActivity.this, "Swipe to see other tickets!", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        // TODO: error
-                        Toast.makeText(QrActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
+
                     }
-                } else {
-                    // TODO: error
-                    Toast.makeText(QrActivity.this, "Some internal server error try after some time \uD83D\uDE14", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -121,13 +118,15 @@ public class QrActivity extends AppCompatActivity {
         // SET ARROW IMAGE BASED ON JOURNEY TYPE
         if (ticketData.getPass_id() == 90) {
             binding.ArrowImage.setImageDrawable(
-                    ResourcesCompat.getDrawable(this.getResources(), R.drawable.return_arrow, null));
+                    ResourcesCompat.getDrawable(this.getResources(), R.drawable.return_arrow_inverted, null));
         }
         // SET BOOKING AND EXPIRY DATE
         binding.BookingDate.setText(ticketData.getTxn_date());
         binding.ExpiryDate.setText(ticketData.getMs_qr_exp());
+        String validTill = "Valid till last train on " + ticketData.getMs_qr_exp().split(" ")[0];
+        binding.ValidTill.setText(validTill);
         // SET UNIT PRICE
-        String fare = "₹" + ticketData.getUnit_price();
+        String fare = "₹" + ticketData.getTotal_price();
         binding.Fare.setText(fare);
     }
 
@@ -155,7 +154,7 @@ public class QrActivity extends AppCompatActivity {
 
         String Heading = "Mobile QR";
         binding.QrRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, TicketDashboard.class)));
+        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(Heading);
     }
@@ -164,9 +163,9 @@ public class QrActivity extends AppCompatActivity {
     {
 
         if (isReturn) {
-            qrAdapter = new QrAdapter(returnTicketQrs, binding.QrProgressBar, QrActivity.this, binding);
+            qrAdapter = new QrAdapter(returnTicketQrs, binding.QrProgressBar, binding.QrScrollView, QrActivity.this, binding);
         } else {
-            qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, QrActivity.this, binding);
+            qrAdapter = new QrAdapter(ticketQrs, binding.QrProgressBar, binding.QrScrollView, QrActivity.this, binding);
         }
 
 

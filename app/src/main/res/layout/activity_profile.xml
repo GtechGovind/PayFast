@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/go_back"
             android:padding="10dp"
-            android:src="@drawable/back" />
+            android:src="@drawable/arrow_left_black" />
 
         <TextView
             android:id="@+id/Heading"

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,16 +45,18 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
 
     List<UpwardTicket> ticketQrs;
     ProgressBar qrProgressBar;
+    ScrollView qrScrollView;
     Context context;
     DBHelper dbHelper;
     String slQrNo, orderId;
     int adapterPosition;
     ActivityQrBinding binding;
 
-    public QrAdapter(List<UpwardTicket> qrs, ProgressBar qrProgressBar, Context context, ActivityQrBinding binding) {
+    public QrAdapter(List<UpwardTicket> qrs, ProgressBar qrProgressBar, ScrollView qrScrollView, Context context, ActivityQrBinding binding) {
         this.ticketQrs = qrs;
         this.qrProgressBar = qrProgressBar;
         this.context = context;
+        this.qrScrollView = qrScrollView;
         dbHelper = new DBHelper(context);
         this.binding = binding;
     }
@@ -167,7 +170,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
         Call<RefundDetail> refundDetailCall = ApiController.getInstance().apiInterface().getRefundDetails(orderId);
         refundDetailCall.enqueue(new Callback<RefundDetail>() {
             @Override
-            public void onResponse(Call<RefundDetail> call, Response<RefundDetail> response) {
+            public void onResponse(@NonNull Call<RefundDetail> call, @NonNull Response<RefundDetail> response) {
                 alert.dismiss();
                 Gson gson = new Gson();
                 Log.e("REFUND_DETAILS_REQ", gson.toJson(orderId));
@@ -211,7 +214,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
             }
 
             @Override
-            public void onFailure(Call<RefundDetail> call, Throwable t) { ;
+            public void onFailure(@NonNull Call<RefundDetail> call, @NonNull Throwable t) {
             }
         });
     }
@@ -253,6 +256,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         qrProgressBar.setVisibility(View.GONE);
+        qrScrollView.setVisibility(View.VISIBLE);
     }
 
     @Override

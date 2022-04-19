@@ -59,14 +59,7 @@ tools:context=".Activity.TP.TripPassGeneration">
     android:textSize="30sp"
     android:textStyle="bold"/>
 
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="20sp"
-    android:textColor="@color/white"
-    android:text="@string/desc_tp" />
-
-<androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="20dp"
