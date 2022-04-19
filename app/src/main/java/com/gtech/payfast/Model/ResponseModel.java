@@ -1,10 +1,6 @@
 package com.gtech.payfast.Model;
 
 import com.gtech.payfast.Model.Auth.User;
-import com.gtech.payfast.Model.Fetch.Qr;
-import com.gtech.payfast.Model.IssueToken.Response.ResponseData;
-
-import java.util.List;
 
 public class ResponseModel {
 
@@ -17,12 +13,6 @@ public class ResponseModel {
     // ORDER
     String message, order_no;
     String order_id;
-
-    // GET QR
-    List<Qr> qrs;
-
-    // CHECK PASS
-    ResponseData data;
 
     // SVP PASS PAYMENT PROCESSING RESPONSE
     int product_id;
@@ -48,20 +38,6 @@ public class ResponseModel {
         this.code = code;
         this.message = message;
         this.order_no = order_no;
-    }
-
-    // GET QR CODES
-    public ResponseModel(boolean status, int code, List<Qr> qrs) {
-        this.status = status;
-        this.code = code;
-        this.qrs = qrs;
-    }
-
-    // CHECK IF PASS EXITS
-    public ResponseModel(boolean status, int code, ResponseData data) {
-        this.status = status;
-        this.code = code;
-        this.data = data;
     }
 
     // Check user
@@ -118,18 +94,6 @@ public class ResponseModel {
     }
     public void setOrder_no(String order_no) {
         this.order_no = order_no;
-    }
-    public List<Qr> getQrs() {
-        return qrs;
-    }
-    public void setQrs(List<Qr> qrs) {
-        this.qrs = qrs;
-    }
-    public ResponseData getData() {
-        return data;
-    }
-    public void setData(ResponseData data) {
-        this.data = data;
     }
 
     public String getOrder_id() {

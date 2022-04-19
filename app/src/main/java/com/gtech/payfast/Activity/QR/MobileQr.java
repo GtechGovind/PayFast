@@ -124,7 +124,7 @@ public class MobileQr extends AppCompatActivity {
     public void setFare() {
 
         if (isMobileQrInputValid()) {
-
+            binding.OrderButton.setEnabled(true);
             String  SourceId, DestinationId, pass_id;
             SourceId = dbHelper.getStationId(binding.Source.getText().toString());
             DestinationId = dbHelper.getStationId(binding.Destination.getText().toString());
@@ -161,6 +161,8 @@ public class MobileQr extends AppCompatActivity {
                     binding.OrderButton.setVisibility(View.VISIBLE);
                 }
             });
+        } else {
+            binding.OrderButton.setEnabled(false);
         }
 
     }
@@ -180,6 +182,8 @@ public class MobileQr extends AppCompatActivity {
 
     // SET CONFIG
     private void setBasicConfig() {
+        // DISABLE ORDER BUTTON INITIALLY
+        binding.OrderButton.setEnabled(false);
         // SET RECENT ORDER FROM TICKET DASHBOARD IF PASSED
         String sourceRec = getIntent().getStringExtra("SOURCE_RECENT");
         String destRec = getIntent().getStringExtra("DESTINATION_RECENT");
