@@ -426,7 +426,6 @@ public class TripPass extends AppCompatActivity {
     }
 
     private void setBasicConfig() {
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.NeedHelp.setOnClickListener(v -> openNeedHelpModal());
 

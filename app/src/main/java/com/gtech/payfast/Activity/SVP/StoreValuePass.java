@@ -22,7 +22,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Activity.GRA;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.Auth.User;
 import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.ResponseModel;
@@ -500,7 +499,6 @@ public class StoreValuePass extends AppCompatActivity {
 
     // SET CONFIG
     private void setBasicConfig() {
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(R.string.mumbai_metro_one);
 

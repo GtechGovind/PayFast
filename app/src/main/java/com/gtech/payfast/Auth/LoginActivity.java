@@ -144,7 +144,6 @@ public class LoginActivity extends AppCompatActivity {
     private void setBasicConfig() {
 
         String Heading = "LOGIN";
-        binding.OptionButton.setOnClickListener(view2 -> Toast.makeText(this, "Your details are safe with us \uD83D\uDE0A", Toast.LENGTH_SHORT).show());
         binding.BackButton.setOnClickListener(view1 -> finish());
         binding.Heading.setText(Heading);
 

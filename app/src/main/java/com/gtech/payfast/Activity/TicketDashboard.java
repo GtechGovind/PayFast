@@ -12,7 +12,6 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.gtech.payfast.Activity.QR.MobileQr;
 import com.gtech.payfast.Adapter.TicketAdapter;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.Ticket.UpdateTicketDashboard;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
@@ -166,7 +165,6 @@ public class TicketDashboard extends AppCompatActivity {
 
     private void setBasicConfig() {
         binding.Heading.setText(R.string.mumbai_metro_one);
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.goToBookTickets.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
         binding.goToBookTicketsCard.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
         binding.BackButton.setOnClickListener(view -> finish());

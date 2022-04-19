@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 import com.gtech.payfast.Adapter.QrAdapter;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Ticket.Ticket;
 import com.gtech.payfast.Model.Ticket.UpwardTicket;
@@ -154,7 +153,6 @@ public class QrActivity extends AppCompatActivity {
 
         String Heading = "Mobile QR";
         binding.QrRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(Heading);
     }

@@ -30,20 +30,11 @@
             android:layout_gravity="center"
             android:layout_weight="6"
             android:gravity="center"
+            android:layout_marginEnd="40dp"
             android:padding="10dp"
             android:text="@string/heading"
             android:textColor="@color/white"
             android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/Profile"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/safe"
-            android:padding="10dp"
-            android:src="@drawable/ic_person" />
 
     </LinearLayout>
 
@@ -55,15 +46,21 @@
         android:includeFontPadding="false"
         android:text="@string/trip_pass"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/secondary_light"
         android:textSize="25sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="18sp"
+        android:layout_marginBottom="-12dp"
+        android:src="@drawable/orangestrip" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondary_light"
-        android:layout_marginTop="20dp"
         app:cardCornerRadius="10dp">
 
         <ProgressBar
@@ -359,7 +356,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:padding="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_gravity="center"
                         android:gravity="center">
 

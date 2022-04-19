@@ -180,7 +180,6 @@ public class OtpActivity extends AppCompatActivity {
     private void setBasicConfig() {
 
         String Heading = "VERIFY OTP";
-        binding.OptionButton.setOnClickListener(view2 -> Toast.makeText(this, "Your details are safe with us \uD83D\uDE0A", Toast.LENGTH_SHORT).show());
         binding.BackButton.setOnClickListener(view1 -> finish());
         binding.Heading.setText(Heading);
         binding.UserNumber.setText(getIntent().getStringExtra("NUMBER"));

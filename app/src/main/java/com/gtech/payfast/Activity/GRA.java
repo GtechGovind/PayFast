@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.GRA.Data;
 import com.gtech.payfast.Model.GRA.GRAStatus;
@@ -92,7 +91,6 @@ public class GRA extends AppCompatActivity {
     private void setConfig() {
         binding.Heading.setText(R.string.mumbai_metro_one);
         binding.BackButton.setOnClickListener(v -> finish());
-        binding.Profile.setOnClickListener(v -> startActivity(new Intent(GRA.this, ProfileActivity.class)));
         // DISABLE GENERATE TICKET BUTTON
         binding.GenerateTicket.setVisibility(View.GONE);
         // HIDE PENALTY INFO CONTAINER

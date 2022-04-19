@@ -33,18 +33,9 @@ tools:context=".Activity.TP.TripPassGeneration">
         android:textColor="@color/white"
         android:gravity="center"
         android:padding="10dp"
+        android:layout_marginEnd="40dp"
         android:text="@string/heading"
         android:textSize="18sp" />
-
-    <ImageView
-        android:id="@+id/Profile"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/safe"
-        android:padding="10dp"
-        android:src="@drawable/ic_person" />
 
 </LinearLayout>
 
@@ -55,14 +46,20 @@ tools:context=".Activity.TP.TripPassGeneration">
     android:layout_marginHorizontal="20dp"
     android:includeFontPadding="false"
     android:textColor="@color/white"
+    android:layout_marginBottom="10dp"
     android:text="@string/trip_pass"
     android:textSize="30sp"
     android:textStyle="bold"/>
 
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="18sp"
+        android:layout_marginBottom="-12dp"
+        android:src="@drawable/orangestrip" />
+
     <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
     android:background="@color/secondary_light"
     app:cardCornerRadius="10dp">
 

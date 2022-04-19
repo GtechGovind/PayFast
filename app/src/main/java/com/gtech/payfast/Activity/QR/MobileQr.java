@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.BuildConfig;
 import com.gtech.payfast.Database.DBHelper;
 import com.gtech.payfast.Model.Config.FareRequest;
@@ -193,7 +192,6 @@ public class MobileQr extends AppCompatActivity {
             setFare();
         }
 
-        binding.Profile.setOnClickListener(view -> startActivity(new Intent(this, ProfileActivity.class)));
         binding.BackButton.setOnClickListener(view -> finish());
 
         // INCREMENT COUNTER
