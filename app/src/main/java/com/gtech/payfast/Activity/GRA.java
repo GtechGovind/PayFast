@@ -72,8 +72,8 @@ public class GRA extends AppCompatActivity {
                         Intent intent = new Intent(GRA.this, PaymentActivity.class);
                         intent.putExtra("ORDER_ID", orderId);
                         String paymentType;
-                        if (ticketType == "SVP") paymentType = "2";
-                        else if (ticketType == "TP") paymentType = "4";
+                        if (ticketType.equals("SVP")) paymentType = "2";
+                        else if (ticketType.equals("TP")) paymentType = "4";
                         else paymentType = "1";
                         intent.putExtra("PAYMENT_TYPE", paymentType);
                         startActivity(intent);
@@ -121,6 +121,7 @@ public class GRA extends AppCompatActivity {
                             binding.PenaltyAmount.setText(penalty);
                             binding.grabutton.setVisibility(View.GONE);
                             binding.GenerateTicket.setVisibility(View.VISIBLE);
+                            if (penaltyAmt == 0) binding.GenerateTicket.setEnabled(false);
                             binding.GenerateTicket.setOnClickListener(view1 -> generateTicket(resPenaltyData));
                         } else {
                             // SHOW MESSAGE TEXT
@@ -138,6 +139,7 @@ public class GRA extends AppCompatActivity {
         binding.StationsGra.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                binding.GenerateTicket.setEnabled(true);
                 binding.GenerateTicket.setVisibility(View.GONE);
                 binding.grabutton.setVisibility(View.VISIBLE);
             }

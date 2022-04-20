@@ -21,7 +21,12 @@ import com.gtech.payfast.R;
 import com.gtech.payfast.Retrofit.ApiController;
 import com.gtech.payfast.databinding.ActivityQrBinding;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;

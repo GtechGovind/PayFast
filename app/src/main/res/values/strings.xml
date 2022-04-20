@@ -22,16 +22,16 @@
     <string name="resend_otp">Resend OTP</string>
     <string name="verify_otp">Verify</string>
     <string name="select_one">Select One</string>
-    <string name="select_one_">Select any one option to travel mumbai metro one</string>
-    <string name="store_value_pass">Store Value Pass</string>
+    <string name="select_one_">Select any type to generate tickets for your journey</string>
+    <string name="store_value_pass">Store Value Pass QR</string>
     <string name="desc_tp">It\'s a digital pass to ease the journey of the passenger</string>
-    <string name="trip_pass">Trip Pass</string>
+    <string name="trip_pass">Trip Pass QR</string>
     <string name="desc_svp">Store Value pass is for easy travel without any hassle</string>
     <string name="qr_desc">Digital tickets for one-way journey or return journey between any two stations</string>
-    <string name="metro_qr_ticket">SJT / RJT</string>
+    <string name="metro_qr_ticket">SJT / RJT QR Code</string>
     <string name="upcoming">UPCOMING</string>
     <string name="history">HISTORY</string>
-    <string name="mobile_qr">Mobile QR</string>
+    <string name="mobile_qr">SJT / RJT QR Ticket</string>
     <string name="mobile_qr_">Fill below details to generate mobile Qr ticket</string>
     <string name="source">Source</string>
     <string name="destination">Destination</string>
@@ -73,13 +73,13 @@
     <string name="ticket_dashboard">Ticket Dashboard</string>
     <string name="book_tickets">Book Tickets</string>
     <string name="recent_orders">Frequent Orders</string>
-    <string name="upcoming_orders">Upcoming Orders</string>
+    <string name="upcoming_orders">Upcoming Tickets</string>
     <string name="reload_pass_sv">Reload Pass</string>
     <string name="trip_pass_heading">Trip Pass</string>
     <string name="trip_pass_desc">Lorem ipsum dolor sit amet kitn</string>
     <string name="balance_trips">Balance Trips</string>
     <string name="tp_name_label">Name</string>
-    <string name="tp_label_mx_id">Master Transaction Id</string>
+    <string name="tp_label_mx_id">Pass NO</string>
     <string name="reload">Reload</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="refund_pass">REFUND PASS</string>
@@ -99,6 +99,14 @@
     <string name="western_express">Western Express</string>
     <string name="_30">₹30</string>
     <string name="right_arrow">right_arrow</string>
+    <string name="logo_mumbai_metro_one_image_desc">Logo of Mumbai Metro One</string>
+    <string name="name_placeholder">Rahul</string>
+    <string name="qr_tickets">QR Tickets</string>
+    <string name="ticket_price_modal">Ticket Price:</string>
+    <string name="refund_amount_modal">Refund Amount:</string>
+    <string name="processing_fee_modal">Processing Fee:</string>
+    <string name="outward_toggle">OUTWARD</string>
+    <string name="return_toggle">RETURN</string>
     <string-array name="stations_list">
         <item>Versova</item>
         <item>DN Nagar</item>

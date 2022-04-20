@@ -72,26 +72,15 @@ public class TicketDashboard extends AppCompatActivity {
                         if (upcomingOrders != null) {
                             if (!(upcomingOrders.isEmpty())) isUpcomingOrders = true;
                         }
-                        // HIDE RECENT ORDERS VIEW IF NO RECENT ORDERS
-                        if (isRecentOrders) {
-                            setRecentOrder(recentOrders.get(0));
-                        } else {
-                            binding.RecentOrdersText.setVisibility(View.GONE);
-                        }
                         // HIDE UPCOMING ORDERS VIEW IF NOT UPCOMING ORDERS
                         if (!isUpcomingOrders) {
-                            binding.UpcomingOrdersText.setVisibility(View.GONE);
+                            startActivity(new Intent(TicketDashboard.this, MobileQr.class));
+                            finish();
                         } else { // DISPLAY OTHERWISE
                             binding.UpcomingOrdersText.setVisibility(View.VISIBLE);
                             ticketAdapter = new TicketAdapter(upcomingOrders, TicketDashboard.this);
                             binding.ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(TicketDashboard.this, LinearLayoutManager.VERTICAL, false));
                             binding.ticketsRecyclerView.setAdapter(ticketAdapter);
-                        }
-                        if (!isRecentOrders && !isUpcomingOrders) {
-                            // No upcoming orders to show, go to Ticket booking
-                            startActivity(new Intent(TicketDashboard.this, MobileQr.class));
-                            finish();
-                        } else {
                             if (!statusUpdated) updateStatus();
                         }
                     } else {
@@ -111,6 +100,7 @@ public class TicketDashboard extends AppCompatActivity {
         });
     }
 
+    /*
     // SET UP RECENT ORDER CARD
     private void setRecentOrder(UpwardTicket recentOrder) {
         binding.RecentOrdersText.setVisibility(View.VISIBLE);
@@ -139,6 +129,7 @@ public class TicketDashboard extends AppCompatActivity {
             finish();
         });
     }
+    */
 
     private void updateStatus() {
         String PAX_ID = SharedPrefUtils.getStringData(this, "PAX_ID");
@@ -168,6 +159,5 @@ public class TicketDashboard extends AppCompatActivity {
         binding.goToBookTickets.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
         binding.goToBookTicketsCard.setOnClickListener(view -> startActivity(new Intent(this, MobileQr.class)));
         binding.BackButton.setOnClickListener(view -> finish());
-        binding.RecentTicketCard.setVisibility(View.GONE);
     }
 }

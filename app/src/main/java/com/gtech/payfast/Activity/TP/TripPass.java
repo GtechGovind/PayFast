@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,7 +20,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.gtech.payfast.Activity.GRA;
-import com.gtech.payfast.Auth.ProfileActivity;
 import com.gtech.payfast.Model.RefundDetail;
 import com.gtech.payfast.Model.ResponseModel;
 import com.gtech.payfast.Model.TP.ReloadTP;
@@ -33,10 +33,8 @@ import com.gtech.payfast.Utils.SharedPrefUtils;
 import com.gtech.payfast.databinding.ActivityTripPassBinding;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +56,7 @@ public class TripPass extends AppCompatActivity {
         View TripPassView = binding.getRoot();
         setContentView(TripPassView);
         // INIT ALERT DIALOG
-        builder = new AlertDialog.Builder(this);
+        builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         // SET BASIC CONFIG
         setBasicConfig();
         // UPDATE DASHBOARD
@@ -132,6 +130,7 @@ public class TripPass extends AppCompatActivity {
     private void updateDashboard() {
         binding.QrCodeCard.setVisibility(View.GONE);
         binding.HasTP.setVisibility(View.VISIBLE);
+        binding.RefundPassCard.setVisibility(View.VISIBLE);
         binding.RefundPassCard.setEnabled(true);
         binding.RefundPassCard.setOnClickListener(v -> getRefundDetails(pass.getSale_or_no()));
 
@@ -227,7 +226,7 @@ public class TripPass extends AppCompatActivity {
                 Log.e("RELOAD_PASS_RESP", gson.toJson(response.body()));
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
-                        binding.ReloadTPButton.setVisibility(View.VISIBLE);
+                        binding.ReloadTPButton.setEnabled(true);
                         binding.ReloadTPButton.setOnClickListener(view -> reloadPass(orderId, amount));
                     }
                 } else {
@@ -305,10 +304,10 @@ public class TripPass extends AppCompatActivity {
                         TextView rfRefundAmount = refundDetailsLayout.findViewById(R.id.RFRefundAmount);
                         rfRefundAmount.setText(refundAmt);
                         // OPEN
-                        builder.setMessage("Are you sure you want to refund your pass card?")
+                        builder.setMessage("Are you sure you want to refund your pass?. You will no longer be able to use this 45 trip pass.")
                                 .setCancelable(false)  // ON CONFIRMATION REFUND PASS
-                                .setPositiveButton("Yes, Refund", (dialog, id) -> refundPass(orderId))
-                                .setNegativeButton("No", (dialog, id) -> {
+                                .setPositiveButton(Html.fromHtml("<font color='#E53935'>Yes, Refund</font>"), (dialog, id) -> refundPass(orderId))
+                                .setNegativeButton(Html.fromHtml("<font color='#3A3A3A'>No</font>"), (dialog, id) -> {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
                                 });
@@ -328,6 +327,7 @@ public class TripPass extends AppCompatActivity {
             public void onFailure(@NonNull Call<RefundDetail> call, @NonNull Throwable t) {
                 binding.RefundProgressBar.setVisibility(View.GONE);
                 binding.RefundCardArrow.setVisibility(View.VISIBLE);
+                binding.RefundPassCard.setVisibility(View.VISIBLE);
                 binding.RefundPassCard.setEnabled(true);
             }
         });
@@ -431,8 +431,8 @@ public class TripPass extends AppCompatActivity {
 
         binding.Heading.setText(R.string.mumbai_metro_one);
         binding.TPassProgressBar.setVisibility(View.GONE);
-        binding.ReloadTPButton.setVisibility(View.GONE);
-        binding.RefundPassCard.setEnabled(false);
+        binding.ReloadTPButton.setEnabled(false);
+        binding.RefundPassCard.setVisibility(View.GONE);
         binding.TPProgressBar.setVisibility(View.GONE);
         binding.QrCodeCard.setVisibility(View.GONE);
 

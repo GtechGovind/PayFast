@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlertDialogStyle" parent="Theme.Material3.Light.Dialog">
+        <item name="android:colorAccent">@color/font_dark</item>
+        <item name="android:textColor">@color/font_dark</item>
+        <item name="android:textColorPrimary">#E53935</item>
+    </style>
+</resources>

@@ -42,7 +42,7 @@ public class MainDashboard extends AppCompatActivity {
 
         String username = SharedPrefUtils.getStringData(MainDashboard.this, "NAME");
         String welcomeText;
-        if (username != null) welcomeText = "Welcome, " + username;
+        if (username != null) welcomeText = "Welcome, " + username.split(" ")[0];
         else welcomeText = "Welcome";
         binding.WelcomeText.setText(welcomeText);
 

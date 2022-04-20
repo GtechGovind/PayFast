@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,7 +162,7 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
     }
 
     private void getRefundDetails(String orderId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogStyle);
         builder.setMessage("Fetching refund details...");
         AlertDialog alert = builder.create();
         alert.setTitle("Refund Ticket");
@@ -195,10 +196,10 @@ public class QrAdapter extends RecyclerView.Adapter<QrAdapter.QrViewHolder> {
                         TextView rfRefundAmount = refundDetailsLayout.findViewById(R.id.RFRefundAmount);
                         rfRefundAmount.setText(refundAmt);
                         // OPEN
-                        builder.setMessage("Are you sure you want to refund your ticket")
+                        builder.setMessage("Are you sure you want to refund your ticket?")
                                 .setCancelable(false)  // ON CONFIRMATION REFUND PASS
-                                .setPositiveButton("Yes, Refund", (dialog, id) -> refundTicket(orderId))
-                                .setNegativeButton("No", (dialog, id) -> {
+                                .setPositiveButton(Html.fromHtml("<font color='#E53935'>Yes, Refund</font>"), (dialog, id) -> refundTicket(orderId))
+                                .setNegativeButton(Html.fromHtml("<font color='#3A3A3A'>No</font>"), (dialog, id) -> {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
                                 });

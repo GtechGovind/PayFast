@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -58,7 +59,7 @@ public class StoreValuePass extends AppCompatActivity {
         View SVPView = binding.getRoot();
         setContentView(SVPView);
         // INIT ALERT DIALOG
-        builder = new AlertDialog.Builder(this);
+        builder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         // BASIC CONFIG
         setBasicConfig();
 
@@ -457,10 +458,10 @@ public class StoreValuePass extends AppCompatActivity {
                         TextView rfRefundAmount = refundDetailsLayout.findViewById(R.id.RFRefundAmount);
                         rfRefundAmount.setText(refundAmt);
                         // OPEN
-                        builder.setMessage("Are you sure you want to refund your pass card?")
+                        builder.setMessage("Are you sure you want to refund your pass?")
                                 .setCancelable(false)  // ON CONFIRMATION REFUND PASS
-                                .setPositiveButton("Yes, Refund", (dialog, id) -> refundPass(orderId))
-                                .setNegativeButton("No", (dialog, id) -> {
+                                .setPositiveButton(Html.fromHtml("<font color='#E53935'>Yes, Refund</font>"), (dialog, id) -> refundPass(orderId))
+                                .setNegativeButton(Html.fromHtml("<font color='#3A3A3A'>No</font>"), (dialog, id) -> {
                                     //  Action for 'NO' Button
                                     dialog.cancel();
                                 });

@@ -11,7 +11,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/primary"
         android:elevation="10dp"
         android:orientation="horizontal"
         android:padding="5dp"
@@ -26,19 +26,20 @@
             android:layout_weight="1"
             android:contentDescription="@string/go_back"
             android:padding="10dp"
-            android:src="@drawable/arrow_left_black" />
+            android:src="@drawable/back" />
 
         <TextView
             android:id="@+id/Heading"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="50dp"
             android:layout_weight="6"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:padding="10dp"
             android:text="@string/heading"
-            android:textColor="@color/font_dark"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:drawableStartCompat="@drawable/metro_logo_small_2"
+            android:drawablePadding="20dp" />
 
     </LinearLayout>
 
