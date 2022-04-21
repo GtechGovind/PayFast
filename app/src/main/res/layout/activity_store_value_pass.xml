@@ -42,7 +42,7 @@
                 android:padding="10dp"
                 android:text="@string/mumbai_metro_one"
                 android:textSize="18sp"
-                app:drawableStartCompat="@drawable/metro_logo_small_2"
+                app:drawableStartCompat="@drawable/metro_logo_small"
                 android:drawablePadding="20dp" />
 
 
@@ -108,6 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
+                            android:visibility="gone"
                             android:background="@drawable/progress_bg" />
 
                         <!--DON'T HAVE ANY CARD-->

@@ -69,6 +69,7 @@ public class StoreValuePass extends AppCompatActivity {
 
     // GET DASHBOARD DATA
     private void getDashboardData() {
+        binding.SVProgressBar.setVisibility(View.VISIBLE);
         String PAX_ID = SharedPrefUtils.getStringData(this, "PAX_ID");
         Call<SVDashboard> svDashboardCall = ApiController.getInstance().apiInterface().updateSVDashboard(PAX_ID);
         svDashboardCall.enqueue(new Callback<SVDashboard>() {
@@ -78,7 +79,7 @@ public class StoreValuePass extends AppCompatActivity {
                 Log.e("UPDATE_DASHBOARD_REQ", gson.toJson(PAX_ID));
                 Log.e("UPDATE_DASHBOARD_RESP", gson.toJson(response.body()));
 
-                binding.SPassProgressBar.setVisibility(View.GONE);
+                binding.SVProgressBar.setVisibility(View.GONE);
                 if (response.body() != null) {
                     if (response.body().isStatus()) {
 
@@ -503,6 +504,7 @@ public class StoreValuePass extends AppCompatActivity {
         binding.BackButton.setOnClickListener(view -> finish());
         binding.Heading.setText(R.string.mumbai_metro_one);
 
+        binding.HasSVP.setVisibility(View.GONE);
         binding.HasSVPController.setVisibility(View.GONE);
         binding.ReloadSVButton.setEnabled(false);
         binding.NeedHelp.setOnClickListener(v -> openNeedHelpModal());
