@@ -52,7 +52,8 @@
         android:layout_marginBottom="-12dp"
         android:src="@drawable/orangestrip"
         app:layout_constraintBottom_toTopOf="@+id/materialCardView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -89,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:padding="20dp">
 
-
+                <!--
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/LogoCard"
                     style="@style/Widget.Material3.CardView.Filled"
@@ -149,7 +150,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.card.MaterialCardView>
-
+                -->
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleButton"
                     android:layout_width="match_parent"

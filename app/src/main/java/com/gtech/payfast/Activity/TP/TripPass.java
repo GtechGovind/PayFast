@@ -200,10 +200,8 @@ public class TripPass extends AppCompatActivity {
                         binding.GenerateTrip.setVisibility(View.GONE);
                         getDashboardData();
                     } else {
-                        // Could not generate trip
+                        // TODO: Could not generate trip
                     }
-                } else {
-                    // Problem with generate trip request
                 }
             }
 
@@ -229,8 +227,6 @@ public class TripPass extends AppCompatActivity {
                         binding.ReloadTPButton.setEnabled(true);
                         binding.ReloadTPButton.setOnClickListener(view -> reloadPass(orderId, amount));
                     }
-                } else {
-                    // Problem with generate trip request
                 }
             }
 
@@ -429,12 +425,12 @@ public class TripPass extends AppCompatActivity {
         binding.BackButton.setOnClickListener(view -> finish());
         binding.NeedHelp.setOnClickListener(v -> openNeedHelpModal());
 
-        binding.Heading.setText(R.string.mumbai_metro_one);
-        binding.TPassProgressBar.setVisibility(View.GONE);
-        binding.ReloadTPButton.setEnabled(false);
-        binding.RefundPassCard.setVisibility(View.GONE);
-        binding.TPProgressBar.setVisibility(View.GONE);
-        binding.QrCodeCard.setVisibility(View.GONE);
-
+        binding.Heading.setText(R.string.mumbai_metro_one); // set header text
+        binding.TPassProgressBar.setVisibility(View.GONE); // hide loader on pass card
+        binding.ReloadTPButton.setEnabled(false); // reload button should be hidden initially
+        binding.RefundPassCard.setVisibility(View.GONE); // refund button should be shown only if pass exists
+        binding.TPProgressBar.setVisibility(View.GONE); // hide loader
+        binding.QrCodeCard.setVisibility(View.GONE); // qr code card
+        binding.HasTP.setVisibility(View.GONE); // TP card is shown only if user has a pass
     }
 }

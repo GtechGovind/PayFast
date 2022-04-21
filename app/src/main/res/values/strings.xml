@@ -76,10 +76,10 @@
     <string name="upcoming_orders">Upcoming Tickets</string>
     <string name="reload_pass_sv">Reload Pass</string>
     <string name="trip_pass_heading">Trip Pass</string>
-    <string name="trip_pass_desc">Lorem ipsum dolor sit amet kitn</string>
+    <string name="trip_pass_desc">45 Trip Pass journey from source to destination</string>
     <string name="balance_trips">Balance Trips</string>
     <string name="tp_name_label">Name</string>
-    <string name="tp_label_mx_id">Pass NO</string>
+    <string name="tp_label_mx_id">Pass Number</string>
     <string name="reload">Reload</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="refund_pass">REFUND PASS</string>
@@ -92,7 +92,7 @@
     <string name="generate_new_trip_button_content_desc">generate new trip button</string>
     <string name="welcome">Welcome</string>
     <string name="atek_logo">Atek Logo</string>
-    <string name="loading">loading...</string>
+    <string name="loading">loading…</string>
     <string name="store_value_pass_">Store Value Pass</string>
     <string name="chakala_jb_nagar">Chakala JB Nagar</string>
     <string name="data">DATA</string>
@@ -107,6 +107,7 @@
     <string name="processing_fee_modal">Processing Fee:</string>
     <string name="outward_toggle">OUTWARD</string>
     <string name="return_toggle">RETURN</string>
+    <string name="store_value_pass_qr_title">Store Value Pass QR</string>
     <string-array name="stations_list">
         <item>Versova</item>
         <item>DN Nagar</item>

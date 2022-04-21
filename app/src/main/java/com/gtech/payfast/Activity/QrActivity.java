@@ -58,17 +58,13 @@ public class QrActivity extends AppCompatActivity {
 
         binding.LeftBtn.setOnClickListener(v -> {
             qrAdapter.notifyDataSetChanged();
-            binding.QrRecyclerView.post(() -> {
-                binding.QrRecyclerView.scrollToPosition(qrAdapter.getCurrentPosition() - 1);
-            });
+            binding.QrRecyclerView.post(() -> binding.QrRecyclerView.scrollToPosition(qrAdapter.getCurrentPosition() - 1));
             qrAdapter.notifyDataSetChanged();
         });
 
         binding.RightBtn.setOnClickListener(v -> {
             qrAdapter.notifyDataSetChanged();
-            binding.QrRecyclerView.post(() -> {
-                binding.QrRecyclerView.scrollToPosition(qrAdapter.getCurrentPosition() + 1);
-            });
+            binding.QrRecyclerView.post(() -> binding.QrRecyclerView.scrollToPosition(qrAdapter.getCurrentPosition() + 1));
             qrAdapter.notifyDataSetChanged();
         });
 
@@ -101,8 +97,6 @@ public class QrActivity extends AppCompatActivity {
                         if (ticketQrs.size() > 1) {
                             Toast.makeText(QrActivity.this, "Swipe to see other tickets!", Toast.LENGTH_LONG).show();
                         }
-                    } else {
-
                     }
                 }
             }
@@ -127,7 +121,7 @@ public class QrActivity extends AppCompatActivity {
         // SET BOOKING AND EXPIRY DATE
         binding.BookingDate.setText(ticketData.getTxn_date());
         binding.ExpiryDate.setText(ticketData.getMs_qr_exp());
-        String validTill = "Valid till last train on " + ticketData.getMs_qr_exp().split(" ")[0];
+        String validTill = "Valid till last train on " + ticketData.getTxn_date().split(" ")[0];
         binding.ValidTill.setText(validTill);
         // SET UNIT PRICE
         String fare = "₹" + ticketData.getTotal_price();
@@ -156,10 +150,9 @@ public class QrActivity extends AppCompatActivity {
     // SET CONFIG
     private void setBasicConfig() {
 
-        String Heading = "Mobile QR";
         binding.QrRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.BackButton.setOnClickListener(view -> finish());
-        binding.Heading.setText(Heading);
+        binding.Heading.setText(R.string.mumbai_metro_one);
     }
 
     private void setAdapter(Boolean isReturn)
